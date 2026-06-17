@@ -1,7 +1,8 @@
 import { dirname, isAbsolute, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const configDir = dirname(fileURLToPath(import.meta.url));
+const moduleUrl = typeof import.meta !== "undefined" && typeof import.meta.url === "string" ? import.meta.url : "";
+const configDir = moduleUrl ? dirname(fileURLToPath(moduleUrl)) : ".";
 
 export const rootDir = resolve(configDir, "../../..");
 export const publicDir = join(rootDir, "public");
