@@ -4,6 +4,7 @@ import { createApiRouter } from "./api/router.mjs";
 import { createAuthService } from "./auth/authService.mjs";
 import { createSupabaseAuthClient } from "./auth/supabaseAuthClient.mjs";
 import { getAppEnvironment, getPublicAuthConfig, getSupabaseConfig } from "./config/env.mjs";
+import { createWebRequest, createWebResponse } from "./http/webAdapter.mjs";
 import { sendErrorResponse } from "./http/response.mjs";
 import { createRepository } from "./persistence/repositoryFactory.mjs";
 import { createAdminService } from "./services/adminService.mjs";
@@ -14,12 +15,12 @@ import { createResultService } from "./services/resultService.mjs";
 import { createUserService } from "./services/userService.mjs";
 import { createStaticServer } from "./static/staticServer.mjs";
 
-export function createApp() {
+export function createServices() {
   const { repository, storageMode } = createRepository();
   const appEnvironment = getAppEnvironment();
   const publicAuthConfig = getPublicAuthConfig();
   const supabaseAuthClient = createSupabaseAuthClient(getSupabaseConfig());
-  const services = {
+  return {
     auth: createAuthService(repository, {
       authMode: appEnvironment.authMode,
       supabaseAuthClient,
@@ -32,10 +33,14 @@ export function createApp() {
     users: createUserService(repository),
     admin: createAdminService(repository),
   };
+}
+
+export function createNodeRequestHandler() {
+  const services = createServices();
   const handleApi = createApiRouter(services);
   const serveStatic = createStaticServer(publicDir);
 
-  return createServer(async (req, res) => {
+  return async function handleNodeRequest(req, res) {
     try {
       const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
       if (url.pathname.startsWith("/api/")) {
@@ -46,7 +51,11 @@ export function createApp() {
     } catch (error) {
       sendErrorResponse(res, error);
     }
-  });
+  };
+}
+
+export function createApp() {
+  return createServer(createNodeRequestHandler());
 }
 
 export function startServer({ port = defaultPort } = {}) {
@@ -55,4 +64,35 @@ export function startServer({ port = defaultPort } = {}) {
     console.log(`Social Jarvis Dashboard running at http://localhost:${port}`);
   });
   return server;
+}
+
+export function createWorkerFetchHandler({ assetsBindingName = "ASSETS" } = {}) {
+  const services = createServices();
+  const handleApi = createApiRouter(services);
+
+  return async function handleWorkerFetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname.startsWith("/api/")) {
+      const req = createWebRequest(request);
+      const res = createWebResponse();
+      try {
+        await handleApi(req, res, url);
+      } catch (error) {
+        sendErrorResponse(res, error);
+      }
+      return res.toResponse();
+    }
+
+    const assets = env?.[assetsBindingName];
+    if (!assets || typeof assets.fetch !== "function") {
+      return new Response("Static assets binding fehlt.", { status: 500 });
+    }
+
+    const assetResponse = await assets.fetch(request);
+    if (assetResponse.status !== 404) return assetResponse;
+
+    const fallbackUrl = new URL("/index.html", request.url);
+    return assets.fetch(new Request(fallbackUrl.toString(), request));
+  };
 }

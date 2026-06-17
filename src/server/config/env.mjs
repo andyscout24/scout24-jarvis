@@ -1,5 +1,14 @@
 const env = process.env;
 
+export function applyEnvironmentOverrides(overrides = {}) {
+  for (const [key, value] of Object.entries(overrides)) {
+    if (value === undefined || value === null) continue;
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+      env[key] = String(value);
+    }
+  }
+}
+
 const integrationRequirements = [
   {
     id: "campaign_review",

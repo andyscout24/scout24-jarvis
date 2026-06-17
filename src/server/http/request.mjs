@@ -3,6 +3,20 @@ import { badRequest, payloadTooLarge } from "../errors/apiError.mjs";
 const maxJsonBodyBytes = 1024 * 1024;
 
 export function readJsonBody(req) {
+  if (typeof req.text === "function") {
+    return req.text().then((raw) => {
+      if (!raw) return {};
+      if (raw.length > maxJsonBodyBytes) {
+        throw payloadTooLarge("payload_too_large", "Der Request Body ist zu gross.");
+      }
+      try {
+        return JSON.parse(raw);
+      } catch {
+        throw badRequest("invalid_json", "Der Request Body ist kein gueltiges JSON.");
+      }
+    });
+  }
+
   return new Promise((resolve, reject) => {
     let raw = "";
     let settled = false;

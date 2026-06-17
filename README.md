@@ -75,6 +75,8 @@ npm run dev
 npm run build
 npm start
 npm run health
+npm run cf:dev
+npm run cf:deploy
 ```
 
 Falls npm lokal nicht verfuegbar ist:
@@ -198,7 +200,10 @@ Details stehen in `docs/supabase-setup.md`.
 
 ## Deployment
 
-Empfohlen fuer dieses MVP: Railway oder Render. Beide koennen einen klassischen Node-HTTP-Server mit dynamischem `PORT` und Healthcheck betreiben.
+Das Projekt ist jetzt fuer zwei Wege vorbereitet:
+
+- klassischer Node-Deploy, z. B. Render oder Railway
+- Cloudflare Workers mit GitHub Deploy
 
 Build Command:
 
@@ -217,6 +222,13 @@ Health Check Path:
 ```text
 /api/health
 ```
+
+Cloudflare-relevante Dateien:
+
+- `wrangler.jsonc`
+- `src/server/worker.mjs`
+
+Cloudflare braucht fuer einen funktionierenden API-Deploy dieselben Supabase- und Auth-Variablen wie lokal.
 
 Weitere Details stehen in `docs/deployment.md`.
 

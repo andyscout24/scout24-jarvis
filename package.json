@@ -13,8 +13,12 @@
     "start:env": "node --env-file=.env server.mjs",
     "build": "node scripts/check.mjs",
     "check": "node scripts/check.mjs",
-    "health": "node scripts/healthcheck.mjs"
+    "health": "node scripts/healthcheck.mjs",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "wrangler deploy"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "wrangler": "^4.54.0"
+  }
 }

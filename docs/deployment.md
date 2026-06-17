@@ -10,11 +10,14 @@ Das Social Jarvis Dashboard ist aktuell eine dependency-freie Node.js App:
 - Persistenz im MVP: `data/db.json`
 - Produktionsziel: PostgreSQL/Supabase mit `database/schema.sql` und `database/seed.sql`
 
-## Empfohlener Anbieter
+## Anbieter
 
-Fuer dieses MVP ist Railway oder Render am sinnvollsten, weil beide einen klassischen Node-HTTP-Server mit Healthcheck und Port-Binding sauber unterstuetzen.
+Es gibt jetzt zwei tragfaehige Deployment-Wege:
 
-Vercel und Netlify sind fuer dieses Projekt weniger passend, solange der Server als eigener Node-HTTP-Prozess laeuft. Sie waeren besser, wenn das Projekt spaeter auf Next.js, serverless functions oder reine Static/API-Splits umgebaut wird.
+- klassischer Node-Deploy auf Render oder Railway
+- Cloudflare Workers mit Static Assets und Worker-API
+
+Vercel und Netlify sind fuer dieses Projekt weiterhin weniger passend, solange der Server nicht auf ihr jeweiliges Serverless-Modell zugeschnitten wird.
 
 ## Build und Start
 
@@ -134,6 +137,40 @@ DASHBOARD_HEALTHCHECK_URL=https://example.up.railway.app/api/health npm run heal
 4. Start Command: `npm start`
 5. Health Check Path: `/api/health`
 6. Environment Variables setzen.
+
+## Cloudflare Workers
+
+Das Projekt ist fuer Workers vorbereitet mit:
+
+- `wrangler.jsonc`
+- Worker Entry: `src/server/worker.mjs`
+- Static Assets aus `public/`
+
+Wichtige Variablen in Cloudflare:
+
+- `AUTH_MODE=hybrid` oder spaeter `supabase`
+- `DATA_REPOSITORY=supabase`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_SCHEMA=public`
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `PUBLIC_BASE_URL=https://<dein-worker>.workers.dev`
+- `SERVICE_NAME=social-jarvis-dashboard`
+
+Optional:
+
+- `CAMPAIGN_REVIEW_BASE_URL`
+- `SWATIO_BASE_URL`
+- `SWATIO_API_KEY`
+- `META_APP_ID`
+- `META_APP_SECRET`
+- `META_ACCESS_TOKEN`
+- `GOOGLE_SHEETS_CLIENT_EMAIL`
+- `GOOGLE_SHEETS_PRIVATE_KEY`
+- `OPENAI_API_KEY`
+
+Wenn diese Variablen in Cloudflare fehlen, laedt zwar das Frontend, aber die API zeigt nur Fehler.
 
 ## Deployment Checklist
 

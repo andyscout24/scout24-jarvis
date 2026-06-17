@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "scout24-jarvis",
+  "main": "src/server/worker.mjs",
+  "compatibility_date": "2026-06-17",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "public",
+    "binding": "ASSETS"
+  }
+}
