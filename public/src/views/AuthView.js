@@ -1,6 +1,7 @@
 import { icon } from "../icons.js";
+import { escapeHtml } from "../utils.js";
 
-export function AuthView(authConfig) {
+export function AuthView(authConfig, { error = "" } = {}) {
   const supabaseEnabled = Boolean(authConfig?.supabase?.enabled);
 
   return `
@@ -16,6 +17,7 @@ export function AuthView(authConfig) {
 
         ${supabaseEnabled
           ? `<form id="auth-sign-in-form" class="auth-form">
+              ${error ? `<div class="inline-form-error" role="alert">${icon("alert")}<span>${escapeHtml(error)}</span></div>` : ""}
               <label>
                 <span>E-Mail</span>
                 <input name="email" type="email" autocomplete="username" placeholder="vorname.nachname@firma.de" required>

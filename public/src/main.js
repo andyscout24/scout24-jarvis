@@ -12,7 +12,7 @@ import { EmptyState } from "./components/EmptyState.js";
 import { PageHeader } from "./components/PageHeader.js";
 import { offerPayloadFromForm, reportPayloadFromForm } from "./forms/formPayloads.js";
 import { getRoute } from "./router.js";
-import { bindAutomationHubFilters, bindActivityLogFilters } from "./ui/filters.js";
+import { bindAutomationHubFilters, bindActivityLogFilters, bindReportingFilters } from "./ui/filters.js";
 import { bindToolOpenLogging } from "./ui/toolOpenLogging.js";
 import { ActivityView } from "./views/ActivityView.js";
 import { DashboardView } from "./views/DashboardView.js";
@@ -31,7 +31,9 @@ let state = {
   authConfig: null,
   authRequired: false,
   authState: getAuthState(),
+  apiStatus: "loading",
   error: "",
+  authError: "",
   notice: "",
   loading: true,
 };
@@ -40,7 +42,14 @@ window.addEventListener("hashchange", () => render());
 window.addEventListener("DOMContentLoaded", () => loadData());
 
 async function loadData(options = {}) {
-  state = { ...state, loading: true, error: "", notice: options.notice || "" };
+  state = {
+    ...state,
+    loading: true,
+    error: "",
+    authError: "",
+    notice: options.notice || "",
+    apiStatus: "loading",
+  };
   render();
 
   try {
@@ -72,6 +81,7 @@ async function loadData(options = {}) {
       authConfig,
       authRequired: false,
       authState: getAuthState(),
+      apiStatus: "connected",
       data: {
         tools: toolsPayload.tools,
         logs: logsPayload.logs,
@@ -102,7 +112,9 @@ async function loadData(options = {}) {
         authConfig,
         authRequired: true,
         authState: getAuthState(),
+        apiStatus: "connected",
         error: "",
+        authError: "",
         loading: false,
       };
       render();
@@ -112,6 +124,7 @@ async function loadData(options = {}) {
     state = {
       ...state,
       authState: getAuthState(),
+      apiStatus: error?.status ? "connected" : "error",
       error: error.message || "Daten konnten nicht geladen werden.",
       loading: false,
     };
@@ -134,18 +147,19 @@ function render() {
     currentUser: state.currentUser,
     authState: state.authState,
     authConfig: state.authConfig,
+    apiStatus: state.apiStatus,
   });
 
   bindActions();
 }
 
 function renderContent(route) {
-  if (state.authRequired) return AuthView(state.authConfig);
+  if (state.authRequired) return AuthView(state.authConfig, { error: state.authError });
   if (route.name === "#/auth") {
     if (shouldRenderSupabaseAuth()) {
-      return AuthView(state.authConfig);
+      return AuthView(state.authConfig, { error: state.authError });
     }
-    return state.currentUser ? DashboardView(state.data, state.currentUser) : AuthView(state.authConfig);
+    return state.currentUser ? DashboardView(state.data, state.currentUser) : AuthView(state.authConfig, { error: state.authError });
   }
   if (!state.data) return "";
   if (!canAccessRoute(state.currentUser, route, state.data)) return AccessDeniedView(route);
@@ -179,6 +193,7 @@ function bindActions() {
   });
   bindAutomationHubFilters();
   bindActivityLogFilters();
+  bindReportingFilters();
   bindToolOpenLogging(api);
 
   document.getElementById("auth-sign-in-form")?.addEventListener("submit", async (event) => {
@@ -198,7 +213,9 @@ function bindActions() {
     } catch (error) {
       state = {
         ...state,
-        error: error.message || "Anmeldung fehlgeschlagen.",
+        apiStatus: error?.status ? "connected" : "error",
+        authError: error.message || "Anmeldung fehlgeschlagen.",
+        error: "",
         loading: false,
       };
       render();
@@ -219,6 +236,7 @@ function bindActions() {
       } catch (error) {
         state = {
           ...state,
+          apiStatus: error?.status ? state.apiStatus : "error",
           error: error.message || "Status konnte nicht aktualisiert werden.",
           loading: false,
         };
@@ -241,6 +259,7 @@ function bindActions() {
     } catch (error) {
       state = {
         ...state,
+        apiStatus: error?.status ? state.apiStatus : "error",
         error: error.message || "Angebot konnte nicht erstellt werden.",
         notice: "",
         loading: false,
@@ -265,6 +284,7 @@ function bindActions() {
     } catch (error) {
       state = {
         ...state,
+        apiStatus: error?.status ? state.apiStatus : "error",
         error: error.message || "Report konnte nicht erstellt werden.",
         notice: "",
         loading: false,

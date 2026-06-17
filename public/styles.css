@@ -122,6 +122,21 @@ a {
   color: var(--petrol-dark);
 }
 
+.nav-link:focus-visible,
+.button:focus-visible,
+.icon-button:focus-visible,
+.status-action:focus-visible,
+.quick-action:focus-visible,
+.auth-form input:focus-visible,
+.filter-grid select:focus-visible,
+.search-field input:focus-visible,
+.select-field select:focus-visible,
+.form-grid input:focus-visible,
+.form-grid select:focus-visible {
+  outline: 2px solid var(--petrol);
+  outline-offset: 2px;
+}
+
 .nav-link.active {
   box-shadow: inset 3px 0 0 var(--orange);
 }
@@ -223,6 +238,19 @@ a {
   border: 1px solid var(--border-strong);
   border-radius: 6px;
   background: #fff;
+}
+
+.inline-form-error {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 11px 12px;
+  border: 1px solid #f6bbb5;
+  border-radius: 6px;
+  color: var(--red);
+  background: var(--red-soft);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .auth-submit {
@@ -524,6 +552,26 @@ a {
 .connection-pill {
   color: var(--green);
   background: var(--green-soft);
+}
+
+.connection-success {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.connection-pending {
+  color: var(--petrol-dark);
+  background: var(--petrol-soft);
+}
+
+.connection-error {
+  color: var(--red);
+  background: var(--red-soft);
+}
+
+.connection-muted {
+  color: var(--muted-strong);
+  background: #edf0f2;
 }
 
 .source-ready {
@@ -885,6 +933,12 @@ a {
 .report-filter-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-bottom: 14px;
+}
+
+.filter-helper {
+  margin: -4px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .filter-grid label {

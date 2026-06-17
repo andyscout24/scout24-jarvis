@@ -59,3 +59,43 @@ export function bindActivityLogFilters() {
   toolSelect.addEventListener("change", applyFilters);
   applyFilters();
 }
+
+export function bindReportingFilters() {
+  const periodSelect = document.getElementById("report-filter-period");
+  const channelSelect = document.getElementById("report-filter-channel");
+  const clientSelect = document.getElementById("report-filter-client");
+  const typeSelect = document.getElementById("report-filter-type");
+  const rows = [...document.querySelectorAll("[data-report-row]")];
+  const emptyState = document.getElementById("report-filter-empty");
+  const tableWrap = document.getElementById("report-table-wrap");
+
+  if (!periodSelect || !channelSelect || !clientSelect || !typeSelect || !rows.length) return;
+
+  const applyFilters = () => {
+    const period = periodSelect.value;
+    const channel = channelSelect.value;
+    const client = clientSelect.value;
+    const reportType = typeSelect.value;
+    let visibleCount = 0;
+
+    rows.forEach((row) => {
+      const visible =
+        (!period || (row.getAttribute("data-report-period") || "") === period) &&
+        (!channel || (row.getAttribute("data-report-channel") || "") === channel) &&
+        (!client || (row.getAttribute("data-report-client") || "") === client) &&
+        (!reportType || (row.getAttribute("data-report-type") || "") === reportType);
+
+      row.hidden = !visible;
+      if (visible) visibleCount += 1;
+    });
+
+    if (emptyState) emptyState.hidden = visibleCount > 0;
+    if (tableWrap) tableWrap.hidden = visibleCount === 0;
+  };
+
+  [periodSelect, channelSelect, clientSelect, typeSelect].forEach((select) => {
+    select.addEventListener("change", applyFilters);
+  });
+
+  applyFilters();
+}

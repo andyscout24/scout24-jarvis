@@ -103,13 +103,19 @@ export function ReportingCenterView(data, currentUser) {
           <p class="panel-subtitle">${reports.length} Reports gefunden</p>
         </div>
       </div>
-      <div class="filter-grid report-filter-grid">
-        <label><span>Zeitraum</span><select><option>Alle Zeitraeume</option>${filterOptions(reports, "reportingPeriod")}</select></label>
-        <label><span>Kanal</span><select><option>Alle Kanaele</option>${filterOptions(reports, "channel")}</select></label>
-        <label><span>Kunde</span><select><option>Alle Kunden</option>${filterOptions(reports, "clientName")}</select></label>
-        <label><span>Report-Typ</span><select><option>Alle Typen</option>${filterOptions(reports, "reportType")}</select></label>
+      <div class="filter-grid report-filter-grid" aria-label="Report Filter">
+        <label><span>Zeitraum</span><select id="report-filter-period"><option value="">Alle Zeitraeume</option>${filterOptions(reports, "reportingPeriod")}</select></label>
+        <label><span>Kanal</span><select id="report-filter-channel"><option value="">Alle Kanaele</option>${filterOptions(reports, "channel")}</select></label>
+        <label><span>Kunde</span><select id="report-filter-client"><option value="">Alle Kunden</option>${filterOptions(reports, "clientName")}</select></label>
+        <label><span>Report-Typ</span><select id="report-filter-type"><option value="">Alle Typen</option>${filterOptions(reports, "reportType")}</select></label>
       </div>
-      ${reports.length ? reportTable(reports) : EmptyState({ title: "Keine Reports", message: "Neue Reports erscheinen nach dem ersten Export automatisch hier.", iconName: "database" })}
+      <p class="filter-helper">Die Filter wirken direkt auf die aktuell geladenen Report-Eintraege.</p>
+      ${reports.length
+        ? `${reportTable(reports)}
+           <div id="report-filter-empty" hidden>
+             ${EmptyState({ title: "Keine Reports fuer diesen Filter", message: "Passe Zeitraum, Kanal, Kunde oder Report-Typ an.", iconName: "database" })}
+           </div>`
+        : EmptyState({ title: "Keine Reports", message: "Neue Reports erscheinen nach dem ersten Export automatisch hier.", iconName: "database" })}
     </section>
   `;
 }
@@ -188,7 +194,7 @@ function filterOptions(reports, field) {
 
 function reportTable(reports) {
   return `
-    <div class="table-wrap">
+    <div class="table-wrap" id="report-table-wrap">
       <table class="data-table">
         <thead>
           <tr>
@@ -206,14 +212,24 @@ function reportTable(reports) {
           ${reports
             .map((report) => {
               const result = describeResult(report);
+              const reportingPeriod = report.reportingPeriod || "";
+              const channel = report.channel || "";
+              const clientName = report.clientName || "";
+              const reportType = report.reportType || "campaign_review";
               return `
-                <tr>
+                <tr
+                  data-report-row
+                  data-report-period="${escapeHtml(reportingPeriod)}"
+                  data-report-channel="${escapeHtml(channel)}"
+                  data-report-client="${escapeHtml(clientName)}"
+                  data-report-type="${escapeHtml(reportType)}"
+                >
                   <td><strong>${escapeHtml(report.clientName)}</strong><span>${escapeHtml(report.createdBy || "")}</span></td>
                   <td>${escapeHtml(report.campaignName)}</td>
-                  <td>${escapeHtml(report.reportType || "campaign_review")}</td>
+                  <td>${escapeHtml(reportType)}</td>
                   <td>${escapeHtml(report.dataSourceLabel || report.dataSource || "-")}</td>
                   <td>${statusBadge(reportStatus(report, result))}${report.errorMessage ? `<span>${escapeHtml(report.errorMessage)}</span>` : ""}</td>
-                  <td>${escapeHtml(report.reportingPeriod || "-")}</td>
+                  <td>${escapeHtml(reportingPeriod || "-")}</td>
                   <td>${formatDateTime(report.createdAt)}</td>
                   <td class="mono">${escapeHtml(report.fileName || "-")}</td>
                 </tr>
