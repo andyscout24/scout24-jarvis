@@ -1,0 +1,645 @@
+{
+  "tools": [
+    {
+      "id": "offer-generator",
+      "name": "Angebotsgenerator",
+      "description": "Erstellt Media-Angebote und Kampagnenpakete automatisch.",
+      "category": "Sales",
+      "status": "ready",
+      "owner": "Sales Operations",
+      "route": "#/tools/offer-generator",
+      "launchRoute": "#/offers",
+      "externalUrl": null,
+      "lastRunAt": "2026-06-08T07:58:00.000Z",
+      "metrics": {
+        "runsToday": 7,
+        "successRate": 0.96,
+        "storedResults": 18
+      },
+      "integration": {
+        "type": "external_module",
+        "state": "ready",
+        "adapter": "dashboard-offer-generator-wrapper",
+        "notes": "Angebotsgenerator ist als ready registriert und wird ueber den Dashboard-Adapter gestartet."
+      }
+    },
+    {
+      "id": "reporting-tool",
+      "name": "Reporting Tool",
+      "description": "Erzeugt Kampagnenreviews aus Media-Reports inklusive KPI-Preview und PowerPoint-Export.",
+      "category": "Marketing / Reporting",
+      "status": "in_progress",
+      "owner": "Campaign Success",
+      "route": "#/tools/reporting-tool",
+      "launchRoute": "#/reporting",
+      "externalUrl": "http://localhost:8000/app",
+      "lastRunAt": "2026-06-08T08:12:00.000Z",
+      "metrics": {
+        "runsToday": 3,
+        "successRate": 0.91,
+        "storedResults": 11
+      },
+      "integration": {
+        "type": "fastapi_service",
+        "state": "external_reference_detected",
+        "serviceName": "campaign_review_tool",
+        "healthEndpoint": "/api/health",
+        "previewEndpoint": "/api/preview",
+        "generateEndpoint": "/api/generate",
+        "sourceReference": "campaign_review_tool",
+        "adapter": "dashboard-reporting-tool-wrapper",
+        "dataSources": [
+          "csv_upload",
+          "google_ad_manager",
+          "google_ads",
+          "newsletter",
+          "fastapi_campaign_review",
+          "swat_io",
+          "meta_api",
+          "google_sheets"
+        ]
+      }
+    },
+    {
+      "id": "lead-list-generator",
+      "name": "Leadlisten Generator",
+      "description": "Erstellt kuratierte Leadlisten fuer Sales-Kampagnen und Akquise-Flows.",
+      "category": "Sales",
+      "status": "disabled",
+      "owner": "Revenue Operations",
+      "route": "#/tools/lead-list-generator",
+      "launchRoute": "#/tools/lead-list-generator",
+      "externalUrl": null,
+      "lastRunAt": null,
+      "metrics": {
+        "runsToday": 0,
+        "successRate": null,
+        "storedResults": 0
+      },
+      "integration": {
+        "type": "placeholder",
+        "state": "planned"
+      }
+    },
+    {
+      "id": "content-ideas-generator",
+      "name": "Content Ideen Generator",
+      "description": "Generiert Content-Ideen fuer Social Posts, Kampagnen und Redaktionsplaene.",
+      "category": "Marketing",
+      "status": "disabled",
+      "owner": "Marketing Operations",
+      "route": "#/tools/content-ideas-generator",
+      "launchRoute": "#/tools/content-ideas-generator",
+      "externalUrl": null,
+      "lastRunAt": null,
+      "metrics": {
+        "runsToday": 0,
+        "successRate": null,
+        "storedResults": 0
+      },
+      "integration": {
+        "type": "placeholder",
+        "state": "planned"
+      }
+    },
+    {
+      "id": "campaign-analyzer",
+      "name": "Campaign Analyzer",
+      "description": "Analysiert Kampagnen-Performance und bereitet Optimierungspotenziale auf.",
+      "category": "Marketing / Reporting",
+      "status": "pending_connection",
+      "owner": "Campaign Success",
+      "route": "#/tools/campaign-analyzer",
+      "launchRoute": "#/tools/campaign-analyzer",
+      "externalUrl": null,
+      "lastRunAt": null,
+      "metrics": {
+        "runsToday": 0,
+        "successRate": null,
+        "storedResults": 0
+      },
+      "integration": {
+        "type": "placeholder",
+        "state": "pending_connection",
+        "notes": "Wartet auf Datenquellen fuer Kampagnenmetriken."
+      }
+    },
+    {
+      "id": "powerpoint-generator",
+      "name": "PowerPoint Generator",
+      "description": "Erstellt spaeter Praesentationen aus Reports, Angeboten und Briefings.",
+      "category": "Marketing",
+      "status": "disabled",
+      "owner": "Campaign Success",
+      "route": "#/tools/powerpoint-generator",
+      "launchRoute": "#/tools/powerpoint-generator",
+      "externalUrl": null,
+      "lastRunAt": null,
+      "metrics": {
+        "runsToday": 0,
+        "successRate": null,
+        "storedResults": 0
+      },
+      "integration": {
+        "type": "placeholder",
+        "state": "planned"
+      }
+    },
+    {
+      "id": "api-health-monitor",
+      "name": "API Health Monitor",
+      "description": "Ueberwacht spaeter angebundene APIs, Health Checks und fehlgeschlagene Verbindungen.",
+      "category": "Admin",
+      "status": "error",
+      "owner": "Platform",
+      "route": "#/tools/api-health-monitor",
+      "launchRoute": "#/tools/api-health-monitor",
+      "externalUrl": null,
+      "lastRunAt": "2026-06-08T08:35:00.000Z",
+      "metrics": {
+        "runsToday": 1,
+        "successRate": 0.62,
+        "storedResults": 4
+      },
+      "integration": {
+        "type": "placeholder",
+        "state": "needs_adapter"
+      }
+    }
+  ],
+  "reports": [
+    {
+      "id": "report-20260608-001",
+      "toolId": "reporting-tool",
+      "clientId": "client-musterkunde",
+      "automationRunId": "run-report-20260608-001",
+      "clientName": "Musterkunde GmbH",
+      "campaignName": "Q2 Immobilienkampagne",
+      "reportType": "campaign_review",
+      "reportingPeriod": "Q2 2026",
+      "channel": "Google Ad Manager",
+      "dataSource": "google_ad_manager",
+      "dataSourceLabel": "Google Ad Manager",
+      "status": "completed",
+      "fileName": "musterkunde_q2_review.pptx",
+      "fileUrl": null,
+      "errorMessage": null,
+      "createdAt": "2026-06-08T08:12:00.000Z",
+      "updatedAt": "2026-06-08T08:12:00.000Z",
+      "createdBy": "Mira Keller",
+      "metadata": {
+        "reportType": "campaign_review",
+        "dataSource": "google_ad_manager",
+        "dataSourceState": "ready",
+        "outputFile": "musterkunde_q2_review.pptx",
+        "outputUrl": null,
+        "error": null
+      }
+    },
+    {
+      "id": "report-20260607-002",
+      "toolId": "reporting-tool",
+      "clientId": "client-urban-living",
+      "automationRunId": null,
+      "clientName": "Urban Living AG",
+      "campaignName": "Lead Boost Mai",
+      "reportType": "campaign_review",
+      "reportingPeriod": "Mai 2026",
+      "channel": "Google Ads",
+      "dataSource": "google_ads",
+      "dataSourceLabel": "Google Ads",
+      "status": "completed",
+      "fileName": "urban_living_lead_boost_review.pptx",
+      "fileUrl": null,
+      "errorMessage": null,
+      "createdAt": "2026-06-07T15:26:00.000Z",
+      "updatedAt": "2026-06-07T15:26:00.000Z",
+      "createdBy": "Jonas Weber",
+      "metadata": {
+        "reportType": "campaign_review",
+        "dataSource": "google_ads",
+        "dataSourceState": "ready",
+        "outputFile": "urban_living_lead_boost_review.pptx",
+        "outputUrl": null,
+        "error": null
+      }
+    }
+  ],
+  "offers": [
+    {
+      "id": "offer-20260608-004",
+      "toolId": "offer-generator",
+      "clientId": "client-immonord",
+      "automationRunId": "run-offer-20260608-004",
+      "offerNumber": "OFF-2026-0004",
+      "clientName": "ImmoNord GmbH",
+      "status": "sent",
+      "amount": 12400,
+      "currency": "EUR",
+      "fileName": "immonord_angebot_2026_0004.pdf",
+      "createdAt": "2026-06-08T07:58:00.000Z",
+      "updatedAt": "2026-06-08T07:58:00.000Z",
+      "createdBy": "Lena Brandt"
+    },
+    {
+      "id": "offer-20260608-003",
+      "toolId": "offer-generator",
+      "clientId": "client-city-estate",
+      "automationRunId": null,
+      "offerNumber": "OFF-2026-0003",
+      "clientName": "City Estate Group",
+      "status": "draft",
+      "amount": 8600,
+      "currency": "EUR",
+      "fileName": "city_estate_angebot_2026_0003.pdf",
+      "createdAt": "2026-06-08T06:44:00.000Z",
+      "updatedAt": "2026-06-08T06:44:00.000Z",
+      "createdBy": "Jonas Weber"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-001",
+      "externalAuthId": "user-001",
+      "name": "Mira Keller",
+      "email": "mira.keller@example.internal",
+      "role": "admin",
+      "team": "Campaign Success",
+      "active": true
+    },
+    {
+      "id": "user-002",
+      "externalAuthId": "user-002",
+      "name": "Jonas Weber",
+      "email": "jonas.weber@example.internal",
+      "role": "sales_user",
+      "team": "Sales Operations",
+      "active": true
+    },
+    {
+      "id": "user-003",
+      "externalAuthId": "user-003",
+      "name": "Lena Brandt",
+      "email": "lena.brandt@example.internal",
+      "role": "marketing_user",
+      "team": "Revenue Operations",
+      "active": true
+    },
+    {
+      "id": "user-004",
+      "externalAuthId": "user-004",
+      "name": "Clara Stein",
+      "email": "clara.stein@example.internal",
+      "role": "management_viewer",
+      "team": "Management",
+      "active": true
+    }
+  ],
+  "clients": [
+    {
+      "id": "client-musterkunde",
+      "name": "Musterkunde GmbH",
+      "externalRef": "crm-musterkunde",
+      "industry": "Real Estate",
+      "ownerUserId": "user-001",
+      "createdAt": "2026-06-08T07:00:00.000Z",
+      "updatedAt": "2026-06-08T07:00:00.000Z"
+    },
+    {
+      "id": "client-immonord",
+      "name": "ImmoNord GmbH",
+      "externalRef": "crm-immonord",
+      "industry": "Real Estate",
+      "ownerUserId": "user-002",
+      "createdAt": "2026-06-08T07:00:00.000Z",
+      "updatedAt": "2026-06-08T07:00:00.000Z"
+    },
+    {
+      "id": "client-urban-living",
+      "name": "Urban Living AG",
+      "externalRef": "crm-urban-living",
+      "industry": "Real Estate",
+      "ownerUserId": "user-003",
+      "createdAt": "2026-06-07T10:00:00.000Z",
+      "updatedAt": "2026-06-07T10:00:00.000Z"
+    },
+    {
+      "id": "client-city-estate",
+      "name": "City Estate Group",
+      "externalRef": "crm-city-estate",
+      "industry": "Real Estate",
+      "ownerUserId": "user-002",
+      "createdAt": "2026-06-08T06:30:00.000Z",
+      "updatedAt": "2026-06-08T06:30:00.000Z"
+    }
+  ],
+  "logs": [
+    {
+      "id": "log-20260608-083500",
+      "timestamp": "2026-06-08T08:35:00.000Z",
+      "actor": "System",
+      "user": "System",
+      "tool_id": "api-health-monitor",
+      "toolId": "api-health-monitor",
+      "action": "api.health_check_failed",
+      "status": "error",
+      "level": "error",
+      "message": "API Health Monitor Adapter fehlt fuer den geplanten Check.",
+      "metadata": {
+        "errorCode": "adapter_missing"
+      },
+      "created_at": "2026-06-08T08:35:00.000Z",
+      "createdAt": "2026-06-08T08:35:00.000Z"
+    },
+    {
+      "id": "log-20260608-081200",
+      "timestamp": "2026-06-08T08:12:00.000Z",
+      "actor": "Mira Keller",
+      "user": "Mira Keller",
+      "tool_id": "reporting-tool",
+      "toolId": "reporting-tool",
+      "action": "report.created",
+      "status": "success",
+      "level": "success",
+      "message": "Reporting-Ergebnis fuer Musterkunde GmbH gespeichert.",
+      "metadata": {
+        "fileName": "musterkunde_q2_review.pptx"
+      },
+      "created_at": "2026-06-08T08:12:00.000Z",
+      "createdAt": "2026-06-08T08:12:00.000Z"
+    },
+    {
+      "id": "log-20260608-075800",
+      "timestamp": "2026-06-08T07:58:00.000Z",
+      "actor": "Lena Brandt",
+      "user": "Lena Brandt",
+      "tool_id": "offer-generator",
+      "toolId": "offer-generator",
+      "action": "offer.created",
+      "status": "success",
+      "level": "success",
+      "message": "Angebot fuer ImmoNord GmbH erstellt und abgelegt.",
+      "metadata": {
+        "offerNumber": "OFF-2026-0004"
+      },
+      "created_at": "2026-06-08T07:58:00.000Z",
+      "createdAt": "2026-06-08T07:58:00.000Z"
+    },
+    {
+      "id": "log-20260608-071500",
+      "timestamp": "2026-06-08T07:15:00.000Z",
+      "actor": "System",
+      "user": "System",
+      "tool_id": "reporting-tool",
+      "toolId": "reporting-tool",
+      "action": "api.connection_registered",
+      "status": "info",
+      "level": "info",
+      "message": "Externer FastAPI-Service als Integrationsreferenz registriert.",
+      "metadata": {
+        "source": "campaign_review_tool"
+      },
+      "created_at": "2026-06-08T07:15:00.000Z",
+      "createdAt": "2026-06-08T07:15:00.000Z"
+    },
+    {
+      "id": "log-20260608-064400",
+      "timestamp": "2026-06-08T06:44:00.000Z",
+      "actor": "System",
+      "user": "System",
+      "tool_id": "offer-generator",
+      "toolId": "offer-generator",
+      "action": "tool.status_changed",
+      "status": "warning",
+      "level": "warning",
+      "message": "Angebotsgenerator wartet auf finale Service-Anbindung.",
+      "metadata": {},
+      "created_at": "2026-06-08T06:44:00.000Z",
+      "createdAt": "2026-06-08T06:44:00.000Z"
+    }
+  ],
+  "automations": [
+    {
+      "id": "automation-offers-daily-index",
+      "toolId": "offer-generator",
+      "name": "Angebotsindex aktualisieren",
+      "schedule": "werktags 08:00",
+      "enabled": true,
+      "lastRunAt": "2026-06-08T06:00:00.000Z",
+      "nextRunAt": "2026-06-09T06:00:00.000Z"
+    },
+    {
+      "id": "automation-report-cleanup",
+      "toolId": "reporting-tool",
+      "name": "Reporting-Artefakte pruefen",
+      "schedule": "taeglich 18:30",
+      "enabled": true,
+      "lastRunAt": "2026-06-07T16:30:00.000Z",
+      "nextRunAt": "2026-06-08T16:30:00.000Z"
+    },
+    {
+      "id": "automation-lead-list-generator",
+      "toolId": "lead-list-generator",
+      "name": "Leadlisten vorbereiten",
+      "schedule": "manuell",
+      "enabled": false,
+      "lastRunAt": null,
+      "nextRunAt": null
+    }
+  ],
+  "automationRuns": [
+    {
+      "id": "run-offer-20260608-004",
+      "automationId": "automation-offers-daily-index",
+      "toolId": "offer-generator",
+      "clientId": "client-immonord",
+      "status": "succeeded",
+      "triggerSource": "manual",
+      "actorUserId": "user-003",
+      "input": {
+        "clientName": "ImmoNord GmbH"
+      },
+      "output": {
+        "offerId": "offer-20260608-004"
+      },
+      "errorCode": null,
+      "errorMessage": null,
+      "startedAt": "2026-06-08T07:57:00.000Z",
+      "finishedAt": "2026-06-08T07:58:00.000Z",
+      "createdAt": "2026-06-08T07:57:00.000Z"
+    },
+    {
+      "id": "run-report-20260608-001",
+      "automationId": "automation-report-cleanup",
+      "toolId": "reporting-tool",
+      "clientId": "client-musterkunde",
+      "status": "succeeded",
+      "triggerSource": "manual",
+      "actorUserId": "user-001",
+      "input": {
+        "campaignName": "Q2 Immobilienkampagne"
+      },
+      "output": {
+        "reportId": "report-20260608-001"
+      },
+      "errorCode": null,
+      "errorMessage": null,
+      "startedAt": "2026-06-08T08:10:00.000Z",
+      "finishedAt": "2026-06-08T08:12:00.000Z",
+      "createdAt": "2026-06-08T08:10:00.000Z"
+    },
+    {
+      "id": "run-quality-20260608-001",
+      "automationId": null,
+      "toolId": "api-health-monitor",
+      "clientId": null,
+      "status": "failed",
+      "triggerSource": "system",
+      "actorUserId": null,
+      "input": {},
+      "output": {},
+      "errorCode": "adapter_missing",
+      "errorMessage": "API Health Monitor Adapter fehlt fuer den geplanten Check.",
+      "startedAt": "2026-06-08T08:35:00.000Z",
+      "finishedAt": "2026-06-08T08:35:00.000Z",
+      "createdAt": "2026-06-08T08:35:00.000Z"
+    }
+  ],
+  "apiConnections": [
+    {
+      "id": "api-reporting-fastapi",
+      "toolId": "reporting-tool",
+      "name": "Campaign Review FastAPI",
+      "baseUrl": "http://localhost:8000",
+      "healthEndpoint": "/api/health",
+      "authType": "none",
+      "status": "unknown",
+      "lastCheckedAt": null,
+      "lastError": null,
+      "config": {
+        "sourceId": "fastapi_campaign_review",
+        "state": "external_reference_detected",
+        "previewEndpoint": "/api/preview",
+        "generateEndpoint": "/api/generate",
+        "sourceReference": "campaign_review_tool"
+      },
+      "createdAt": "2026-06-08T07:15:00.000Z",
+      "updatedAt": "2026-06-08T07:15:00.000Z"
+    },
+    {
+      "id": "api-reporting-csv-upload",
+      "toolId": "reporting-tool",
+      "name": "CSV / Excel Upload",
+      "baseUrl": null,
+      "healthEndpoint": null,
+      "authType": "none",
+      "status": "healthy",
+      "lastCheckedAt": "2026-06-08T08:12:00.000Z",
+      "lastError": null,
+      "config": {
+        "sourceId": "csv_upload",
+        "state": "ready",
+        "formats": ["csv", "tsv", "xls", "xlsx"]
+      },
+      "createdAt": "2026-06-08T08:12:00.000Z",
+      "updatedAt": "2026-06-08T08:12:00.000Z"
+    },
+    {
+      "id": "api-reporting-swat-io",
+      "toolId": "reporting-tool",
+      "name": "Swat.io",
+      "baseUrl": null,
+      "healthEndpoint": null,
+      "authType": "oauth2",
+      "status": "unknown",
+      "lastCheckedAt": null,
+      "lastError": null,
+      "config": {
+        "sourceId": "swat_io",
+        "state": "pending_connection"
+      },
+      "createdAt": "2026-06-08T08:12:00.000Z",
+      "updatedAt": "2026-06-08T08:12:00.000Z"
+    },
+    {
+      "id": "api-reporting-meta",
+      "toolId": "reporting-tool",
+      "name": "Meta API",
+      "baseUrl": null,
+      "healthEndpoint": null,
+      "authType": "oauth2",
+      "status": "unknown",
+      "lastCheckedAt": null,
+      "lastError": null,
+      "config": {
+        "sourceId": "meta_api",
+        "state": "pending_connection"
+      },
+      "createdAt": "2026-06-08T08:12:00.000Z",
+      "updatedAt": "2026-06-08T08:12:00.000Z"
+    },
+    {
+      "id": "api-reporting-google-sheets",
+      "toolId": "reporting-tool",
+      "name": "Google Sheets",
+      "baseUrl": null,
+      "healthEndpoint": null,
+      "authType": "oauth2",
+      "status": "unknown",
+      "lastCheckedAt": null,
+      "lastError": null,
+      "config": {
+        "sourceId": "google_sheets",
+        "state": "pending_connection"
+      },
+      "createdAt": "2026-06-08T08:12:00.000Z",
+      "updatedAt": "2026-06-08T08:12:00.000Z"
+    },
+    {
+      "id": "api-offer-generator",
+      "toolId": "offer-generator",
+      "name": "Offer Generator Adapter",
+      "baseUrl": null,
+      "healthEndpoint": null,
+      "authType": "none",
+      "status": "healthy",
+      "lastCheckedAt": "2026-06-08T07:58:00.000Z",
+      "lastError": null,
+      "config": {},
+      "createdAt": "2026-06-08T07:58:00.000Z",
+      "updatedAt": "2026-06-08T07:58:00.000Z"
+    }
+  ],
+  "settings": [
+    {
+      "key": "dashboard.default_timezone",
+      "scope": "global",
+      "toolId": null,
+      "userId": null,
+      "value": "Europe/Berlin",
+      "isSecret": false,
+      "updatedByUserId": "user-001",
+      "updatedAt": "2026-06-08T08:00:00.000Z"
+    },
+    {
+      "key": "dashboard.retention_days",
+      "scope": "global",
+      "toolId": null,
+      "userId": null,
+      "value": 180,
+      "isSecret": false,
+      "updatedByUserId": "user-001",
+      "updatedAt": "2026-06-08T08:00:00.000Z"
+    },
+    {
+      "key": "reporting-tool.max_upload_mb",
+      "scope": "tool",
+      "toolId": "reporting-tool",
+      "userId": null,
+      "value": 50,
+      "isSecret": false,
+      "updatedByUserId": "user-001",
+      "updatedAt": "2026-06-08T08:00:00.000Z"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" role="img" aria-labelledby="title desc">
+  <title id="title">Automation Hub Flow</title>
+  <desc id="desc">Abstrakte Modul- und Datenflussgrafik fuer den Automation Hub.</desc>
+  <rect width="240" height="120" rx="8" fill="#f7f9fc"/>
+  <path d="M62 38h38m40 0h38M62 82h38m40 0h38M120 50v20" fill="none" stroke="#8793a7" stroke-width="4" stroke-linecap="round"/>
+  <rect x="22" y="22" width="44" height="32" rx="8" fill="#2457c5"/>
+  <rect x="98" y="22" width="44" height="32" rx="8" fill="#087f8c"/>
+  <rect x="174" y="22" width="44" height="32" rx="8" fill="#168050"/>
+  <rect x="22" y="66" width="44" height="32" rx="8" fill="#a46405"/>
+  <rect x="98" y="66" width="44" height="32" rx="8" fill="#3f4858"/>
+  <rect x="174" y="66" width="44" height="32" rx="8" fill="#b42318"/>
+  <circle cx="44" cy="38" r="6" fill="#fff"/>
+  <path d="M112 38h16M120 30v16" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M188 38l8 8 14-16" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M36 82h16M44 74v16" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M111 82h18" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M190 76l16 16M206 76l-16 16" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg>
