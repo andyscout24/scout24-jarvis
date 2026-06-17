@@ -142,6 +142,9 @@ function render() {
 function renderContent(route) {
   if (state.authRequired) return AuthView(state.authConfig);
   if (route.name === "#/auth") {
+    if (shouldRenderSupabaseAuth()) {
+      return AuthView(state.authConfig);
+    }
     return state.currentUser ? DashboardView(state.data, state.currentUser) : AuthView(state.authConfig);
   }
   if (!state.data) return "";
@@ -274,7 +277,7 @@ function bindActions() {
 }
 
 function normalizeRoute(route) {
-  if (route.name === "#/auth" && state.currentUser && !state.authRequired) {
+  if (route.name === "#/auth" && state.currentUser && !state.authRequired && !shouldRenderSupabaseAuth()) {
     return {
       ...route,
       name: "#/",
@@ -283,4 +286,8 @@ function normalizeRoute(route) {
     };
   }
   return route;
+}
+
+function shouldRenderSupabaseAuth() {
+  return Boolean(state.authConfig?.supabase?.enabled && !state.authState?.hasSupabaseSession);
 }
