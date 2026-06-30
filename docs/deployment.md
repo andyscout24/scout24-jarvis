@@ -19,10 +19,13 @@ Empfohlene Zielarchitektur:
 npm run build
 ```
 
-Das prueft:
+Das prueft und erstellt:
 
 - Syntax aller Quell-Dateien
 - JSON-Struktur von `data/db.json`
+- `dist/server/index.js`
+- `dist/client/`
+- `dist/.openai/hosting.json`
 
 ### Lokaler Start
 
@@ -58,6 +61,16 @@ Erwartung:
 
 - `success: true`
 - `data.status: ok`
+
+## Sites / internes Hosting
+
+Fuer Sites ist das Projekt jetzt vorbereitet:
+
+- `.openai/hosting.json` ist vorhanden
+- `public/screenshot.jpeg` ist als kanonischer Preview-Screenshot hinterlegt
+- `npm run build` erzeugt ein Sites-kompatibles `dist/`-Artefakt
+
+Wenn Supabase in Development nicht sauber erreichbar ist, faellt der Server lokal auf den JSON-Datensatz zurueck. Das ist nur fuer den internen Entwicklungsfluss gedacht, nicht als produktiver Datenmodus.
 
 ## Empfohlene interne Hosting-Variante
 

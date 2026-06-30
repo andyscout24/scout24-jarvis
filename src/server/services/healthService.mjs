@@ -5,12 +5,16 @@ export function createHealthService(repository, { serviceName, storageMode } = {
     async getHealth() {
       const config = getHealthConfigSummary();
       const timestamp = new Date().toISOString();
+      const storageStatus = repository.getStorageStatus?.() || null;
 
       try {
         const [tools, apiConnections] = await Promise.all([
           repository.getTools(),
           repository.getApiConnections(),
         ]);
+
+        const activeMode = storageStatus?.activeMode || storageMode || config.storage.mode;
+        const fallbackActive = Boolean(storageStatus?.fallbackActive);
 
         return {
           status: "ok",
@@ -19,8 +23,14 @@ export function createHealthService(repository, { serviceName, storageMode } = {
           ...config,
           checks: {
             storage: {
-              status: "ok",
-              mode: storageMode || config.storage.mode,
+              status: fallbackActive ? "fallback" : "ok",
+              mode: activeMode,
+              primaryMode: storageStatus?.primaryMode || storageMode || config.storage.mode,
+              fallbackActive,
+              lastFallbackAt: storageStatus?.lastFallbackAt || null,
+              message: fallbackActive
+                ? "Die Primaerdatenquelle war nicht erreichbar. Das Dashboard nutzt lokal den JSON-Fallback."
+                : undefined,
               toolCount: tools.length,
             },
             tools: {
@@ -44,7 +54,9 @@ export function createHealthService(repository, { serviceName, storageMode } = {
           checks: {
             storage: {
               status: "error",
-              mode: storageMode || config.storage.mode,
+              mode: storageStatus?.activeMode || storageMode || config.storage.mode,
+              primaryMode: storageStatus?.primaryMode || storageMode || config.storage.mode,
+              fallbackActive: Boolean(storageStatus?.fallbackActive),
               message: "Die Dashboard-Datenquelle konnte nicht gelesen werden.",
             },
           },

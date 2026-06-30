@@ -153,10 +153,17 @@ Mehr dazu in:
 
 ## Build-Anleitung
 
-Das Projekt hat keinen klassischen Bundle-Build. `npm run build` fuehrt einen Projektcheck aus:
+`npm run build` fuehrt zwei Dinge aus:
 
 - Syntaxcheck aller `.js` und `.mjs` Dateien
 - Validierung von `data/db.json`
+- Erstellung eines hostbaren Artefakts in `dist/`
+
+Der Build erzeugt dabei:
+
+- `dist/server/index.js` als Worker-Einstieg
+- `dist/client/` mit statischen Assets
+- `dist/.openai/hosting.json` fuer Sites
 
 Build ausfuehren:
 
@@ -167,7 +174,7 @@ npm run build
 Oder ohne npm:
 
 ```bash
-node scripts/check.mjs
+node scripts/build.mjs
 ```
 
 ## Start-Skripte
@@ -182,6 +189,19 @@ npm run health
 npm run cf:dev
 npm run cf:deploy
 ```
+
+## Sites Hosting
+
+Das Projekt ist jetzt auch fuer Sites vorbereitet:
+
+- Hosting-Metadaten liegen in [.openai/hosting.json](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/.openai/hosting.json)
+- ein kanonischer Preview-Screenshot liegt in `public/screenshot.jpeg`
+- `npm run build` erzeugt das erwartete `dist/`-Layout
+
+Wichtig:
+
+- produktive Runtime-Secrets werden nicht in `.openai/hosting.json` gespeichert
+- sie gehoeren in die Hosting-Umgebung
 
 ## Healthcheck
 
