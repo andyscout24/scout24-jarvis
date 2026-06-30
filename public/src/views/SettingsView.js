@@ -3,23 +3,28 @@ import { PageHeader } from "../components/PageHeader.js";
 import { statusBadge, escapeHtml } from "../utils.js";
 
 export function SettingsView(data) {
+  const activeStorage = inferActiveStorage(data);
+
   return `
     ${PageHeader({
-      eyebrow: "Admin",
-      title: "Settings und Integrationen",
-      description: "Tool-Status, API-Verbindungen, Datenhaltung und Platzhalter fuer Rollen und Rechte.",
-      actions: [{ label: "Status pruefen", href: "#/activity", icon: "activity" }],
+      eyebrow: "Betrieb",
+      title: "Datenquellen & Einstellungen",
+      description: "Uebersicht ueber Integrationen, API-Verbindungen, Rollen und den technischen Betriebsrahmen der internen Website.",
+      actions: [
+        { label: "Activity Logs", href: "#/activity", icon: "activity" },
+        { label: "Hilfe", href: "#/help", icon: "book" },
+      ],
     })}
     <section class="content-grid">
       <div class="panel">
         <div class="panel-header">
         <div>
-          <h2 class="panel-title">Integrationen</h2>
-          <p class="panel-subtitle">${data.tools.length} Moduladapter</p>
+          <h2 class="panel-title">Module & Integrationen</h2>
+          <p class="panel-subtitle">${data.tools.length} aktive und geplante Bereiche</p>
         </div>
         </div>
         <div class="integration-list">
-          ${data.tools.map(integrationRow).join("")}
+          ${data.tools.length ? data.tools.map(integrationRow).join("") : emptyInline("Keine Module geladen", "Die Modulkonfiguration konnte nicht geladen werden.")}
         </div>
       </div>
 
@@ -31,7 +36,7 @@ export function SettingsView(data) {
         </div>
         </div>
         <div class="integration-list">
-          ${data.apiConnections.map(apiConnectionRow).join("")}
+          ${data.apiConnections.length ? data.apiConnections.map(apiConnectionRow).join("") : emptyInline("Keine API-Verbindungen", "Aktuell wurden keine Verbindungen geladen oder sie sind fuer deine Rolle nicht freigegeben.")}
         </div>
       </div>
     </section>
@@ -45,7 +50,7 @@ export function SettingsView(data) {
           </div>
         </div>
         <div class="integration-list">
-          ${data.users.map(userRow).join("")}
+          ${data.users.length ? data.users.map(userRow).join("") : emptyInline("Keine Userdaten", "User und Rollen konnten fuer diese Ansicht nicht geladen werden.")}
         </div>
       </div>
 
@@ -53,21 +58,21 @@ export function SettingsView(data) {
         <div class="panel-header">
           <div>
             <h2 class="panel-title">Datenhaltung</h2>
-            <p class="panel-subtitle">MVP jetzt, Postgres/Supabase vorbereitet</p>
+            <p class="panel-subtitle">Aktive Quelle und vorbereitete Zielsysteme</p>
           </div>
         </div>
         <div class="integration-list">
           <div class="integration-row">
             <div>
               <p class="integration-title">Aktiver Speicher</p>
-              <p class="integration-meta mono">data/db.json</p>
+              <p class="integration-meta mono">${escapeHtml(activeStorage)}</p>
             </div>
             ${icon("database")}
           </div>
           <div class="integration-row">
             <div>
               <p class="integration-title">Zielsystem</p>
-              <p class="integration-meta">database/schema.sql und database/seed.sql</p>
+              <p class="integration-meta">Supabase / PostgreSQL mit zentralem Schema und Seed-Daten</p>
             </div>
             ${icon("settings")}
           </div>
@@ -109,6 +114,21 @@ function userRow(user) {
         <p class="integration-meta">${escapeHtml(user.role)} - ${escapeHtml(user.team || "kein Team")}</p>
       </div>
       ${statusBadge(user.active ? "ready" : "disabled")}
+    </div>
+  `;
+}
+
+function inferActiveStorage(data) {
+  const hasApiConnections = Array.isArray(data.apiConnections) && data.apiConnections.length > 0;
+  const hasUsers = Array.isArray(data.users) && data.users.length > 0;
+  return hasApiConnections && hasUsers ? "Supabase Repository aktiv" : "Lokale MVP-Daten";
+}
+
+function emptyInline(title, message) {
+  return `
+    <div class="empty-state">
+      <strong>${escapeHtml(title)}</strong>
+      <span>${escapeHtml(message)}</span>
     </div>
   `;
 }

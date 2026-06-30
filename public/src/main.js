@@ -2,14 +2,11 @@ import { api } from "./api.js";
 import { getAuthState } from "./auth/session.js";
 import {
   canAccessRoute,
-  canManageSettings,
-  canViewLogs,
-  canViewOffers,
-  canViewReports,
 } from "./auth/permissions.js";
 import { Shell } from "./components/Shell.js";
 import { EmptyState } from "./components/EmptyState.js";
 import { PageHeader } from "./components/PageHeader.js";
+import { getEmptyDashboardData, loadDashboardData } from "./data/dashboardData.js";
 import { offerPayloadFromForm, reportPayloadFromForm } from "./forms/formPayloads.js";
 import { getRoute } from "./router.js";
 import { bindAutomationHubFilters, bindActivityLogFilters, bindReportingFilters } from "./ui/filters.js";
@@ -20,19 +17,21 @@ import { OfferGeneratorView } from "./views/OfferGeneratorView.js";
 import { ReportingCenterView } from "./views/ReportingCenterView.js";
 import { SettingsView } from "./views/SettingsView.js";
 import { AuthView } from "./views/AuthView.js";
+import { HelpView } from "./views/HelpView.js";
 import { ToolDetailView } from "./views/ToolDetailView.js";
 import { ToolsView } from "./views/ToolsView.js";
 
 const app = document.getElementById("app");
 
 let state = {
-  data: null,
+  data: getEmptyDashboardData(),
   currentUser: null,
   authConfig: null,
   authRequired: false,
   authState: getAuthState(),
   apiStatus: "loading",
   error: "",
+  warnings: [],
   authError: "",
   notice: "",
   loading: true,
@@ -46,6 +45,7 @@ async function loadData(options = {}) {
     ...state,
     loading: true,
     error: "",
+    warnings: [],
     authError: "",
     notice: options.notice || "",
     apiStatus: "loading",
@@ -53,46 +53,18 @@ async function loadData(options = {}) {
   render();
 
   try {
-    const authConfig = await api.getAuthConfig();
-    const authPayload = await api.getCurrentUser();
-    const currentUser = authPayload.user;
-    const [
-      toolsPayload,
-      automationsPayload,
-      offersPayload,
-      reportsPayload,
-      logsPayload,
-      usersPayload,
-      apiConnectionsPayload,
-      settingsPayload,
-    ] = await Promise.all([
-      api.getTools(),
-      api.getAutomations(),
-      canViewOffers(currentUser) ? api.getOffers() : Promise.resolve({ offers: [] }),
-      canViewReports(currentUser) ? api.getReports() : Promise.resolve({ reports: [] }),
-      canViewLogs(currentUser) ? api.getLogs(50) : Promise.resolve({ logs: [] }),
-      canManageSettings(currentUser) ? api.getUsers() : Promise.resolve({ users: [currentUser] }),
-      canManageSettings(currentUser) ? api.getApiConnections() : Promise.resolve({ apiConnections: [] }),
-      canManageSettings(currentUser) ? api.getSettings() : Promise.resolve({ settings: [] }),
-    ]);
+    const { authConfig, currentUser, data } = await loadDashboardData();
 
     state = {
+      ...state,
       currentUser,
       authConfig,
       authRequired: false,
       authState: getAuthState(),
-      apiStatus: "connected",
-      data: {
-        tools: toolsPayload.tools,
-        logs: logsPayload.logs,
-        automations: automationsPayload.automations,
-        offers: offersPayload.offers,
-        reports: reportsPayload.reports,
-        users: usersPayload.users,
-        apiConnections: apiConnectionsPayload.apiConnections,
-        settings: settingsPayload.settings,
-      },
+      apiStatus: data.meta.partial ? "degraded" : "connected",
+      data,
       error: "",
+      warnings: data.meta.warnings,
       notice: options.notice || "",
       loading: false,
     };
@@ -108,7 +80,7 @@ async function loadData(options = {}) {
       state = {
         ...state,
         currentUser: null,
-        data: null,
+        data: getEmptyDashboardData(),
         authConfig,
         authRequired: true,
         authState: getAuthState(),
@@ -124,8 +96,10 @@ async function loadData(options = {}) {
     state = {
       ...state,
       authState: getAuthState(),
-      apiStatus: error?.status ? "connected" : "error",
+      apiStatus: error?.status ? "degraded" : "error",
       error: error.message || "Daten konnten nicht geladen werden.",
+      data: getEmptyDashboardData(),
+      warnings: [],
       loading: false,
     };
   }
@@ -142,6 +116,7 @@ function render() {
     title: route.title,
     content,
     error: state.error,
+    warnings: state.warnings,
     notice: state.notice,
     loading: state.loading,
     currentUser: state.currentUser,
@@ -170,6 +145,7 @@ function renderContent(route) {
   if (route.name === "tool-detail") return ToolDetailView(state.data, route.toolId, state.currentUser);
   if (route.name === "#/activity") return ActivityView(state.data);
   if (route.name === "#/settings") return SettingsView(state.data);
+  if (route.name === "#/help") return HelpView(state.data, state.currentUser);
   return DashboardView(state.data, state.currentUser);
 }
 
@@ -216,6 +192,7 @@ function bindActions() {
         apiStatus: error?.status ? "connected" : "error",
         authError: error.message || "Anmeldung fehlgeschlagen.",
         error: "",
+        warnings: [],
         loading: false,
       };
       render();
@@ -238,6 +215,7 @@ function bindActions() {
           ...state,
           apiStatus: error?.status ? state.apiStatus : "error",
           error: error.message || "Status konnte nicht aktualisiert werden.",
+          warnings: [],
           loading: false,
         };
         render();
@@ -257,14 +235,15 @@ function bindActions() {
       form.reset();
       await loadData({ notice: `Angebot ${result.offer.offerNumber} wurde erstellt.` });
     } catch (error) {
-      state = {
-        ...state,
-        apiStatus: error?.status ? state.apiStatus : "error",
-        error: error.message || "Angebot konnte nicht erstellt werden.",
-        notice: "",
-        loading: false,
-      };
-      render();
+        state = {
+          ...state,
+          apiStatus: error?.status ? state.apiStatus : "error",
+          error: error.message || "Angebot konnte nicht erstellt werden.",
+          notice: "",
+          warnings: [],
+          loading: false,
+        };
+        render();
     } finally {
       submitButton.disabled = false;
     }
@@ -282,14 +261,15 @@ function bindActions() {
       form.reset();
       await loadData({ notice: `Report ${result.report.fileName} wurde angelegt.` });
     } catch (error) {
-      state = {
-        ...state,
-        apiStatus: error?.status ? state.apiStatus : "error",
-        error: error.message || "Report konnte nicht erstellt werden.",
-        notice: "",
-        loading: false,
-      };
-      render();
+        state = {
+          ...state,
+          apiStatus: error?.status ? state.apiStatus : "error",
+          error: error.message || "Report konnte nicht erstellt werden.",
+          notice: "",
+          warnings: [],
+          loading: false,
+        };
+        render();
     } finally {
       submitButton.disabled = false;
     }
@@ -301,7 +281,7 @@ function normalizeRoute(route) {
     return {
       ...route,
       name: "#/",
-      title: "Home Dashboard",
+      title: "Dashboard",
       active: "#/",
     };
   }

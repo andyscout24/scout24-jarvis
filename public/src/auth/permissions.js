@@ -50,6 +50,7 @@ export function canAccessHref(user, href) {
   if (href === "#/reporting") return canViewReports(user);
   if (href === "#/activity") return canViewLogs(user);
   if (href === "#/settings") return canManageSettings(user);
+  if (href === "#/help") return Boolean(user?.active);
   return Boolean(user?.active);
 }
 

@@ -3,8 +3,9 @@ import { icon } from "../icons.js";
 import { navItems } from "../modules/navigation.js";
 import { escapeHtml } from "../utils.js";
 
-export function Shell({ active, title, content, error, notice, loading, currentUser, authState, authConfig, apiStatus = "unknown" }) {
+export function Shell({ active, title, content, error, warnings = [], notice, loading, currentUser, authState, authConfig, apiStatus = "unknown" }) {
   const visibleNavItems = navItems.filter((item) => canAccessHref(currentUser, item.href));
+  const navSections = groupNavItems(visibleNavItems);
   const apiStatusUi = getApiStatusUi(apiStatus);
 
   return `
@@ -14,21 +15,16 @@ export function Shell({ active, title, content, error, notice, loading, currentU
           <img src="/assets/automation-flow.svg" alt="">
           <span>
             <span class="brand-title">Social Jarvis</span>
-            <span class="brand-subtitle">Automation Dashboard</span>
+            <span class="brand-subtitle">Interne Arbeitsoberflaeche</span>
           </span>
         </a>
         <nav class="nav" aria-label="Hauptnavigation">
-          ${visibleNavItems
-            .map(
-              (item) => `
-                <a class="nav-link ${active === item.href ? "active" : ""}" href="${item.href}" ${active === item.href ? 'aria-current="page"' : ""}>
-                  ${icon(item.icon)}
-                  <span>${item.label}</span>
-                </a>
-              `,
-            )
-            .join("")}
+          ${navSections.map((section) => navSection(section, active)).join("")}
         </nav>
+        <div class="sidebar-note">
+          <strong>Interner Zugriff</strong>
+          <span>Tools, Reports und Datenquellen fuer Sales, Marketing und Operations.</span>
+        </div>
       </aside>
       <div class="main-shell">
         <header class="topbar">
@@ -49,6 +45,7 @@ export function Shell({ active, title, content, error, notice, loading, currentU
         <main class="view">
           ${loading ? `<div class="loading-banner">${icon("clock")}Daten werden geladen.</div>` : ""}
           ${notice ? `<div class="success-banner">${icon("check")}<span>${escapeHtml(notice)}</span></div>` : ""}
+          ${warnings.length ? `<div class="warning-banner">${icon("alert")}<span>${escapeHtml(composeWarning(warnings))}</span></div>` : ""}
           ${error ? `<div class="error-banner">${icon("alert")}<span>${escapeHtml(error)}</span></div>` : ""}
           ${content}
         </main>
@@ -57,9 +54,46 @@ export function Shell({ active, title, content, error, notice, loading, currentU
   `;
 }
 
+function groupNavItems(items) {
+  const order = ["workspace", "operations"];
+  return order
+    .map((sectionKey) => ({
+      key: sectionKey,
+      label: sectionKey === "workspace" ? "Arbeitsbereiche" : "Betrieb",
+      items: items.filter((item) => item.section === sectionKey),
+    }))
+    .filter((section) => section.items.length);
+}
+
+function navSection(section, active) {
+  return `
+    <div class="nav-section">
+      <p class="nav-section-label">${escapeHtml(section.label)}</p>
+      <div class="nav-section-links">
+        ${section.items
+          .map(
+            (item) => `
+              <a class="nav-link ${active === item.href ? "active" : ""}" href="${item.href}" ${active === item.href ? 'aria-current="page"' : ""}>
+                ${icon(item.icon)}
+                <span>${item.label}</span>
+              </a>
+            `,
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
 function getApiStatusUi(apiStatus) {
   if (apiStatus === "connected") return { icon: "check", label: "API verbunden", tone: "success" };
+  if (apiStatus === "degraded") return { icon: "alert", label: "API teilweise verfuegbar", tone: "warning" };
   if (apiStatus === "loading") return { icon: "clock", label: "API wird geprueft", tone: "pending" };
   if (apiStatus === "error") return { icon: "alert", label: "API Fehler", tone: "error" };
   return { icon: "clock", label: "API unbekannt", tone: "muted" };
+}
+
+function composeWarning(warnings) {
+  if (warnings.length === 1) return warnings[0];
+  return `${warnings.length} Datenbereiche sind aktuell nicht vollstaendig verfuegbar. ${warnings.slice(0, 2).join(" ")}`;
 }

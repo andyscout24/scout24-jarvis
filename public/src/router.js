@@ -12,9 +12,9 @@ export function getRoute() {
   if (hash.startsWith("#/tools/")) {
     return {
       name: "tool-detail",
-      title: "Tool Detail",
+      title: "Detailansicht",
       toolId: decodeURIComponent(hash.replace("#/tools/", "")),
-      active: "#/tools",
+      active: "#/reporting",
     };
   }
   return {

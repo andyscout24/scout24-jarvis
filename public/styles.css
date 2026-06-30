@@ -99,8 +99,26 @@ a {
 
 .nav {
   display: grid;
-  gap: 6px;
+  gap: 16px;
   margin-top: 18px;
+}
+
+.nav-section {
+  display: grid;
+  gap: 8px;
+}
+
+.nav-section-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.nav-section-links {
+  display: grid;
+  gap: 6px;
 }
 
 .nav-link {
@@ -139,6 +157,22 @@ a {
 
 .nav-link.active {
   box-shadow: inset 3px 0 0 var(--orange);
+}
+
+.sidebar-note {
+  display: grid;
+  gap: 6px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.sidebar-note strong {
+  color: var(--ink);
+  font-size: 12px;
 }
 
 .main-shell {
@@ -519,6 +553,62 @@ a {
   padding: 12px;
 }
 
+.guide-list {
+  display: grid;
+  gap: 12px;
+}
+
+.guide-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fbfdfd;
+}
+
+.guide-index {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  color: var(--petrol-dark);
+  background: var(--petrol-soft);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+
+.help-card {
+  display: grid;
+  gap: 14px;
+  min-height: 170px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fbfdfd;
+  box-shadow: var(--shadow);
+}
+
+.help-card:hover {
+  border-color: var(--petrol);
+}
+
+.help-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .icon {
   width: 18px;
   height: 18px;
@@ -562,6 +652,11 @@ a {
 .connection-pending {
   color: var(--petrol-dark);
   background: var(--petrol-soft);
+}
+
+.connection-warning {
+  color: var(--amber);
+  background: var(--amber-soft);
 }
 
 .connection-error {
@@ -1009,6 +1104,7 @@ a {
 }
 
 .error-banner,
+.warning-banner,
 .loading-banner,
 .success-banner {
   display: flex;
@@ -1023,6 +1119,12 @@ a {
   color: var(--red);
   background: var(--red-soft);
   border: 1px solid #f6bbb5;
+}
+
+.warning-banner {
+  color: var(--amber);
+  background: var(--amber-soft);
+  border: 1px solid #f1d9a0;
 }
 
 .loading-banner {
@@ -1086,7 +1188,7 @@ a {
   }
 
   .nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 
   .topbar,

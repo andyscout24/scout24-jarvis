@@ -1,154 +1,195 @@
 # Social Jarvis Dashboard
 
-Interner Automation Hub fuer Angebotsgenerator, Reporting Tool und kommende Automatisierungen.
+Interne Website fuer Angebotsgenerator, Reporting Center, Activity Logs und weitere Automatisierungen.
 
-## Framework und Runtime
+## Projektueberblick
 
-Dieses MVP nutzt kein Next.js, Vite oder Express. Es ist eine dependency-freie Node.js App:
+Social Jarvis ist eine interne Arbeitsoberflaeche fuer Teams aus Sales, Marketing, Management und Admin.
 
-- Node-HTTP-Server mit Entry Point `server.mjs`
-- Statische SPA im Ordner `public`
-- Serverlogik unter `src/server`
-- Gemeinsame Contracts unter `src/shared`
-- MVP-Persistenz in `data/db.json`
-- PostgreSQL/Supabase-Zielschema in `database/schema.sql`
+Die App bietet aktuell:
 
-## Projektstruktur
+- `Dashboard` mit Status, Ergebnissen und Schnellzugriffen
+- `Arbeitsbereiche` fuer interne Automatisierungen
+- `Angebotsgenerator`
+- `Reports & Details`
+- `Datenquellen & Einstellungen`
+- `Hilfe & Dokumentation`
+
+## Tech Stack
+
+Das Projekt nutzt bewusst einen schlanken Fullstack-Stack:
+
+- Node.js HTTP Server
+- statische SPA aus `public/`
+- serverseitige API in `src/server/`
+- ESM-Module
+- JSON-Fallback fuer lokales MVP
+- Supabase / PostgreSQL fuer produktionsnahe Datenhaltung
+- optional Cloudflare Worker Deployment
+
+Wichtig:
+
+- kein Next.js
+- kein Express
+- kein Vite-Frontend-Build
+
+## Wichtige Verzeichnisse
 
 ```text
-public/src/
-  components/       Wiederverwendbare UI-Bausteine
-  domain/           Frontend-Konstanten und JSDoc-Domain-Types
-  forms/            Form-Payload-Builder
-  modules/          Navigation, Automation- und Ergebnis-Metadaten
-  ui/               Kleine DOM-Bindings fuer Filter und Monitoring
-  views/            Seiten des Dashboards
+public/
+  index.html
+  styles.css
+  src/
+    api.js
+    main.js
+    router.js
+    data/
+    components/
+    views/
+
 src/
-  shared/           Gemeinsame Contracts fuer Servermodule
   server/
-    api/            API-Router
-    auth/           Rollen und Permissions
-    config/         Pfade und Environment-Status
-    errors/         Einheitliche API-Errors
-    logging/        Activity-Log Normalisierung und Sanitizing
-    modules/        Tool-Adapter
-    persistence/    JSON-Repository fuer das MVP
-    security/       Public-Payload Sanitizer
-    services/       Business Logic
+    api/
+    auth/
+    config/
+    errors/
+    logging/
+    modules/
+    persistence/
+    services/
+    static/
+    worker.mjs
+
+database/
+  schema.sql
+  seed.sql
+
+docs/
+  architecture.md
+  auth-model.md
+  data-logic.md
+  deployment.md
+  security-internal-access.md
+  supabase-setup.md
 ```
 
 ## Voraussetzungen
 
-- Node.js 20.11 oder neuer
-- Optional npm, wenn die Package-Scripts genutzt werden sollen
-- Optional PostgreSQL/Supabase fuer spaetere Produktion
+- Node.js `>= 20.11`
+- optional npm
+- optional Supabase / PostgreSQL
 
-## Lokales Setup
+## Lokale Startanleitung
+
+### 1. Environment-Datei anlegen
 
 ```bash
 cp .env.example .env
+```
+
+### 2. Minimalkonfiguration
+
+Fuer lokales Starten reicht der JSON-Modus:
+
+```env
+NODE_ENV=development
+APP_ENV=development
+PORT=4173
+AUTH_MODE=hybrid
+DATA_REPOSITORY=json
+DATA_FILE_PATH=data/db.json
+PUBLIC_BASE_URL=http://localhost:4173
+```
+
+### 3. Server starten
+
+Mit lokaler Node-Installation:
+
+```bash
 node --env-file=.env server.mjs
 ```
 
-Ohne `.env` startet die App ebenfalls mit sicheren Defaults:
+Oder ueber npm:
 
 ```bash
-node server.mjs
+npm run start:env
 ```
 
-Danach oeffnen:
+### 4. App oeffnen
 
 ```text
 http://localhost:4173
 ```
 
-Optionaler Port:
+Login-Ansicht:
 
-```bash
-PORT=4300 node server.mjs
+```text
+http://localhost:4173/#/auth
 ```
 
-## Scripts
+## Lokaler Start mit Supabase
+
+Wenn du statt JSON direkt Supabase nutzen willst:
+
+```env
+AUTH_MODE=hybrid
+DATA_REPOSITORY=supabase
+SUPABASE_URL=
+SUPABASE_SCHEMA=public
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+```
+
+Dann:
+
+```bash
+node --env-file=.env server.mjs
+```
+
+Mehr dazu in:
+
+- [docs/supabase-setup.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/supabase-setup.md)
+
+## Build-Anleitung
+
+Das Projekt hat keinen klassischen Bundle-Build. `npm run build` fuehrt einen Projektcheck aus:
+
+- Syntaxcheck aller `.js` und `.mjs` Dateien
+- Validierung von `data/db.json`
+
+Build ausfuehren:
+
+```bash
+npm run build
+```
+
+Oder ohne npm:
+
+```bash
+node scripts/check.mjs
+```
+
+## Start-Skripte
 
 ```bash
 npm run dev
+npm run start
+npm run start:env
 npm run build
-npm start
+npm run check
 npm run health
 npm run cf:dev
 npm run cf:deploy
 ```
 
-Falls npm lokal nicht verfuegbar ist:
-
-```bash
-node scripts/check.mjs
-node server.mjs
-```
-
-## Code Quality
-
-Der MVP hat bewusst keine externen Dev Dependencies. `npm run build` fuehrt deshalb einen pragmatischen Check aus:
-
-- Syntaxcheck aller `.js` und `.mjs` Dateien
-- JSON-Validierung von `data/db.json`
-
-Security-relevante Payloads werden serverseitig gefiltert, bevor sie ans Frontend gehen. Blockiert werden u. a. Token-/Secret-Felder, private Keys und lokale Pfadfelder wie `sourcePath`.
-
-## Environment Variables
-
-Siehe `.env.example`. Keine echten API Keys in `.env.example` eintragen.
-
-| Variable | Pflicht lokal | Zweck |
-| --- | --- | --- |
-| NODE_ENV | nein | Node-Umgebung |
-| APP_ENV | nein | App-Umgebung |
-| PORT | nein | HTTP-Port |
-| SERVICE_NAME | nein | Name im Healthcheck |
-| PUBLIC_BASE_URL | nein | Oeffentliche App-URL |
-| AUTH_MODE | nein | `hybrid`, `mock_header` oder `supabase` |
-| DATA_REPOSITORY | nein | `json`, `supabase` oder `auto` |
-| DATA_FILE_PATH | nein | JSON-Datenfile fuer MVP |
-| DATABASE_URL | nein | Ziel-DB fuer PostgreSQL/Supabase |
-| SUPABASE_URL | nein | Supabase URL |
-| SUPABASE_SCHEMA | nein | Supabase Schema, default `public` |
-| SUPABASE_ANON_KEY | nein | Supabase Public Client Key |
-| SUPABASE_SERVICE_ROLE_KEY | nein | Supabase Serverzugriff, nur serverseitig |
-| NEXT_PUBLIC_SUPABASE_URL | nein | Oeffentliche Supabase URL fuer Login im Browser |
-| NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | nein | Publishable Key fuer Supabase Sign-In im Browser |
-| CAMPAIGN_REVIEW_BASE_URL | nein | Reporting FastAPI |
-| SWATIO_BASE_URL | nein | Swat.io API |
-| SWATIO_API_KEY | nein | Swat.io API Key |
-| META_APP_ID | nein | Meta API |
-| META_APP_SECRET | nein | Meta API, nur serverseitig |
-| META_ACCESS_TOKEN | nein | Meta API, nur serverseitig |
-| GOOGLE_SHEETS_CLIENT_EMAIL | nein | Google Sheets |
-| GOOGLE_SHEETS_PRIVATE_KEY | nein | Google Sheets, nur serverseitig |
-| OPENAI_API_KEY | nein | Zukuenftige KI-Automationen |
-
-Fehlende optionale API Keys blockieren das MVP nicht. Der Healthcheck und pending Reporting-Laeufe zeigen nur fehlende Variablennamen, keine Secret-Werte. Fuer aktive Supabase-Persistenz muessen `SUPABASE_URL` und `SUPABASE_SERVICE_ROLE_KEY` gesetzt sein.
-
-## Auth-Modi
-
-- `mock_header`: aktueller MVP-Fallback ueber `X-User-Id`
-- `hybrid`: bevorzugt Supabase Bearer Tokens, akzeptiert lokal weiter `X-User-Id`
-- `supabase`: erzwingt Login ueber Supabase Auth
-
-Der aktuelle Stand fuer internes Testen ist `AUTH_MODE=hybrid`. Damit bleibt das Dashboard lokal benutzbar, waehrend Supabase Auth schon serverseitig validiert werden kann.
-
 ## Healthcheck
+
+Endpoint:
 
 ```text
 GET /api/health
 ```
-
-Der Endpoint prueft:
-
-- Serverstatus
-- JSON-Datenzugriff
-- Tool-/API-Verbindungszaehler
-- Env-Konfigurationsstatus
-- fehlende Integrationsvariablen als Namen, ohne Werte
 
 Beispiel:
 
@@ -156,90 +197,158 @@ Beispiel:
 curl http://localhost:4173/api/health
 ```
 
-## Datenbank und Migrationen
+Der Healthcheck liefert:
 
-Fuer das lokale MVP sind keine Migrationen noetig. Die aktive Persistenz ist standardmaessig `data/db.json`.
+- Serverstatus
+- Storage-Modus
+- Tool-/Fehlerzaehler
+- Integrationskontext
+- fehlende Variablennamen ohne Secret-Werte
 
-Fuer Supabase/PostgreSQL:
+## Benoetigte Umgebungsvariablen
 
-```bash
-psql "$DATABASE_URL" -f database/schema.sql
-psql "$DATABASE_URL" -f database/seed.sql
-```
+### Pflicht fuer lokalen Start
 
-Oder in Supabase beide Dateien im SQL Editor ausfuehren. Danach:
+| Variable | Zweck |
+| --- | --- |
+| `NODE_ENV` | Laufzeitmodus |
+| `APP_ENV` | App-Kontext |
+| `PORT` | lokaler Port |
+| `PUBLIC_BASE_URL` | Basis-URL |
+| `AUTH_MODE` | `hybrid`, `mock_header`, `supabase` |
+| `DATA_REPOSITORY` | `json`, `supabase`, `auto` |
+| `DATA_FILE_PATH` | JSON-Datei fuer MVP |
 
-```bash
-DATA_REPOSITORY=supabase node --env-file=.env server.mjs
-```
+### Pflicht fuer Supabase-Betrieb
 
-Details stehen in `docs/supabase-setup.md`.
+| Variable | Zweck |
+| --- | --- |
+| `SUPABASE_URL` | Supabase-Projekt-URL |
+| `SUPABASE_SCHEMA` | Schema, meist `public` |
+| `SUPABASE_SERVICE_ROLE_KEY` | serverseitiger Zugriff |
+| `NEXT_PUBLIC_SUPABASE_URL` | Browser-Login |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser-Login |
 
-## Relevante API-Endpunkte
+### Optional / Integrationen
 
-- `GET /api/health`
-- `GET /api/auth/config`
-- `GET /api/auth/me`
-- `GET /api/modules`
-- `GET /api/tools`
-- `GET /api/tools/:id`
-- `PATCH /api/tools/:id/status`
-- `GET /api/activity-logs`
-- `POST /api/activity-logs`
-- `GET /api/automations`
-- `GET /api/automations/status`
-- `GET /api/offers`
-- `GET /api/offers/:id`
-- `POST /api/offers/generate`
-- `GET /api/reports`
-- `GET /api/reports/:id`
-- `POST /api/reports/generate`
-- `GET /api/users`
-- `GET /api/api-connections`
-- `GET /api/settings`
+| Variable | Zweck |
+| --- | --- |
+| `DATABASE_URL` | Postgres / Tooling |
+| `CAMPAIGN_REVIEW_BASE_URL` | Reporting FastAPI |
+| `SWATIO_BASE_URL` | Swat.io |
+| `SWATIO_API_KEY` | Swat.io |
+| `META_APP_ID` | Meta |
+| `META_APP_SECRET` | Meta serverseitig |
+| `META_ACCESS_TOKEN` | Meta serverseitig |
+| `GOOGLE_SHEETS_CLIENT_EMAIL` | Google Sheets |
+| `GOOGLE_SHEETS_PRIVATE_KEY` | Google Sheets serverseitig |
+| `OPENAI_API_KEY` | spaetere KI-Funktionen |
 
-## Deployment
+Wichtig:
 
-Das Projekt ist jetzt fuer zwei Wege vorbereitet:
+- `.env.example` enthaelt nur Platzhalter
+- `.env` bleibt uncommitted
+- Service-Role- und API-Secrets duerfen nie im Client-Code landen
 
-- klassischer Node-Deploy, z. B. Render oder Railway
-- Cloudflare Workers mit GitHub Deploy
+## Empfohlene Hosting-Variante fuer interne Nutzung
 
-Build Command:
+### Empfehlung
 
-```bash
-npm run build
-```
+Fuer dieses Projekt ist am sinnvollsten:
 
-Start Command:
+- **Render Web Service**
+- plus **Supabase** als Datenquelle
+- plus **`AUTH_MODE=supabase`**
+- optional **IP-Allowlist** fuer Firmen- oder VPN-Netze
 
-```bash
-npm start
-```
+Warum:
 
-Health Check Path:
+- die App startet direkt als klassischer Node-Webservice
+- Render unterstuetzt offizielle Web-Service-Deployments mit Environment Variables und Health Checks
+- wenn ihr feste Firmen- oder VPN-IP-Ranges habt, koennt ihr den Zugriff zusaetzlich per Inbound IP Rules eingrenzen
 
-```text
-/api/health
-```
+### Alternative
 
-Cloudflare-relevante Dateien:
+Wenn ihr bewusst klassisch hosten wollt:
 
-- `wrangler.jsonc`
-- `src/server/worker.mjs`
+- Railway als Node-Webservice
 
-Cloudflare braucht fuer einen funktionierenden API-Deploy dieselben Supabase- und Auth-Variablen wie lokal.
+Das ist okay, aber wenn ihr ohne Cloudflare arbeitet und zusaetzlich Netzwerkgrenzen setzen wollt, ist Render aktuell die staerkere Standardempfehlung.
 
-Weitere Details stehen in `docs/deployment.md`.
+## Deployment-Anleitung
 
-## Deployment Checklist
+Die ausfuehrliche Anleitung steht in:
 
-- `.env.example` ist aktuell und enthaelt keine echten Secrets.
-- `.env` ist nicht committet.
-- `npm run build` oder `node scripts/check.mjs` ist gruen.
-- `npm start` oder `node server.mjs` startet ohne Fehler.
-- `/api/health` antwortet mit `success: true`.
-- Hosting-Provider setzt `PORT`.
-- Secrets sind nur serverseitig als Environment Variables gesetzt.
-- Keine Secret-Werte erscheinen im Frontend oder Healthcheck.
-- Datenbankstrategie ist entschieden: MVP JSON oder PostgreSQL/Supabase.
+- [docs/deployment.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/deployment.md)
+
+Kurzfassung:
+
+1. Build pruefen
+2. Environment Variables setzen
+3. Storage auf Supabase stellen
+4. Auth fuer Deployment auf `supabase`
+5. `/api/health` pruefen
+6. optional IP-Allowlist oder internen Netzschutz aktivieren
+
+## Auth fuer internes Deployment
+
+### Lokal
+
+- `AUTH_MODE=hybrid`
+
+### Internes Deployment
+
+- `AUTH_MODE=supabase`
+
+Nicht empfohlen fuer Produktion:
+
+- `mock_header`
+- `hybrid` mit offenem Browser-Zugriff
+
+Mehr dazu:
+
+- [docs/security-internal-access.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/security-internal-access.md)
+
+## Go-live-Checkliste
+
+### Build & Runtime
+
+- `npm run build` ist gruen
+- App startet lokal ohne Fehler
+- `/api/health` antwortet mit `success: true`
+
+### Daten
+
+- Supabase Schema eingespielt
+- Seed-Daten oder Produktivdaten verfuegbar
+- `DATA_REPOSITORY=supabase`
+
+### Auth & Security
+
+- `AUTH_MODE=supabase`
+- kein produktiver `X-User-Id`-Fallback
+- interne Zugriffsbeschraenkung aktiv
+- keine Secrets im Frontend
+- `.env` nicht committet
+
+### Integrationen
+
+- benoetigte URLs und Keys gesetzt
+- fehlende Integrationen bewusst als `pending` akzeptiert oder konfiguriert
+
+### Fachlich
+
+- Dashboard laedt
+- Angebotsgenerator laeuft
+- Reporting Center laeuft
+- Datenquellenansicht laedt
+- Activity Logs sind sichtbar
+
+## Weitere Dokumentation
+
+- [docs/architecture.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/architecture.md)
+- [docs/auth-model.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/auth-model.md)
+- [docs/data-logic.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/data-logic.md)
+- [docs/internal-release-runbook.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/internal-release-runbook.md)
+- [docs/security-internal-access.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/security-internal-access.md)
+- [docs/supabase-setup.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/supabase-setup.md)

@@ -3,6 +3,7 @@ const paths = {
   alert: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /><path d="M12 9v4" /><path d="M12 17h.01" />',
   ban: '<circle cx="12" cy="12" r="9" /><path d="m5.7 5.7 12.6 12.6" />',
   boxes: '<path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z" /><path d="M3 12.5 12 17l9-4.5" /><path d="M3 17.5 12 22l9-4.5" />',
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />',
   check: '<path d="M20 6 9 17l-5-5" />',
   chevron: '<path d="m9 18 6-6-6-6" />',
   clock: '<circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />',

@@ -1,3 +1,4 @@
+import { EmptyState } from "./EmptyState.js";
 import { formatDateTime, levelBadge, toolMap, escapeHtml } from "../utils.js";
 
 export function ActivityLog(logs, tools, limit = logs.length) {
@@ -5,7 +6,7 @@ export function ActivityLog(logs, tools, limit = logs.length) {
   const visibleLogs = logs.slice(0, limit);
 
   if (!visibleLogs.length) {
-    return `<div class="empty-state">Keine Aktivitaeten vorhanden.</div>`;
+    return EmptyState({ title: "Keine Aktivitaeten", message: "Sobald Tools laufen oder Hinweise erzeugen, erscheinen sie hier.", iconName: "activity" });
   }
 
   return `

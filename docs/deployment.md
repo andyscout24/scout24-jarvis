@@ -1,185 +1,240 @@
 # Deployment Guide
 
-## Zielruntime
+## Ziel
 
-Das Social Jarvis Dashboard ist aktuell eine dependency-freie Node.js App:
+Dieses Dokument beschreibt, wie Social Jarvis intern veroeffentlicht werden kann.
 
-- Runtime: Node.js 20 oder neuer
-- Server: `server.mjs`
-- Frontend: statische SPA in `public`
-- Persistenz im MVP: `data/db.json`
-- Produktionsziel: PostgreSQL/Supabase mit `database/schema.sql` und `database/seed.sql`
+Empfohlene Zielarchitektur:
 
-## Anbieter
-
-Es gibt jetzt zwei tragfaehige Deployment-Wege:
-
-- klassischer Node-Deploy auf Render oder Railway
-- Cloudflare Workers mit Static Assets und Worker-API
-
-Vercel und Netlify sind fuer dieses Projekt weiterhin weniger passend, solange der Server nicht auf ihr jeweiliges Serverless-Modell zugeschnitten wird.
+- Hosting: Render Web Service
+- Zugriffsschutz: Supabase Auth und optional IP-Allowlist
+- Datenhaltung: Supabase
+- Auth: Supabase
 
 ## Build und Start
 
-Build Command:
+### Build
 
 ```bash
 npm run build
 ```
 
-Start Command:
+Das prueft:
+
+- Syntax aller Quell-Dateien
+- JSON-Struktur von `data/db.json`
+
+### Lokaler Start
+
+```bash
+node --env-file=.env server.mjs
+```
+
+Oder:
+
+```bash
+npm run start:env
+```
+
+### Produktionsstart als Node-Service
 
 ```bash
 npm start
 ```
 
-Ohne npm kann lokal direkt geprueft und gestartet werden:
-
-```bash
-node scripts/check.mjs
-node server.mjs
-```
-
 ## Healthcheck
-
-Endpoint:
 
 ```text
 GET /api/health
 ```
 
-Beispiel:
+Pruefen mit:
 
 ```bash
-curl http://localhost:4173/api/health
+curl https://<deine-url>/api/health
 ```
 
-Der Healthcheck gibt nur Konfigurationsstatus und fehlende Variablennamen aus. Secret-Werte werden nicht ausgegeben.
+Erwartung:
 
-## Environment Variables
+- `success: true`
+- `data.status: ok`
 
-Pflicht fuer lokalen MVP-Start:
+## Empfohlene interne Hosting-Variante
 
-| Variable | Zweck | Beispiel |
-| --- | --- | --- |
-| PORT | HTTP-Port | `4173` |
-| NODE_ENV | Node-Umgebung | `development` |
-| APP_ENV | App-Umgebung | `development` |
-| DATA_FILE_PATH | JSON-Datenfile fuer MVP | `data/db.json` |
+### Primaere Empfehlung: Render Web Service
 
-Empfohlen fuer Deployment:
+Warum das gut passt:
 
-| Variable | Zweck |
-| --- | --- |
-| SERVICE_NAME | Name im Healthcheck |
-| PUBLIC_BASE_URL | Oeffentliche App-URL |
-| DATABASE_URL | PostgreSQL/Supabase Ziel-DB |
-| AUTH_MODE | Auth-Modus, empfohlen `hybrid` |
-| DATA_REPOSITORY | `json`, `supabase` oder `auto` |
+- das Projekt startet direkt als klassischer Node-Webservice
+- Render dokumentiert Web Services mit Environment Variables und Health Checks
+- Render unterstuetzt Inbound IP Rules fuer CIDR-Allowlisting
+- damit koennt ihr die App fuer interne Netze zusaetzlich einschraenken
 
-Optionale Integrationen:
+### Alternative: Railway
 
-| Variable | Integration |
-| --- | --- |
-| CAMPAIGN_REVIEW_BASE_URL | Reporting FastAPI |
-| SWATIO_BASE_URL | Swat.io |
-| SWATIO_API_KEY | Swat.io |
-| META_APP_ID | Meta API |
-| META_APP_SECRET | Meta API |
-| META_ACCESS_TOKEN | Meta API |
-| GOOGLE_SHEETS_CLIENT_EMAIL | Google Sheets |
-| GOOGLE_SHEETS_PRIVATE_KEY | Google Sheets |
-| OPENAI_API_KEY | Zukuenftige KI-Automationen |
-| SUPABASE_URL | Supabase |
-| SUPABASE_ANON_KEY | Supabase |
-| SUPABASE_SERVICE_ROLE_KEY | Supabase serverseitig |
-| NEXT_PUBLIC_SUPABASE_URL | Supabase Login im Browser |
-| NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | Supabase Publishable Key im Browser |
+Sinnvoll, wenn ihr:
 
-## Datenbankmigration
+- klassisches Node-Hosting bevorzugt
+- schneller in einen einfachen Webservice deployen wollt
 
-Fuer das MVP sind keine Migrationen noetig, solange `data/db.json` genutzt wird.
+Weniger stark, wenn ihr zusaetzlich Plattform-seitige IP-Einschraenkungen wollt.
 
-Fuer Produktion:
+## Deployment auf Render
+
+### Voraussetzungen
+
+- Repository in GitHub
+- Render-Account
+- Supabase-Projekt eingerichtet
+- Schema und Seed eingespielt
+
+### Service-Konfiguration
+
+- Runtime: `Node`
+- Build Command: `npm run build`
+- Start Command: `npm start`
+- Health Check Path: `/api/health`
+
+### Pflicht-Variablen
+
+```env
+NODE_ENV=production
+APP_ENV=production
+SERVICE_NAME=social-jarvis-dashboard
+PUBLIC_BASE_URL=https://<deine-internal-url>
+
+AUTH_MODE=supabase
+DATA_REPOSITORY=supabase
+
+SUPABASE_URL=
+SUPABASE_SCHEMA=public
+SUPABASE_SERVICE_ROLE_KEY=
+
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+```
+
+### Optionale Integrationen
+
+```env
+CAMPAIGN_REVIEW_BASE_URL=
+SWATIO_BASE_URL=
+SWATIO_API_KEY=
+META_APP_ID=
+META_APP_SECRET=
+META_ACCESS_TOKEN=
+GOOGLE_SHEETS_CLIENT_EMAIL=
+GOOGLE_SHEETS_PRIVATE_KEY=
+OPENAI_API_KEY=
+```
+
+### Optional fuer staerkeren internen Schutz
+
+- Inbound IP Rules nur fuer Firmen- oder VPN-CIDRs setzen
+- Zugriff ausserhalb dieser Netze blockieren
+
+### Wichtige Regel
+
+- `AUTH_MODE=supabase`
+- kein `mock_header`
+- kein offener `hybrid`-Fallback
+
+## Deployment auf Railway
+
+### Build Command
+
+```bash
+npm run build
+```
+
+### Start Command
+
+```bash
+npm start
+```
+
+### Healthcheck
+
+```text
+/api/health
+```
+
+### Pflichtvariablen
+
+Gleich wie oben, insbesondere:
+
+- `AUTH_MODE=supabase`
+- `DATA_REPOSITORY=supabase`
+- Supabase-URL und Service-Role-Key
+
+Hinweis:
+
+- Railway passt gut fuer den einfachen App-Betrieb
+- den internen Schutz loest ihr dort vor allem ueber Auth und Freigaben, nicht ueber eine harte Netzgrenze
+
+## Datenbank / Supabase vorbereiten
+
+### Schema ausfuehren
 
 ```bash
 psql "$DATABASE_URL" -f database/schema.sql
 psql "$DATABASE_URL" -f database/seed.sql
 ```
 
-Danach Supabase als aktive Persistenz setzen:
+Oder in Supabase SQL Editor:
 
-```bash
-DATA_REPOSITORY=supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=...
-```
+1. `database/schema.sql`
+2. `database/seed.sql`
 
-## Railway
+## Start-Checkliste
 
-1. Repository verbinden.
-2. Node.js Runtime erkennen lassen.
-3. Build Command: `npm run build`
-4. Start Command: `npm start`
-5. Environment Variables aus `.env.example` setzen.
-6. Healthcheck Path: `/api/health`
-7. Nach Deployment `npm run health` lokal gegen die Live-URL ausfuehren:
+Vor dem ersten internen Test:
 
-```bash
-DASHBOARD_HEALTHCHECK_URL=https://example.up.railway.app/api/health npm run health
-```
+- `.env.example` ist aktuell
+- `.env` enthaelt keine Beispielwerte mehr
+- Build ist gruen
+- Supabase ist erreichbar
+- `AUTH_MODE=supabase` gesetzt
+- `DATA_REPOSITORY=supabase` gesetzt
+- `/api/health` ist gruen
+- Login funktioniert
 
-## Render
+## Go-live-Checkliste
 
-1. New Web Service anlegen.
-2. Runtime: Node.
-3. Build Command: `npm run build`
-4. Start Command: `npm start`
-5. Health Check Path: `/api/health`
-6. Environment Variables setzen.
+### Runtime
 
-## Cloudflare Workers
+- Build erfolgreich
+- Start erfolgreich
+- Healthcheck erfolgreich
 
-Das Projekt ist fuer Workers vorbereitet mit:
+### Sicherheit
 
-- `wrangler.jsonc`
-- Worker Entry: `src/server/worker.mjs`
-- Static Assets aus `public/`
+- interner Zugriffsschutz aktiv
+- keine Secrets im Frontend
+- `SUPABASE_SERVICE_ROLE_KEY` nur serverseitig
+- keine offenen Entwicklungsmodi
 
-Wichtige Variablen in Cloudflare:
+### Daten
 
-- `AUTH_MODE=hybrid` oder spaeter `supabase`
-- `DATA_REPOSITORY=supabase`
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `SUPABASE_SCHEMA=public`
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `PUBLIC_BASE_URL=https://<dein-worker>.workers.dev`
-- `SERVICE_NAME=social-jarvis-dashboard`
+- Supabase-Schema und Seed oder Produktivdaten vorhanden
+- User sind korrekt gemappt
+- Reports, Offers und Tools laden
 
-Optional:
+### Fachlicher Smoke Test
 
-- `CAMPAIGN_REVIEW_BASE_URL`
-- `SWATIO_BASE_URL`
-- `SWATIO_API_KEY`
-- `META_APP_ID`
-- `META_APP_SECRET`
-- `META_ACCESS_TOKEN`
-- `GOOGLE_SHEETS_CLIENT_EMAIL`
-- `GOOGLE_SHEETS_PRIVATE_KEY`
-- `OPENAI_API_KEY`
+- Dashboard laedt
+- Angebotsgenerator erreichbar
+- Reporting Center erreichbar
+- Datenquellenansicht erreichbar
+- Activity Logs erreichbar
+- Logout/Login funktionieren
 
-Wenn diese Variablen in Cloudflare fehlen, laedt zwar das Frontend, aber die API zeigt nur Fehler.
+## Empfehlung fuer den ersten internen Release
 
-## Deployment Checklist
+Der sauberste erste Go-live ist:
 
-- `.env.example` ist aktuell und enthaelt keine echten Secrets.
-- `.env` ist nicht committet.
-- `npm run build` bzw. `node scripts/check.mjs` ist gruen.
-- `npm start` bzw. `node server.mjs` startet ohne Fehler.
-- `/api/health` antwortet mit `success: true`.
-- Hosting-Provider setzt `PORT` automatisch oder passend.
-- Produktions-Secrets sind nur serverseitig gesetzt.
-- Keine Secret-Werte werden im Frontend oder Healthcheck angezeigt.
-- Datenbankstrategie ist entschieden: MVP JSON oder PostgreSQL/Supabase.
+1. Supabase final konfigurieren
+2. `AUTH_MODE=supabase` festziehen
+3. Render Web Service deployen
+4. optional IP-Allowlist fuer Firmen-/VPN-Netze setzen
+5. Healthcheck und Smoke Test durchfuehren

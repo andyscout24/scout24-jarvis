@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: social-jarvis-dashboard
+    runtime: node
+    plan: starter
+    autoDeploy: true
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_ENV
+        value: production
+      - key: SERVICE_NAME
+        value: social-jarvis-dashboard
+      - key: AUTH_MODE
+        value: supabase
+      - key: DATA_REPOSITORY
+        value: supabase
+      - key: SUPABASE_SCHEMA
+        value: public
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CAMPAIGN_REVIEW_BASE_URL
+        sync: false
+      - key: SWATIO_BASE_URL
+        sync: false
+      - key: SWATIO_API_KEY
+        sync: false
+      - key: META_APP_ID
+        sync: false
+      - key: META_APP_SECRET
+        sync: false
+      - key: META_ACCESS_TOKEN
+        sync: false
+      - key: GOOGLE_SHEETS_CLIENT_EMAIL
+        sync: false
+      - key: GOOGLE_SHEETS_PRIVATE_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
