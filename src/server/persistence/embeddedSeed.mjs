@@ -1,4 +1,4 @@
-import seedData from "../../../data/db.json" with { type: "json" };
+import seedData from "./embeddedSeedData.mjs";
 
 export function getEmbeddedSeedData() {
   return clone(seedData);
