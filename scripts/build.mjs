@@ -8,11 +8,14 @@ const distDir = resolve(rootDir, "dist");
 const clientDir = resolve(distDir, "client");
 const serverDir = resolve(distDir, "server");
 const openAiDir = resolve(distDir, ".openai");
+const serverSourceDir = resolve(serverDir, "server");
+const sharedSourceDir = resolve(serverDir, "shared");
 
 runChecks();
 await prepareDist();
 await copyDirectoryContentsIfPresent("public", clientDir);
-await copyDirectoryContentsIfPresent("src", resolve(distDir, "src"));
+await copyDirectoryContentsIfPresent("src/server", serverSourceDir);
+await copyDirectoryContentsIfPresent("src/shared", sharedSourceDir);
 await copyDirectoryContentsIfPresent(".openai", openAiDir);
 await writeServerEntry();
 
@@ -37,6 +40,8 @@ async function prepareDist() {
   await rm(distDir, { recursive: true, force: true });
   await mkdir(clientDir, { recursive: true });
   await mkdir(serverDir, { recursive: true });
+  await mkdir(serverSourceDir, { recursive: true });
+  await mkdir(sharedSourceDir, { recursive: true });
   await mkdir(openAiDir, { recursive: true });
 }
 
@@ -56,5 +61,5 @@ async function copyDirectoryContentsIfPresent(sourceRelativePath, targetPath) {
 
 async function writeServerEntry() {
   const entryPath = resolve(serverDir, "index.js");
-  await writeFile(entryPath, "export { default } from \"../src/server/worker.mjs\";\n", "utf8");
+  await writeFile(entryPath, "export { default } from \"./server/worker.mjs\";\n", "utf8");
 }
