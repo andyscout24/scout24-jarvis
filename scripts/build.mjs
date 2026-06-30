@@ -8,12 +8,14 @@ const distDir = resolve(rootDir, "dist");
 const clientDir = resolve(distDir, "client");
 const serverDir = resolve(distDir, "server");
 const openAiDir = resolve(distDir, ".openai");
+const dataDir = resolve(distDir, "data");
 const serverSourceDir = resolve(serverDir, "server");
 const sharedSourceDir = resolve(serverDir, "shared");
 
 runChecks();
 await prepareDist();
 await copyDirectoryContentsIfPresent("public", clientDir);
+await copyDirectoryContentsIfPresent("data", dataDir);
 await copyDirectoryContentsIfPresent("src/server", serverSourceDir);
 await copyDirectoryContentsIfPresent("src/shared", sharedSourceDir);
 await copyDirectoryContentsIfPresent(".openai", openAiDir);
@@ -40,6 +42,7 @@ async function prepareDist() {
   await rm(distDir, { recursive: true, force: true });
   await mkdir(clientDir, { recursive: true });
   await mkdir(serverDir, { recursive: true });
+  await mkdir(dataDir, { recursive: true });
   await mkdir(serverSourceDir, { recursive: true });
   await mkdir(sharedSourceDir, { recursive: true });
   await mkdir(openAiDir, { recursive: true });
