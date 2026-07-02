@@ -26,34 +26,32 @@
     {
       "id": "reporting-tool",
       "name": "Reporting Tool",
-      "description": "Erzeugt Kampagnenreviews aus Media-Reports inklusive KPI-Preview und PowerPoint-Export.",
+      "description": "Erzeugt Social Media Reports direkt aus dem separaten social_reporting Projekt und haelt Campaign-Review Workflows sichtbar.",
       "category": "Marketing / Reporting",
-      "status": "in_progress",
+      "status": "ready",
       "owner": "Campaign Success",
       "route": "#/tools/reporting-tool",
       "launchRoute": "#/reporting",
       "externalUrl": "http://localhost:8000/app",
-      "lastRunAt": "2026-06-08T08:12:00.000Z",
+      "lastRunAt": "2026-07-02T07:56:54.924Z",
       "metrics": {
-        "runsToday": 3,
+        "runsToday": 4,
         "successRate": 0.91,
-        "storedResults": 11
+        "storedResults": 12
       },
       "integration": {
-        "type": "fastapi_service",
-        "state": "external_reference_detected",
-        "serviceName": "campaign_review_tool",
+        "type": "hybrid_external_tooling",
+        "state": "ready",
+        "serviceName": "social_reporting",
         "healthEndpoint": "/api/health",
         "previewEndpoint": "/api/preview",
         "generateEndpoint": "/api/generate",
-        "sourceReference": "campaign_review_tool",
-        "adapter": "dashboard-reporting-tool-wrapper",
+        "sourceReference": "social_reporting",
+        "adapter": "social-reporting-cli-adapter",
         "dataSources": [
-          "csv_upload",
-          "google_ad_manager",
-          "google_ads",
-          "newsletter",
+          "file",
           "fastapi_campaign_review",
+          "combined",
           "swat_io",
           "meta_api",
           "google_sheets"
@@ -100,6 +98,32 @@
       "integration": {
         "type": "placeholder",
         "state": "planned"
+      }
+    },
+    {
+      "id": "editorial-planner",
+      "name": "Redaktionsplan",
+      "description": "Plant woechentliche Social Media Inhalte, Trend-Signale und Content-Ideen ueber das separate Weekly Editorial Planner Projekt.",
+      "category": "Marketing",
+      "status": "in_progress",
+      "owner": "Marketing Operations",
+      "route": "#/tools/editorial-planner",
+      "launchRoute": "#/tools/editorial-planner",
+      "externalUrl": "http://127.0.0.1:8080/dashboard/editorial-planner",
+      "lastRunAt": null,
+      "metrics": {
+        "runsToday": 0,
+        "successRate": null,
+        "storedResults": 0
+      },
+      "integration": {
+        "type": "sqlite_http_service",
+        "state": "external_reference_detected",
+        "serviceName": "weekly_editorial_planner",
+        "healthEndpoint": "/api/health",
+        "sourceReference": "weekly_editorial_planner",
+        "adapter": "editorial-planner-http-adapter",
+        "notes": "Das Projekt liegt separat und kann als naechstes ueber seine HTTP API angebunden werden."
       }
     },
     {
@@ -168,6 +192,115 @@
     }
   ],
   "reports": [
+    {
+      "id": "report-1782979014924",
+      "toolId": "reporting-tool",
+      "clientId": null,
+      "automationRunId": "run-report-1782979014924",
+      "clientName": "ImmoScout24 Austria",
+      "campaignName": "Social Weekly Check",
+      "reportType": "weekly_social",
+      "reportingPeriod": "KW 27 2026",
+      "channel": "Instagram",
+      "dataSource": "file",
+      "dataSourceLabel": "Datei-Import",
+      "status": "generated",
+      "fileName": "dashboard_immoscout24_austria_1782979013305.xlsx",
+      "fileUrl": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_1782979013305.xlsx",
+      "errorMessage": null,
+      "createdAt": "2026-07-02T07:56:54.924Z",
+      "updatedAt": "2026-07-02T07:56:54.924Z",
+      "createdBy": "Mira Keller",
+      "metadata": {
+        "reportType": "weekly_social",
+        "reportingPeriod": "KW 27 2026",
+        "dataSource": "file",
+        "dataSourceLabel": "Datei-Import",
+        "dataSourceState": "ready",
+        "channel": "Instagram",
+        "generatedAt": "2026-07-02T07:56:54.924Z",
+        "createdBy": "Mira Keller",
+        "outputFile": "dashboard_immoscout24_austria_1782979013305.xlsx",
+        "outputUrl": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_1782979013305.xlsx",
+        "error": null,
+        "missingConfig": [],
+        "fallback": false,
+        "adapter": "social-reporting-cli-adapter",
+        "execution": {
+          "executed": true,
+          "projectPath": "/Users/awill/Documents/Codex/Reporting/social_reporting",
+          "pythonPath": "/Users/awill/Documents/Codex/Reporting/social_reporting/.venv/bin/python",
+          "source": "file",
+          "sourceLabel": "Datei-Import",
+          "commandPreview": "/Users/awill/Documents/Codex/Reporting/social_reporting/.venv/bin/python -m src.main --source file --output data_output --output-name dashboard_immoscout24_austria_1782979013305.xlsx --period weekly --layout weekly --no-ai --input /Users/awill/Documents/Codex/Reporting/social_reporting/data_input --platform Instagram",
+          "stdoutPreview": "Report created: /Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_1782979013305.xlsx",
+          "stderrPreview": "INFO | Starting social media reporting pipeline. INFO | Data source: file INFO | Period: None to None INFO | Input: /Users/awill/Documents/Codex/Reporting/social_reporting/data_input INFO | Output: /Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_1782979013305.xlsx INFO | Loading input file: /Users/awill/Documents/Codex/Reporting/social_reporting/data_input/example_minimal_social_data.csv INFO | Loading input file: /Users/awill/Documents/Codex/Re…",
+          "outputFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_1782979013305.xlsx",
+          "outputCreatedAt": "2026-07-02T07:56:54.894Z",
+          "logFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/logs/social_reporting_2026-07-02.log",
+          "logCreatedAt": "2026-07-02T07:56:54.894Z",
+          "startDate": "2026-06-25",
+          "endDate": "2026-07-02",
+          "layout": "weekly"
+        },
+        "externalService": {
+          "serviceName": "social_reporting",
+          "baseUrl": "http://localhost:8000/app",
+          "healthEndpoint": "/api/health",
+          "previewEndpoint": "/api/preview",
+          "generateEndpoint": "/api/generate",
+          "state": "social_reporting_cli_connected",
+          "sourceReference": "social_reporting"
+        },
+        "requiredUploads": [
+          "social_export_file"
+        ],
+        "kpiPlaceholders": {
+          "reach": {
+            "label": "Reichweite",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "impressions": {
+            "label": "Impressionen",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "engagement": {
+            "label": "Engagement",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "clicks": {
+            "label": "Klicks",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "followerGrowth": {
+            "label": "Follower-Wachstum",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "topFormats": {
+            "label": "Top-Formate",
+            "value": [],
+            "status": "pending_data",
+            "source": "file"
+          },
+          "recommendations": {
+            "label": "Optimierungsvorschlaege",
+            "value": [],
+            "status": "pending_data",
+            "source": "file"
+          }
+        }
+      }
+    },
     {
       "id": "report-20260608-001",
       "toolId": "reporting-tool",
@@ -335,6 +468,31 @@
   ],
   "logs": [
     {
+      "id": "log-1782979014924-gauyer",
+      "timestamp": "2026-07-02T07:56:54.924Z",
+      "actor": "Mira Keller",
+      "user": "Mira Keller",
+      "tool_id": "reporting-tool",
+      "toolId": "reporting-tool",
+      "action": "report.created",
+      "status": "success",
+      "level": "success",
+      "message": "Social Reporting Report fuer ImmoScout24 Austria wurde erstellt.",
+      "metadata": {
+        "reportId": "report-1782979014924",
+        "runId": "run-report-1782979014924",
+        "reportType": "weekly_social",
+        "dataSource": "file",
+        "outputFile": "dashboard_immoscout24_austria_1782979013305.xlsx",
+        "pendingConnection": false,
+        "fallback": false,
+        "outputFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_1782979013305.xlsx",
+        "logFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/logs/social_reporting_2026-07-02.log"
+      },
+      "created_at": "2026-07-02T07:56:54.924Z",
+      "createdAt": "2026-07-02T07:56:54.924Z"
+    },
+    {
       "id": "log-20260608-083500",
       "timestamp": "2026-06-08T08:35:00.000Z",
       "actor": "System",
@@ -449,6 +607,35 @@
   ],
   "automationRuns": [
     {
+      "id": "run-report-1782979014924",
+      "automationId": "automation-report-cleanup",
+      "toolId": "reporting-tool",
+      "clientId": null,
+      "status": "succeeded",
+      "triggerSource": "manual",
+      "actorUserId": "user-001",
+      "input": {
+        "clientName": "ImmoScout24 Austria",
+        "campaignName": "Social Weekly Check",
+        "reportingPeriod": "KW 27 2026",
+        "channel": "Instagram",
+        "reportType": "weekly_social",
+        "dataSource": "file"
+      },
+      "output": {
+        "reportId": "report-1782979014924",
+        "fileName": "dashboard_immoscout24_austria_1782979013305.xlsx",
+        "fileUrl": null,
+        "pendingConnection": false,
+        "fallback": false
+      },
+      "errorCode": null,
+      "errorMessage": null,
+      "startedAt": "2026-07-02T07:56:54.924Z",
+      "finishedAt": "2026-07-02T07:56:54.924Z",
+      "createdAt": "2026-07-02T07:56:54.924Z"
+    },
+    {
       "id": "run-offer-20260608-004",
       "automationId": "automation-offers-daily-index",
       "toolId": "offer-generator",
@@ -527,19 +714,41 @@
       "updatedAt": "2026-06-08T07:15:00.000Z"
     },
     {
-      "id": "api-reporting-csv-upload",
+      "id": "api-reporting-file",
       "toolId": "reporting-tool",
-      "name": "CSV / Excel Upload",
-      "baseUrl": null,
+      "name": "Datei-Import",
+      "baseUrl": "/Users/awill/Documents/Codex/Reporting/social_reporting",
       "healthEndpoint": null,
       "authType": "none",
       "status": "healthy",
       "lastCheckedAt": "2026-06-08T08:12:00.000Z",
       "lastError": null,
       "config": {
-        "sourceId": "csv_upload",
+        "sourceId": "file",
         "state": "ready",
-        "formats": ["csv", "tsv", "xls", "xlsx"]
+        "formats": [
+          "csv",
+          "tsv",
+          "xls",
+          "xlsx"
+        ]
+      },
+      "createdAt": "2026-06-08T08:12:00.000Z",
+      "updatedAt": "2026-06-08T08:12:00.000Z"
+    },
+    {
+      "id": "api-reporting-combined",
+      "toolId": "reporting-tool",
+      "name": "Meta + Swat.io",
+      "baseUrl": null,
+      "healthEndpoint": null,
+      "authType": "oauth2",
+      "status": "unknown",
+      "lastCheckedAt": null,
+      "lastError": null,
+      "config": {
+        "sourceId": "combined",
+        "state": "pending_connection"
       },
       "createdAt": "2026-06-08T08:12:00.000Z",
       "updatedAt": "2026-06-08T08:12:00.000Z"
@@ -608,6 +817,23 @@
       "config": {},
       "createdAt": "2026-06-08T07:58:00.000Z",
       "updatedAt": "2026-06-08T07:58:00.000Z"
+    },
+    {
+      "id": "api-editorial-planner-local",
+      "toolId": "editorial-planner",
+      "name": "Weekly Editorial Planner",
+      "baseUrl": "http://127.0.0.1:8080",
+      "healthEndpoint": "/api/health",
+      "authType": "session",
+      "status": "unknown",
+      "lastCheckedAt": null,
+      "lastError": null,
+      "config": {
+        "state": "external_reference_detected",
+        "sourceReference": "weekly_editorial_planner"
+      },
+      "createdAt": "2026-07-02T07:45:00.000Z",
+      "updatedAt": "2026-07-02T07:45:00.000Z"
     }
   ],
   "settings": [

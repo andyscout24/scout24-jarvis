@@ -41,6 +41,18 @@ const adapters = new Map(
       resultTypes: [ResultTypes.ARTIFACT],
     }),
     createAutomationModuleAdapter({
+      id: "editorial-planner",
+      capabilities: [
+        ModuleCapabilities.LAUNCH,
+        ModuleCapabilities.HEALTH,
+        ModuleCapabilities.STATUS,
+        ModuleCapabilities.RESULTS,
+        ModuleCapabilities.LOGS,
+      ],
+      requiredRoles: [Roles.ADMIN, Roles.MARKETING_USER],
+      resultTypes: [ResultTypes.ARTIFACT],
+    }),
+    createAutomationModuleAdapter({
       id: "campaign-analyzer",
       capabilities: [ModuleCapabilities.HEALTH, ModuleCapabilities.STATUS, ModuleCapabilities.RESULTS, ModuleCapabilities.LOGS],
       requiredRoles: [Roles.ADMIN, Roles.MARKETING_USER, Roles.MANAGEMENT_VIEWER],

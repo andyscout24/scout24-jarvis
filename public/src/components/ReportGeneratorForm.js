@@ -22,19 +22,21 @@ export function ReportGeneratorForm({ tool, dataSources = [] }) {
           <span>Kanal</span>
           <select name="channel" ${disabled ? "disabled" : ""}>
             <option value="Alle Kanaele">Alle Kanaele</option>
-            <option value="Google Ads">Google Ads</option>
-            <option value="Google Ad Manager">Google Ad Manager</option>
-            <option value="Newsletter">Newsletter</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Facebook">Facebook</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="TikTok">TikTok</option>
             <option value="Social">Social</option>
           </select>
         </label>
         <label>
           <span>Report-Typ</span>
           <select name="reportType" ${disabled ? "disabled" : ""}>
-            <option value="campaign_review">Campaign Review</option>
+            <option value="weekly_social">Weekly Social Report</option>
             <option value="monthly_social">Monthly Social Report</option>
             <option value="performance_summary">Performance Summary</option>
             <option value="management_overview">Management Overview</option>
+            <option value="campaign_review">Campaign Review</option>
           </select>
         </label>
         <label>
@@ -42,6 +44,18 @@ export function ReportGeneratorForm({ tool, dataSources = [] }) {
           <select name="dataSource" ${disabled ? "disabled" : ""}>
             ${dataSources.map((source) => sourceOption(source)).join("")}
           </select>
+        </label>
+        <label>
+          <span>Startdatum</span>
+          <input name="startDate" type="date" ${disabled ? "disabled" : ""}>
+        </label>
+        <label>
+          <span>Enddatum</span>
+          <input name="endDate" type="date" ${disabled ? "disabled" : ""}>
+        </label>
+        <label class="form-grid-span-2">
+          <span>Input-Pfad (optional)</span>
+          <input name="inputPath" type="text" placeholder="leer lassen fuer Standarddaten im social_reporting Projekt" ${disabled ? "disabled" : ""}>
         </label>
         <label>
           <span>Ersteller</span>
@@ -52,7 +66,7 @@ export function ReportGeneratorForm({ tool, dataSources = [] }) {
         <button class="button primary" type="submit" ${disabled ? "disabled" : ""}>
           ${icon("play")} ${disabled ? "Tool deaktiviert" : "Report erstellen"}
         </button>
-        <span class="form-note">${escapeHtml(tool?.integration?.serviceName || "campaign_review_tool")}</span>
+        <span class="form-note">${escapeHtml(tool?.integration?.serviceName || "social_reporting")}</span>
       </div>
     </form>
   `;

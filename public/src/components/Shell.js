@@ -7,42 +7,56 @@ export function Shell({ active, title, content, error, warnings = [], notice, lo
   const visibleNavItems = navItems.filter((item) => canAccessHref(currentUser, item.href));
   const navSections = groupNavItems(visibleNavItems);
   const apiStatusUi = getApiStatusUi(apiStatus);
+  const initials = getInitials(currentUser?.name || "SJ");
 
   return `
-    <div class="app-shell">
-      <aside class="sidebar">
-        <a class="brand" href="#/" aria-label="Social Jarvis Dashboard">
-          <img src="/assets/automation-flow.svg" alt="">
-          <span>
-            <span class="brand-title">Social Jarvis</span>
-            <span class="brand-subtitle">Interne Arbeitsoberflaeche</span>
-          </span>
-        </a>
-        <nav class="nav" aria-label="Hauptnavigation">
-          ${navSections.map((section) => navSection(section, active)).join("")}
-        </nav>
-        <div class="sidebar-note">
-          <strong>Interner Zugriff</strong>
-          <span>Tools, Reports und Datenquellen fuer Sales, Marketing und Operations.</span>
+    <div class="saas-shell">
+      <aside class="saas-sidebar">
+        <div class="sidebar-top">
+          <a class="brand-block" href="#/offers" aria-label="Social Jarvis Dashboard">
+            <span class="brand-mark">
+              <img src="/assets/automation-flow.svg" alt="">
+            </span>
+            <span>
+              <span class="brand-title">Social Jarvis</span>
+              <span class="brand-subtitle">ImmoScout24 Austria Team</span>
+            </span>
+          </a>
+          <nav class="sidebar-nav" aria-label="Hauptnavigation">
+            ${navSections.map((section) => navSection(section, active)).join("")}
+          </nav>
+        </div>
+
+        <div class="sidebar-footer">
+          <a class="sidebar-settings-link" href="#/settings">
+            ${icon("settings")}
+            <span>Einstellungen</span>
+          </a>
+          <div class="profile-card">
+            <span class="profile-avatar">${escapeHtml(initials)}</span>
+            <div class="profile-copy">
+              <strong>${escapeHtml(currentUser?.name || "Teammitglied")}</strong>
+              <span>${escapeHtml(currentUser ? (roleLabels[currentUser.role] || currentUser.role) : "Interner Zugriff")}</span>
+            </div>
+          </div>
         </div>
       </aside>
-      <div class="main-shell">
-        <header class="topbar">
-          <div>
-            <p class="eyebrow">Social Jarvis</p>
+      <div class="saas-main">
+        <header class="workspace-topbar">
+          <div class="workspace-title">
+            <p class="workspace-kicker">Interne Tool Suite</p>
             <h1>${escapeHtml(title)}</h1>
           </div>
-          <div class="topbar-actions">
-            ${currentUser ? `<span class="connection-pill">${icon("users", "icon small")}${escapeHtml(currentUser.name)} - ${escapeHtml(roleLabels[currentUser.role] || currentUser.role)}</span>` : ""}
+          <div class="workspace-actions">
             <span class="connection-pill connection-${apiStatusUi.tone}">${icon(apiStatusUi.icon, "icon small")}${escapeHtml(apiStatusUi.label)}</span>
-            ${authConfig?.supabase?.enabled && !authState?.hasSupabaseSession ? `<a class="button" href="#/auth">${icon("users")}Supabase Login</a>` : ""}
-            ${authState?.hasSupabaseSession ? `<button class="button" id="sign-out-button" type="button">${icon("ban")}Abmelden</button>` : ""}
+            ${authConfig?.supabase?.enabled && !authState?.hasSupabaseSession ? `<a class="button subtle" href="#/auth">${icon("users")}Anmelden</a>` : ""}
+            ${authState?.hasSupabaseSession ? `<button class="button subtle" id="sign-out-button" type="button">${icon("ban")}Abmelden</button>` : ""}
             <button class="icon-button" id="refresh-dashboard" type="button" title="Aktualisieren" aria-label="Aktualisieren">
               ${icon("refresh")}
             </button>
           </div>
         </header>
-        <main class="view">
+        <main class="workspace-content">
           ${loading ? `<div class="loading-banner">${icon("clock")}Daten werden geladen.</div>` : ""}
           ${notice ? `<div class="success-banner">${icon("check")}<span>${escapeHtml(notice)}</span></div>` : ""}
           ${warnings.length ? `<div class="warning-banner">${icon("alert")}<span>${escapeHtml(composeWarning(warnings))}</span></div>` : ""}
@@ -55,11 +69,11 @@ export function Shell({ active, title, content, error, warnings = [], notice, lo
 }
 
 function groupNavItems(items) {
-  const order = ["workspace", "operations"];
+  const order = ["media-sales", "social-media"];
   return order
     .map((sectionKey) => ({
       key: sectionKey,
-      label: sectionKey === "workspace" ? "Arbeitsbereiche" : "Betrieb",
+      label: sectionKey === "media-sales" ? "Media Sales" : "Social Media",
       items: items.filter((item) => item.section === sectionKey),
     }))
     .filter((section) => section.items.length);
@@ -67,13 +81,13 @@ function groupNavItems(items) {
 
 function navSection(section, active) {
   return `
-    <div class="nav-section">
-      <p class="nav-section-label">${escapeHtml(section.label)}</p>
-      <div class="nav-section-links">
+    <div class="sidebar-group">
+      <p class="sidebar-group-label">${escapeHtml(section.label)}</p>
+      <div class="sidebar-group-links">
         ${section.items
           .map(
             (item) => `
-              <a class="nav-link ${active === item.href ? "active" : ""}" href="${item.href}" ${active === item.href ? 'aria-current="page"' : ""}>
+              <a class="sidebar-link ${active === item.href ? "active" : ""}" href="${item.href}" ${active === item.href ? 'aria-current="page"' : ""}>
                 ${icon(item.icon)}
                 <span>${item.label}</span>
               </a>
@@ -96,4 +110,13 @@ function getApiStatusUi(apiStatus) {
 function composeWarning(warnings) {
   if (warnings.length === 1) return warnings[0];
   return `${warnings.length} Datenbereiche sind aktuell nicht vollstaendig verfuegbar. ${warnings.slice(0, 2).join(" ")}`;
+}
+
+function getInitials(value) {
+  return String(value || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() || "")
+    .join("") || "SJ";
 }

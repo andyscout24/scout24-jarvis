@@ -4,7 +4,10 @@ const paths = {
   ban: '<circle cx="12" cy="12" r="9" /><path d="m5.7 5.7 12.6 12.6" />',
   boxes: '<path d="M3 7.5 12 3l9 4.5-9 4.5L3 7.5Z" /><path d="M3 12.5 12 17l9-4.5" /><path d="M3 17.5 12 22l9-4.5" />',
   book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />',
+  calculator: '<rect x="5" y="2" width="14" height="20" rx="2" /><path d="M8 6h8" /><path d="M8 10h.01" /><path d="M12 10h.01" /><path d="M16 10h.01" /><path d="M8 14h.01" /><path d="M12 14h.01" /><path d="M16 14h.01" /><path d="M8 18h8" />',
+  calendar: '<path d="M8 2v4" /><path d="M16 2v4" /><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M3 10h18" />',
   check: '<path d="M20 6 9 17l-5-5" />',
+  chart: '<path d="M3 3v18h18" /><path d="m7 14 4-4 3 3 5-7" />',
   chevron: '<path d="m9 18 6-6-6-6" />',
   clock: '<circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />',
   dashboard: '<rect x="3" y="3" width="7" height="8" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="15" width="7" height="6" rx="1" />',
@@ -15,6 +18,7 @@ const paths = {
   play: '<path d="M7 4v16l13-8Z" />',
   refresh: '<path d="M21 12a9 9 0 0 1-15.1 6.6" /><path d="M3 12A9 9 0 0 1 18.1 5.4" /><path d="M3 19v-5h5" /><path d="M21 5v5h-5" />',
   settings: '<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" /><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.6 1.6 0 0 0 1 1.5h.1a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.2a1.6 1.6 0 0 0-1.5 1Z" />',
+  sparkles: '<path d="M12 3 13.8 8.2 19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" /><path d="M19 3v4" /><path d="M21 5h-4" /><path d="M5 17v4" /><path d="M7 19H3" />',
   users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.9" /><path d="M16 3.1a4 4 0 0 1 0 7.8" />',
   wrench: '<path d="M14.7 6.3a4 4 0 0 0-5 5L3 18v3h3l6.7-6.7a4 4 0 0 0 5-5l-2.9 2.9-2.1-2.1 2.9-2.9Z" />',
 };

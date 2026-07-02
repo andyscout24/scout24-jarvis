@@ -254,6 +254,8 @@ Der Healthcheck liefert:
 | Variable | Zweck |
 | --- | --- |
 | `DATABASE_URL` | Postgres / Tooling |
+| `SOCIAL_REPORTING_PROJECT_PATH` | Pfad zum separaten Social Reporting Projekt |
+| `REDAKTIONSPLAN_PROJECT_PATH` | Pfad zum separaten Weekly Editorial Planner |
 | `CAMPAIGN_REVIEW_BASE_URL` | Reporting FastAPI |
 | `SWATIO_BASE_URL` | Swat.io |
 | `SWATIO_API_KEY` | Swat.io |
@@ -269,6 +271,17 @@ Wichtig:
 - `.env.example` enthaelt nur Platzhalter
 - `.env` bleibt uncommitted
 - Service-Role- und API-Secrets duerfen nie im Client-Code landen
+
+## Externe Tool-Projekte
+
+Das Dashboard bindet interne Automatisierungen schrittweise ueber Adapter an.
+
+Aktuell relevante Schwesterprojekte:
+
+- Social Reporting: `../Reporting/social_reporting`
+- Redaktionsplan: `../Redaktionsplan`
+
+Der Reporting-Adapter startet bereits das Python-Projekt direkt ueber das Dashboard und speichert Ergebnis-Metadaten im Hub.
 
 ## Empfohlene Hosting-Variante fuer interne Nutzung
 

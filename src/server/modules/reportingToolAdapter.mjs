@@ -5,60 +5,39 @@ import { createAuditLog } from "../logging/auditLogger.mjs";
 import { optionalString, publicMetadata, requireObject, requireString } from "../utils/validation.mjs";
 
 export const reportingDataSources = Object.freeze({
-  csv_upload: {
-    id: "csv_upload",
-    label: "CSV / Excel Upload",
+  file: {
+    id: "file",
+    label: "Datei-Import",
     state: "ready",
-    description: "Unterstuetzt CSV, TSV, XLS und XLSX ueber das Campaign Review Tool.",
-    requiredUploads: ["google_ad_manager_report"],
+    description: "CSV-, XLSX- und XLS-Dateien direkt aus dem social_reporting Projekt.",
+    requiredUploads: ["social_export_file"],
   },
-  google_ad_manager: {
-    id: "google_ad_manager",
-    label: "Google Ad Manager",
-    state: "ready",
-    description: "Als Pflichtquelle im externen Campaign Review Tool vorhanden.",
-    requiredUploads: ["google_ad_manager_report"],
-  },
-  google_ads: {
-    id: "google_ads",
-    label: "Google Ads",
-    state: "ready",
-    description: "Optionaler Upload fuer Paid-Search- und Campaign-Daten.",
-    requiredUploads: ["google_ads_report"],
-  },
-  newsletter: {
-    id: "newsletter",
-    label: "Newsletter CSV",
-    state: "ready",
-    description: "Optionaler Upload fuer Newsletter KPIs.",
-    requiredUploads: ["newsletter_report"],
-  },
-  fastapi_campaign_review: {
-    id: "fastapi_campaign_review",
-    label: "Campaign Review FastAPI",
-    state: "external_reference_detected",
-    description: "Externe FastAPI ist referenziert, wird im Dashboard aber noch nicht direkt mit Uploads angesteuert.",
-    requiredUploads: ["google_ad_manager_report"],
+  combined: {
+    id: "combined",
+    label: "Meta + Swat.io",
+    state: "pending_connection",
+    description: "Kombiniert Paid- und Social-Daten, sobald beide API-Verbindungen konfiguriert sind.",
+    requiredUploads: [],
   },
   swat_io: {
     id: "swat_io",
     label: "Swat.io",
     state: "pending_connection",
-    description: "Social-Reporting API ist noch nicht angebunden.",
+    description: "Social-Daten aus Swat.io fuer organische Performance und Community-Signale.",
     requiredUploads: [],
   },
   meta_api: {
     id: "meta_api",
     label: "Meta API",
     state: "pending_connection",
-    description: "Meta Marketing API ist fuer das MVP als offene Verbindung markiert.",
+    description: "Meta Paid Daten fuer Kampagnen und Performance-Auswertungen.",
     requiredUploads: [],
   },
-  google_sheets: {
-    id: "google_sheets",
-    label: "Google Sheets",
-    state: "pending_connection",
-    description: "Sheets Import ist geplant, aber noch nicht verbunden.",
+  fastapi_campaign_review: {
+    id: "fastapi_campaign_review",
+    label: "Campaign Review FastAPI",
+    state: "external_reference_detected",
+    description: "Externe Campaign-Review-Webapp fuer PPTX-Workflows und Media-Reports.",
     requiredUploads: [],
   },
 });
@@ -67,7 +46,7 @@ export function listReportingDataSources() {
   return Object.values(reportingDataSources);
 }
 
-export function buildReportGenerationPayload(body, tool) {
+export function buildReportGenerationPayload(body, tool, execution = null) {
   requireObject(body);
 
   const clientName = requireString(body, "clientName", { max: 180 });
@@ -75,7 +54,7 @@ export function buildReportGenerationPayload(body, tool) {
   const reportingPeriod = optionalString(body, "reportingPeriod", { max: 120 }) || "Nicht angegeben";
   const channel = optionalString(body, "channel", { max: 80 }) || "Alle Kanaele";
   const reportType = optionalString(body, "reportType", { max: 80 }) || "campaign_review";
-  const dataSourceId = optionalString(body, "dataSource", { max: 80 }) || "csv_upload";
+  const dataSourceId = optionalString(body, "dataSource", { max: 80 }) || "file";
   const dataSource = reportingDataSources[dataSourceId];
   if (!dataSource) {
     throw badRequest("invalid_data_source", "Die angegebene Datenquelle ist fuer das Reporting Tool nicht bekannt.");
@@ -89,15 +68,15 @@ export function buildReportGenerationPayload(body, tool) {
   const reportId = `report-${idSeed}`;
   const runId = `run-report-${idSeed}`;
   const safeSuffix = slugify(`${clientName}-${campaignName}-${reportingPeriod}`) || "report";
-  const outputFile = `${safeSuffix}_review.pptx`;
-  const pendingConnection = dataSource.state === "pending_connection";
+  const outputFile = execution?.outputFileName || `${safeSuffix}_review.xlsx`;
+  const pendingConnection = !execution && dataSource.state === "pending_connection";
   const externalPending = tool.integration?.state !== "ready";
-  const fallback = pendingConnection || externalPending;
+  const fallback = execution ? Boolean(execution.fallback) : (pendingConnection || externalPending);
   const envStatus = getReportingSourceEnvStatus(dataSource.id);
   const missingConfig = envStatus?.missing || [];
-  const errorMessage = pendingConnection
+  const errorMessage = execution?.errorMessage || (pendingConnection
     ? `${dataSource.label} ist noch nicht verbunden.${missingConfig.length ? ` Fehlende Konfiguration: ${missingConfig.join(", ")}.` : ""} Der Reportlauf wurde als Metadaten-Eintrag gespeichert.`
-    : null;
+    : null);
 
   const kpiPlaceholders = buildKpiPlaceholders(dataSource);
   const metadata = {
@@ -111,18 +90,35 @@ export function buildReportGenerationPayload(body, tool) {
     generatedAt: createdAt,
     createdBy: actor,
     outputFile,
-    outputUrl: null,
+    outputUrl: execution?.outputFilePath || null,
     error: errorMessage,
     missingConfig,
     fallback,
-    adapter: "dashboard-reporting-tool-wrapper",
+    adapter: execution?.executed ? "social-reporting-cli-adapter" : "dashboard-reporting-tool-wrapper",
+    execution: execution ? {
+      executed: true,
+      projectPath: execution.projectPath,
+      pythonPath: execution.pythonPath,
+      source: execution.source,
+      sourceLabel: execution.sourceLabel,
+      commandPreview: execution.commandPreview,
+      stdoutPreview: execution.stdoutPreview,
+      stderrPreview: execution.stderrPreview,
+      outputFilePath: execution.outputFilePath,
+      outputCreatedAt: execution.outputCreatedAt,
+      logFilePath: execution.logFilePath,
+      logCreatedAt: execution.logCreatedAt,
+      startDate: execution.dateRange?.startDate || null,
+      endDate: execution.dateRange?.endDate || null,
+      layout: execution.layout || null,
+    } : null,
     externalService: {
       serviceName: tool.integration?.serviceName || "campaign_review_tool",
       baseUrl: tool.externalUrl || null,
       healthEndpoint: tool.integration?.healthEndpoint || "/api/health",
       previewEndpoint: tool.integration?.previewEndpoint || "/api/preview",
       generateEndpoint: tool.integration?.generateEndpoint || "/api/generate",
-      state: tool.integration?.state || "unknown",
+      state: execution?.executed ? "social_reporting_cli_connected" : (tool.integration?.state || "unknown"),
       sourceReference: tool.integration?.sourceReference || null,
     },
     requiredUploads: dataSource.requiredUploads,
@@ -134,7 +130,7 @@ export function buildReportGenerationPayload(body, tool) {
     automationId: "automation-report-cleanup",
     toolId: tool.id,
     clientId,
-    status: "succeeded",
+    status: execution?.automationStatus || "succeeded",
     triggerSource: "manual",
     actorUserId,
     input: {
@@ -152,8 +148,8 @@ export function buildReportGenerationPayload(body, tool) {
       pendingConnection,
       fallback,
     },
-    errorCode: null,
-    errorMessage: null,
+    errorCode: execution?.reportStatus === "error" ? "social_reporting_failed" : null,
+    errorMessage: errorMessage || null,
     startedAt: createdAt,
     finishedAt: createdAt,
     createdAt,
@@ -171,9 +167,9 @@ export function buildReportGenerationPayload(body, tool) {
     channel,
     dataSource: dataSource.id,
     dataSourceLabel: dataSource.label,
-    status: pendingConnection ? "pending_connection" : "generated",
+    status: execution?.reportStatus || (pendingConnection ? "pending_connection" : "generated"),
     fileName: outputFile,
-    fileUrl: null,
+    fileUrl: execution?.outputFilePath || null,
     errorMessage,
     createdAt,
     updatedAt: createdAt,
@@ -183,11 +179,25 @@ export function buildReportGenerationPayload(body, tool) {
 
   const log = createAuditLog({
     toolId: tool.id,
-    level: pendingConnection ? LogLevels.WARNING : fallback ? LogLevels.INFO : LogLevels.SUCCESS,
-    action: pendingConnection ? "report.pending_connection" : "report.created",
-    message: pendingConnection
-      ? `Reportlauf fuer ${clientName} gespeichert, Datenquelle ${dataSource.label} ist pending.`
-      : `Reportlauf fuer ${clientName} angelegt.`,
+    level: execution?.reportStatus === "error"
+      ? LogLevels.ERROR
+      : pendingConnection
+        ? LogLevels.WARNING
+        : fallback
+          ? LogLevels.INFO
+          : LogLevels.SUCCESS,
+    action: execution?.reportStatus === "error"
+      ? "report.failed"
+      : pendingConnection
+        ? "report.pending_connection"
+        : "report.created",
+    message: execution?.reportStatus === "error"
+      ? `Reportlauf fuer ${clientName} ist fehlgeschlagen.`
+      : pendingConnection
+        ? `Reportlauf fuer ${clientName} gespeichert, Datenquelle ${dataSource.label} ist pending.`
+        : execution?.executed
+          ? `Social Reporting Report fuer ${clientName} wurde erstellt.`
+          : `Reportlauf fuer ${clientName} angelegt.`,
     actor,
     metadata: {
       reportId,
@@ -197,6 +207,8 @@ export function buildReportGenerationPayload(body, tool) {
       outputFile,
       pendingConnection,
       fallback,
+      outputFilePath: execution?.outputFilePath || null,
+      logFilePath: execution?.logFilePath || null,
     },
   });
 

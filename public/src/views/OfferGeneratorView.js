@@ -1,117 +1,168 @@
-import { EmptyState } from "../components/EmptyState.js";
-import { OfferGeneratorForm } from "../components/OfferGeneratorForm.js";
 import { PageHeader } from "../components/PageHeader.js";
-import { StatCard } from "../components/StatCard.js";
+import { canCreateOffers } from "../auth/permissions.js";
 import { icon } from "../icons.js";
-import { describeResult } from "../modules/results/resultTypes.js";
-import { escapeHtml, formatDateTime, newestFirst, statusBadge } from "../utils.js";
+import { escapeHtml, formatCurrency, newestFirst } from "../utils.js";
 
-export function OfferGeneratorView(data) {
-  const tool = data.tools.find((item) => item.id === "offer-generator");
-  const offers = newestFirst(data.offers.filter((offer) => offer.toolId === "offer-generator"));
+export function OfferGeneratorView(data, currentUser) {
+  const canEdit = canCreateOffers(currentUser);
+  const latestOffers = newestFirst(data.offers.filter((offer) => offer.toolId === "offer-generator")).slice(0, 3);
 
   return `
     ${PageHeader({
-      eyebrow: "Sales",
+      eyebrow: "Media Sales",
       title: "Angebotsgenerator",
-      description: "Erstelle standardisierte Angebote und finde zuletzt generierte Angebotsdateien schnell wieder.",
-      actions: [
-        { label: "Neues Angebot erstellen", href: "#/offers", icon: "file", primary: true },
-        { label: "Alle Tools", href: "#/tools", icon: "boxes" },
-      ],
+      description: "Erfasse Kunden- und Kampagnenparameter links und erzeuge rechts eine hochwertige Angebotsvorschau fuer dein Sales-Team.",
+      actions: latestOffers.length ? [{ label: "Letzte Angebote", href: "#/offers", icon: "file" }] : [],
     })}
 
-    <section class="summary-grid">
-      ${StatCard({ label: "Tool Status", value: tool?.status === "ready" ? 1 : 0, note: tool?.status || "unbekannt", iconName: "check", tone: tool?.status === "ready" ? "green" : "amber" })}
-      ${StatCard({ label: "Angebote", value: offers.length, note: "im Ergebnisindex", iconName: "file", tone: "teal" })}
-      ${StatCard({ label: "Runs heute", value: tool?.metrics?.runsToday || 0, note: "laut Tool Registry", iconName: "play", tone: "blue" })}
-      ${StatCard({ label: "Fehler", value: data.logs.filter((log) => log.toolId === "offer-generator" && log.level === "error").length, note: "letzte Aktivitaeten", iconName: "alert", tone: "red" })}
-    </section>
-
-    <section class="content-grid">
-      <div class="panel">
-        <div class="panel-header">
+    <section class="workspace-grid workspace-grid-2">
+      <article class="surface-card surface-form-card">
+        <div class="surface-card-header">
           <div>
-            <h2 class="panel-title">Integration</h2>
-            <p class="panel-subtitle">${escapeHtml(tool?.integration?.state || "ready")}</p>
+            <p class="surface-kicker">Eingaben</p>
+            <h3>Rahmendaten fuer das Angebot</h3>
           </div>
-          ${statusBadge(tool?.status || "disabled")}
+          <span class="surface-meta">${canEdit ? "Bearbeitbar" : "Nur Vorschau"}</span>
         </div>
-        <div class="integration-list">
-          <div class="integration-row">
-            <div>
-              <p class="integration-title">Startpunkt</p>
-              <p class="integration-meta">${tool?.externalUrl ? "Externer Angebotsgenerator" : "Dashboard-Modul vorbereitet"}</p>
-            </div>
-            ${icon("external")}
-          </div>
-          <div class="integration-row">
-            <div>
-              <p class="integration-title">Kategorie</p>
-              <p class="integration-meta">Sales</p>
-            </div>
-            ${icon("file")}
-          </div>
-        </div>
-      </div>
 
-      <div class="panel">
-        <div class="panel-header">
+        <form id="offer-generator-form" class="modern-form form-stack">
+          <div class="field-grid field-grid-2">
+            <label class="field">
+              <span>Kundenname</span>
+              <input name="clientName" data-offer-preview="client" type="text" placeholder="z. B. Wohnbau Atlas GmbH" ${canEdit ? "" : "disabled"} required>
+            </label>
+            <label class="field">
+              <span>Branche</span>
+              <input name="industry" data-offer-preview="industry" type="text" placeholder="z. B. Immobilienentwicklung" ${canEdit ? "" : "disabled"}>
+            </label>
+          </div>
+
+          <div class="field-grid field-grid-2">
+            <label class="field">
+              <span>Kampagnen-Budget</span>
+              <input name="budget" data-offer-preview="budget" type="number" min="0" step="100" placeholder="15000" ${canEdit ? "" : "disabled"}>
+            </label>
+            <label class="field">
+              <span>Laufzeit</span>
+              <input name="runtime" data-offer-preview="runtime" type="text" placeholder="6 Wochen" ${canEdit ? "" : "disabled"}>
+            </label>
+          </div>
+
+          <fieldset class="channel-fieldset">
+            <legend>Kanalauswahl</legend>
+            <div class="checkbox-grid">
+              ${["ImmoScout24 Portal", "Meta Ads", "Instagram", "LinkedIn", "Newsletter", "Display Retargeting"]
+                .map((channel, index) => `
+                  <label class="checkbox-tile">
+                    <input type="checkbox" name="channels" value="${escapeHtml(channel)}" data-offer-preview="channel"${index < 3 ? " checked" : ""} ${canEdit ? "" : "disabled"}>
+                    <span>${escapeHtml(channel)}</span>
+                  </label>
+                `)
+                .join("")}
+            </div>
+          </fieldset>
+
+          <label class="field">
+            <span>Ersteller</span>
+            <input name="actor" type="text" value="${escapeHtml(currentUser?.name || "Dashboard User")}" ${canEdit ? "" : "disabled"}>
+          </label>
+        </form>
+      </article>
+
+      <article class="surface-card proposal-preview-card">
+        <div class="surface-card-header">
           <div>
-            <h2 class="panel-title">Neues Angebot</h2>
-            <p class="panel-subtitle">Wrapper fuer den ready Angebotsgenerator</p>
+            <p class="surface-kicker">Live-Vorschau</p>
+            <h3>Angebotsentwurf</h3>
           </div>
+          <span class="status-chip status-chip-live">${icon("sparkles", "icon small")}Aktiv</span>
         </div>
-        ${OfferGeneratorForm(tool)}
-      </div>
-    </section>
 
-    <section class="panel">
-      <div class="panel-header">
-        <div>
-          <h2 class="panel-title">Letzte generierte Angebote</h2>
-          <p class="panel-subtitle">${offers.length} Angebote gefunden</p>
-        </div>
-      </div>
-      ${offers.length ? offerTable(offers) : EmptyState({ title: "Keine Angebote", message: "Neue Angebote erscheinen nach dem ersten Lauf automatisch hier.", iconName: "file" })}
-    </section>
-  `;
-}
+        <div class="proposal-sheet">
+          <div class="proposal-letterhead">
+            <div>
+              <strong>ImmoScout24 Austria</strong>
+              <span>Media Sales Solutions</span>
+            </div>
+            <span class="proposal-id">Proposal</span>
+          </div>
 
-function offerTable(offers) {
-  return `
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Kunde</th>
-            <th>Branche</th>
-            <th>Status</th>
-            <th>Betrag</th>
-            <th>Laufzeit</th>
-            <th>Erstellt</th>
-            <th>Datei</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${offers
-            .map((offer) => {
-              const result = describeResult(offer);
-              return `
+          <div class="proposal-body">
+            <div class="proposal-summary">
+              <div>
+                <span class="proposal-label">Kunde</span>
+                <strong id="offer-preview-client">Wohnbau Atlas GmbH</strong>
+              </div>
+              <div>
+                <span class="proposal-label">Branche</span>
+                <strong id="offer-preview-industry">Immobilienentwicklung</strong>
+              </div>
+              <div>
+                <span class="proposal-label">Laufzeit</span>
+                <strong id="offer-preview-runtime">6 Wochen</strong>
+              </div>
+            </div>
+
+            <div class="proposal-channel-line">
+              <span class="proposal-label">Kanaele</span>
+              <div id="offer-preview-channels" class="inline-tag-list">
+                <span class="inline-tag">ImmoScout24 Portal</span>
+                <span class="inline-tag">Meta Ads</span>
+                <span class="inline-tag">Instagram</span>
+              </div>
+            </div>
+
+            <table class="pricing-table">
+              <thead>
                 <tr>
-                  <td><strong>${escapeHtml(offer.clientName)}</strong><span>${escapeHtml(offer.offerNumber || offer.id)}</span></td>
-                  <td>${escapeHtml(offer.industry || offer.metadata?.industry || "-")}</td>
-                  <td>${statusBadge(result.ready ? "ready" : "in_progress")}</td>
-                  <td>${escapeHtml(result.title.split(" - ")[1] || "-")}</td>
-                  <td>${escapeHtml(offer.runtime || offer.metadata?.runtime || "-")}</td>
-                  <td>${formatDateTime(offer.createdAt)}</td>
-                  <td class="mono">${escapeHtml(offer.fileName || "-")}</td>
+                  <th>Leistung</th>
+                  <th>Anteil</th>
+                  <th>Kosten</th>
                 </tr>
-              `;
-            })
-            .join("")}
-        </tbody>
-      </table>
-    </div>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Media Placement</td>
+                  <td>60%</td>
+                  <td id="offer-preview-media">${formatCurrency(9000)}</td>
+                </tr>
+                <tr>
+                  <td>Creative & Setup</td>
+                  <td>25%</td>
+                  <td id="offer-preview-creative">${formatCurrency(3750)}</td>
+                </tr>
+                <tr>
+                  <td>Optimierung & Reporting</td>
+                  <td>15%</td>
+                  <td id="offer-preview-ops">${formatCurrency(2250)}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2">Gesamtbudget</td>
+                  <td id="offer-preview-total">${formatCurrency(15000)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="surface-card-footer">
+          <button class="button primary large-button" type="submit" form="offer-generator-form" ${canEdit ? "" : "disabled"}>
+            ${icon("file")}Angebot generieren
+          </button>
+          <div class="mini-list">
+            ${latestOffers.length
+              ? latestOffers.map((offer) => `
+                  <div class="mini-row">
+                    <span>${escapeHtml(offer.clientName)}</span>
+                    <strong>${formatCurrency(offer.amount, offer.currency)}</strong>
+                  </div>
+                `).join("")
+              : `<div class="mini-row muted"><span>Keine Angebote erzeugt</span><strong>-</strong></div>`}
+          </div>
+        </div>
+      </article>
+    </section>
   `;
 }

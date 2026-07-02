@@ -1,18 +1,15 @@
 export const navItems = Object.freeze([
-  { href: "#/", label: "Dashboard", icon: "dashboard", section: "workspace" },
-  { href: "#/tools", label: "Arbeitsbereiche", icon: "boxes", section: "workspace" },
-  { href: "#/reporting", label: "Reports & Details", icon: "database", section: "workspace" },
-  { href: "#/offers", label: "Angebote", icon: "file", section: "workspace" },
-  { href: "#/settings", label: "Datenquellen", icon: "settings", section: "operations" },
-  { href: "#/help", label: "Hilfe & Doku", icon: "book", section: "operations" },
+  { href: "#/offers", label: "Angebotsgenerator", icon: "calculator", section: "media-sales" },
+  { href: "#/editorial-planner", label: "Redaktionsplan", icon: "calendar", section: "social-media" },
+  { href: "#/reporting", label: "Reporting & Analytics", icon: "chart", section: "social-media" },
+  { href: "#/content-creation", label: "Content Creation (Haus der Woche)", icon: "sparkles", section: "social-media" },
+  { href: "#/settings", label: "Einstellungen", icon: "settings", section: "account" },
 ]);
 
 export const routeTitles = Object.freeze({
-  "#/": "Dashboard",
-  "#/tools": "Arbeitsbereiche",
   "#/offers": "Angebotsgenerator",
-  "#/reporting": "Reports & Details",
-  "#/activity": "Activity Logs",
-  "#/settings": "Datenquellen",
-  "#/help": "Hilfe & Dokumentation",
+  "#/editorial-planner": "Redaktionsplan",
+  "#/reporting": "Reporting & Analytics",
+  "#/content-creation": "Content Creation (Haus der Woche)",
+  "#/settings": "Einstellungen",
 });

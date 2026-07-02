@@ -1,12 +1,12 @@
 import { routeTitles } from "./modules/navigation.js";
 
 export function getRoute() {
-  const hash = window.location.hash || "#/";
+  const hash = window.location.hash || "#/offers";
   if (hash === "#/auth") {
     return {
       name: "#/auth",
       title: "Anmeldung",
-      active: "#/",
+      active: "#/offers",
     };
   }
   if (hash.startsWith("#/tools/")) {
@@ -18,8 +18,8 @@ export function getRoute() {
     };
   }
   return {
-    name: routeTitles[hash] ? hash : "#/",
-    title: routeTitles[hash] || routeTitles["#/"],
-    active: routeTitles[hash] ? hash : "#/",
+    name: routeTitles[hash] ? hash : "#/offers",
+    title: routeTitles[hash] || routeTitles["#/offers"],
+    active: routeTitles[hash] ? hash : "#/offers",
   };
 }

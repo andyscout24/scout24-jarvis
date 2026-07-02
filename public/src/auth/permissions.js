@@ -45,12 +45,11 @@ export function canViewTool(user, tool) {
 }
 
 export function canAccessHref(user, href) {
-  if (href === "#/" || href === "#/tools") return Boolean(user?.active);
   if (href === "#/offers") return canViewOffers(user);
+  if (href === "#/editorial-planner") return [Roles.ADMIN, Roles.MARKETING_USER].includes(user?.role);
   if (href === "#/reporting") return canViewReports(user);
-  if (href === "#/activity") return canViewLogs(user);
+  if (href === "#/content-creation") return [Roles.ADMIN, Roles.MARKETING_USER].includes(user?.role);
   if (href === "#/settings") return canManageSettings(user);
-  if (href === "#/help") return Boolean(user?.active);
   return Boolean(user?.active);
 }
 

@@ -2,6 +2,7 @@ import { badRequest, notFound } from "../errors/apiError.mjs";
 import { Permissions, canAccessTool, canReadOffer, canReadReport, requirePermission } from "../auth/permissions.mjs";
 import { buildOfferGenerationPayload } from "../modules/offerGeneratorAdapter.mjs";
 import { buildReportGenerationPayload } from "../modules/reportingToolAdapter.mjs";
+import { runSocialReportingReport } from "../modules/socialReportingExecutor.mjs";
 
 export function createResultService(repository) {
   return {
@@ -44,11 +45,12 @@ export function createResultService(repository) {
         throw badRequest("tool_disabled", "Das Reporting Tool ist deaktiviert.");
       }
 
+      const execution = await runSocialReportingReport(body);
       const { report, automationRun, log } = buildReportGenerationPayload({
         ...body,
         actor: currentUser.name,
         actorUserId: currentUser.id,
-      }, tool);
+      }, tool, execution);
       return repository.createReport({ report, automationRun, log });
     },
 
