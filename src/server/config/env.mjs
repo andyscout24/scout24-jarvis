@@ -87,18 +87,19 @@ export function getSupabaseConfig() {
 
 export function getPublicAuthConfig() {
   const authMode = normalizeAuthMode(env.AUTH_MODE || "mock_header");
-  const url = env.NEXT_PUBLIC_SUPABASE_URL || env.SUPABASE_URL || "";
-  const publishableKey = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_ANON_KEY || "";
+  const supabaseModeEnabled = authMode === "supabase";
+  const url = supabaseModeEnabled ? (env.NEXT_PUBLIC_SUPABASE_URL || env.SUPABASE_URL || "") : "";
+  const publishableKey = supabaseModeEnabled ? (env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.SUPABASE_ANON_KEY || "") : "";
 
   return {
     mode: authMode,
     allowMockHeader: authMode !== "supabase",
-    allowSupabaseToken: hasEnv("SUPABASE_URL") && hasEnv("SUPABASE_SERVICE_ROLE_KEY"),
+    allowSupabaseToken: supabaseModeEnabled && hasEnv("SUPABASE_URL") && hasEnv("SUPABASE_SERVICE_ROLE_KEY"),
     supabase: {
-      enabled: Boolean(url && publishableKey),
+      enabled: supabaseModeEnabled && Boolean(url && publishableKey),
       url,
       publishableKey,
-      passwordSignInEnabled: Boolean(url && publishableKey),
+      passwordSignInEnabled: supabaseModeEnabled && Boolean(url && publishableKey),
     },
   };
 }
