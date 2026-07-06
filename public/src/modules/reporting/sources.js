@@ -9,18 +9,18 @@ export const reportingSources = Object.freeze([
     id: "combined",
     label: "Meta + Swat.io",
     state: "pending_connection",
-    description: "Kommt spaeter fuer kombinierte Social-Datenfluesse dazu.",
+    description: "Kombinierte Social-Daten ueber den internen Social-Reporting-Service.",
   },
   {
     id: "swat_io",
     label: "Swat.io",
     state: "pending_connection",
-    description: "Organische Social-Performance und Publishing-Status.",
+    description: "Organische Social-Performance ueber den internen Social-Reporting-Service.",
   },
   {
     id: "meta_api",
     label: "Meta API",
     state: "pending_connection",
-    description: "Direkte Social-API-Anbindung fuer spaetere Automatisierung.",
+    description: "Paid-Daten und Kampagnen-Performance ueber den internen Social-Reporting-Service.",
   },
 ]);

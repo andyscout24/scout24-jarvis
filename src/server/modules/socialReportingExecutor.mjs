@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import { access, readdir, stat } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { socialReportingProjectDir } from "../config/paths.mjs";
+import { createSocialReportingClient } from "./socialReportingClient.mjs";
 
 const sourceMap = {
   file: "file",
@@ -24,7 +25,80 @@ const sourceLabels = {
   combined: "Meta + Swat.io",
 };
 
+const remoteClient = createSocialReportingClient();
+
 export async function runSocialReportingReport(body) {
+  const requestedSource = String(body.dataSource || "file").trim().toLowerCase();
+  const source = sourceMap[requestedSource] || "file";
+  const layout = resolveLayout(body.reportType);
+  const outputName = `dashboard_${slugify(body.clientName || "report")}_${Date.now()}.xlsx`;
+  const dateRange = resolveDateRange(body);
+  const platform = normalizePlatform(body.channel);
+
+  if (process.env.SOCIAL_REPORTING_API_BASE_URL) {
+    try {
+      const response = await remoteClient.generateReport({
+        source,
+        startDate: source === "file" ? "" : dateRange.startDate,
+        endDate: source === "file" ? "" : dateRange.endDate,
+        platform,
+        inputPath: source === "file" ? resolveInputPath(socialReportingProjectDir, body.inputPath) : "",
+        period: resolvePeriod(body.reportingPeriod),
+        layout,
+        outputName,
+        noAi: true,
+      });
+      const success = response?.status === "generated" && Boolean(response?.artifactPath);
+      return {
+        executed: true,
+        projectPath: socialReportingProjectDir,
+        pythonPath: null,
+        source,
+        sourceLabel: sourceLabels[source] || source,
+        reportStatus: success ? "generated" : "error",
+        automationStatus: success ? "succeeded" : "failed",
+        fallback: !success,
+        errorMessage: success ? null : (response?.error || "Der Social Reporting API-Service konnte den Report nicht erzeugen."),
+        outputFileName: response?.fileName || outputName,
+        outputFilePath: response?.artifactPath || null,
+        outputCreatedAt: new Date().toISOString(),
+        logFilePath: null,
+        logCreatedAt: null,
+        stdoutPreview: "",
+        stderrPreview: "",
+        commandPreview: "social_reporting_internal_api:/api/reports/generate",
+        dateRange,
+        layout,
+        executionMode: "remote_api",
+        internalOnly: true,
+      };
+    } catch (error) {
+      return {
+        executed: true,
+        projectPath: socialReportingProjectDir,
+        pythonPath: null,
+        source,
+        sourceLabel: sourceLabels[source] || source,
+        reportStatus: "error",
+        automationStatus: "failed",
+        fallback: true,
+        errorMessage: error?.message || "Der Social Reporting API-Service konnte nicht erreicht werden.",
+        outputFileName: outputName,
+        outputFilePath: null,
+        outputCreatedAt: null,
+        logFilePath: null,
+        logCreatedAt: null,
+        stdoutPreview: "",
+        stderrPreview: "",
+        commandPreview: "social_reporting_internal_api:/api/reports/generate",
+        dateRange,
+        layout,
+        executionMode: "remote_api",
+        internalOnly: true,
+      };
+    }
+  }
+
   const projectPath = socialReportingProjectDir;
   const outputDir = join(projectPath, "data_output");
   const logsDir = join(projectPath, "logs");
@@ -50,11 +124,6 @@ export async function runSocialReportingReport(body) {
     };
   }
 
-  const requestedSource = String(body.dataSource || "file").trim().toLowerCase();
-  const source = sourceMap[requestedSource] || "file";
-  const layout = resolveLayout(body.reportType);
-  const outputName = `dashboard_${slugify(body.clientName || "report")}_${Date.now()}.xlsx`;
-  const dateRange = resolveDateRange(body);
   const outputBefore = await latestFile(outputDir, isReportArtifact);
   const logBefore = await latestFile(logsDir, isLogArtifact);
 
@@ -80,7 +149,6 @@ export async function runSocialReportingReport(body) {
     args.push("--start-date", dateRange.startDate, "--end-date", dateRange.endDate);
   }
 
-  const platform = normalizePlatform(body.channel);
   if (platform) args.push("--platform", platform);
 
   const commandResult = await runProcess(pythonPath, args, projectPath);
@@ -112,6 +180,8 @@ export async function runSocialReportingReport(body) {
     commandPreview: `${pythonPath} ${args.join(" ")}`,
     dateRange,
     layout,
+    executionMode: "local_cli",
+    internalOnly: true,
   };
 }
 

@@ -1,29 +1,41 @@
 import { readFile } from "node:fs/promises";
 import { relative, resolve, sep } from "node:path";
 import { Roles, canAccessTool } from "../auth/permissions.mjs";
+import { getAppEnvironment } from "../config/env.mjs";
 import { socialReportingProjectDir } from "../config/paths.mjs";
 import { badRequest, forbidden, notFound } from "../errors/apiError.mjs";
 import { createActivityLog } from "../logging/auditLogger.mjs";
 import { createEditorialPlannerClient } from "../modules/editorialPlannerClient.mjs";
+import { createSocialReportingClient } from "../modules/socialReportingClient.mjs";
+import { createEditorialPlannerNativeService } from "./editorialPlannerNativeService.mjs";
 
 const plannerClient = createEditorialPlannerClient();
+const socialReportingClient = createSocialReportingClient();
+const plannerMode = String(process.env.EDITORIAL_PLANNER_MODE || "auto").trim().toLowerCase();
+const plannerBaseUrl = String(process.env.EDITORIAL_PLANNER_BASE_URL || "http://127.0.0.1:8080");
+const appEnvironment = getAppEnvironment();
 
 export function createEditorialPlannerService(repository) {
+  const nativePlanner = createEditorialPlannerNativeService(repository);
+
   return {
     async getOverview(currentUser) {
       const tool = await requirePlannerTool(repository, currentUser);
-      const overview = await plannerClient.getOverview();
+      const overview = await withPlannerBackend({
+        external: () => plannerClient.getOverview(),
+        native: () => nativePlanner.getOverview(),
+      });
 
       return {
         tool,
         planner: {
-          baseUrl: process.env.EDITORIAL_PLANNER_BASE_URL || "http://127.0.0.1:8080",
+          baseUrl: shouldUseNativeFirst() ? "jarvis-native" : plannerBaseUrl,
           connected: overview.health?.status === "ok",
           health: overview.health,
-          latestPlan: simplifyPlan(overview.latestPlan),
-          currentWeekPlan: simplifyPlan(overview.currentWeekPlan),
-          plans: overview.plans.map(simplifyPlan),
-          trendSignals: overview.trendSignals.map(simplifyTrendSignal),
+          latestPlan: ensurePlan(overview.latestPlan),
+          currentWeekPlan: ensurePlan(overview.currentWeekPlan),
+          plans: (overview.plans || []).map(ensurePlan),
+          trendSignals: (overview.trendSignals || []).map(ensureTrendSignal),
           trendSources: overview.trendSources || [],
           performanceInsights: overview.performanceInsights || {},
           integrationStatus: overview.integrationStatus || {},
@@ -34,7 +46,10 @@ export function createEditorialPlannerService(repository) {
 
     async generatePlan(body, currentUser) {
       const tool = await requirePlannerTool(repository, currentUser, true);
-      const generated = simplifyPlan(await plannerClient.generatePlan(body));
+      const generated = ensurePlan(await withPlannerBackend({
+        external: () => plannerClient.generatePlan(body),
+        native: () => nativePlanner.generatePlan(body),
+      }));
       const timestamp = new Date().toISOString();
       const weekLabel = `KW ${generated.calendarWeek}/${generated.calendarYear}`;
 
@@ -70,44 +85,62 @@ export function createEditorialPlannerService(repository) {
 
     async exportPlan(planId, format, currentUser) {
       await requirePlannerTool(repository, currentUser);
-      return plannerClient.exportPlan(planId, format);
+      return withPlannerBackend({
+        external: () => plannerClient.exportPlan(planId, format),
+        native: () => nativePlanner.exportPlan(planId, format),
+      });
     },
 
     async listPlans(query, currentUser) {
       await requirePlannerTool(repository, currentUser);
-      const payload = await plannerClient.listPlans(query);
+      const payload = await withPlannerBackend({
+        external: () => plannerClient.listPlans(query),
+        native: () => nativePlanner.listPlans(query),
+      });
       return {
-        editorialPlans: Array.isArray(payload?.editorial_plans) ? payload.editorial_plans.map(simplifyPlan) : [],
+        editorialPlans: Array.isArray(payload?.editorial_plans) ? payload.editorial_plans.map(ensurePlan) : [],
       };
     },
 
     async getPlan(planId, currentUser) {
       await requirePlannerTool(repository, currentUser);
       return {
-        plan: simplifyPlan(await plannerClient.getPlan(planId)),
+        plan: ensurePlan(await withPlannerBackend({
+          external: () => plannerClient.getPlan(planId),
+          native: () => nativePlanner.getPlan(planId),
+        })),
       };
     },
 
     async listTrendSignals(query, currentUser) {
       await requirePlannerTool(repository, currentUser);
-      const payload = await plannerClient.listTrendSignals(query);
+      const payload = await withPlannerBackend({
+        external: () => plannerClient.listTrendSignals(query),
+        native: () => nativePlanner.listTrendSignals(query),
+      });
       return {
-        trendSignals: Array.isArray(payload?.trend_signals) ? payload.trend_signals.map(simplifyTrendSignal) : [],
+        trendSignals: Array.isArray(payload?.trend_signals) ? payload.trend_signals.map(ensureTrendSignal) : [],
       };
     },
 
     async refreshTrendSignals(body, currentUser) {
       await requirePlannerTool(repository, currentUser, true);
-      const payload = await plannerClient.refreshTrendSignals(body);
+      const payload = await withPlannerBackend({
+        external: () => plannerClient.refreshTrendSignals(body),
+        native: () => nativePlanner.refreshTrendSignals(body),
+      });
       return {
         refreshedCount: Number(payload?.refreshed_count || 0),
-        trendSignals: Array.isArray(payload?.trend_signals) ? payload.trend_signals.map(simplifyTrendSignal) : [],
+        trendSignals: Array.isArray(payload?.trend_signals) ? payload.trend_signals.map(ensureTrendSignal) : [],
       };
     },
 
     async listTrendSources(currentUser) {
       await requirePlannerTool(repository, currentUser);
-      const payload = await plannerClient.listTrendSources();
+      const payload = await withPlannerBackend({
+        external: () => plannerClient.listTrendSources(),
+        native: () => nativePlanner.listTrendSources(),
+      });
       return {
         trendSources: Array.isArray(payload?.trend_sources) ? payload.trend_sources : [],
       };
@@ -116,27 +149,39 @@ export function createEditorialPlannerService(repository) {
     async createContentIdea(body, currentUser) {
       await requirePlannerTool(repository, currentUser, true);
       return {
-        contentIdea: simplifyContentIdea(await plannerClient.createContentIdea(body)),
+        contentIdea: ensureContentIdea(await withPlannerBackend({
+          external: () => plannerClient.createContentIdea(body),
+          native: () => nativePlanner.createContentIdea(body),
+        })),
       };
     },
 
     async updateContentIdea(contentIdeaId, body, currentUser) {
       await requirePlannerTool(repository, currentUser, true);
       return {
-        contentIdea: simplifyContentIdea(await plannerClient.updateContentIdea(contentIdeaId, body)),
+        contentIdea: ensureContentIdea(await withPlannerBackend({
+          external: () => plannerClient.updateContentIdea(contentIdeaId, body),
+          native: () => nativePlanner.updateContentIdea(contentIdeaId, body),
+        })),
       };
     },
 
     async deleteContentIdea(contentIdeaId, currentUser) {
       await requirePlannerTool(repository, currentUser, true);
-      await plannerClient.deleteContentIdea(contentIdeaId);
+      await withPlannerBackend({
+        external: () => plannerClient.deleteContentIdea(contentIdeaId),
+        native: () => nativePlanner.deleteContentIdea(contentIdeaId),
+      });
       return { ok: true };
     },
 
     async changeContentIdeaStatus(contentIdeaId, body, currentUser) {
       await requirePlannerTool(repository, currentUser, true);
       return {
-        contentIdea: simplifyContentIdea(await plannerClient.changeContentIdeaStatus(contentIdeaId, body)),
+        contentIdea: ensureContentIdea(await withPlannerBackend({
+          external: () => plannerClient.changeContentIdeaStatus(contentIdeaId, body),
+          native: () => nativePlanner.changeContentIdeaStatus(contentIdeaId, body),
+        })),
       };
     },
 
@@ -153,6 +198,15 @@ export function createEditorialPlannerService(repository) {
         throw notFound("report_file_missing", "Zu diesem Report ist keine Exportdatei hinterlegt.");
       }
 
+      if (process.env.SOCIAL_REPORTING_API_BASE_URL && filePath.startsWith("/api/reports/artifacts/")) {
+        const artifact = await socialReportingClient.downloadArtifact(filePath);
+        return {
+          filename: report.fileName || artifact.filename || `report-${reportId}.xlsx`,
+          contentType: artifact.contentType || excelContentType,
+          body: artifact.body,
+        };
+      }
+
       const safePath = assertWithinDirectory(filePath, resolve(socialReportingProjectDir, "data_output"));
       return {
         filename: report.fileName || safePath.split(sep).pop() || `report-${reportId}.xlsx`,
@@ -164,6 +218,29 @@ export function createEditorialPlannerService(repository) {
 }
 
 const excelContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+async function withPlannerBackend({ external, native }) {
+  if (shouldUseNativeFirst()) {
+    return native();
+  }
+
+  try {
+    return await external();
+  } catch (error) {
+    if (plannerMode === "external") throw error;
+    return native();
+  }
+}
+
+function shouldUseNativeFirst() {
+  if (plannerMode === "native") return true;
+  if (plannerMode === "external") return false;
+  return appEnvironment.appEnv === "production" && isLoopbackUrl(plannerBaseUrl);
+}
+
+function isLoopbackUrl(value) {
+  return /:\/\/(127\.0\.0\.1|localhost)(:|\/|$)/i.test(String(value || ""));
+}
 
 async function requirePlannerTool(repository, currentUser, requireGeneratePermission = false) {
   const tool = await repository.getToolById("editorial-planner");
@@ -177,6 +254,21 @@ async function requirePlannerTool(repository, currentUser, requireGeneratePermis
     throw forbidden("forbidden", "Nur Admins und Marketing User duerfen Redaktionsplaene erzeugen.");
   }
   return tool;
+}
+
+function ensurePlan(plan) {
+  if (!plan || typeof plan !== "object") return null;
+  return "calendarYear" in plan ? plan : simplifyPlan(plan);
+}
+
+function ensureContentIdea(idea) {
+  if (!idea || typeof idea !== "object") return null;
+  return "postingDate" in idea ? idea : simplifyContentIdea(idea);
+}
+
+function ensureTrendSignal(signal) {
+  if (!signal || typeof signal !== "object") return null;
+  return "relevance" in signal && "title" in signal ? signal : simplifyTrendSignal(signal);
 }
 
 function simplifyPlan(plan) {

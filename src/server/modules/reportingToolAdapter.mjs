@@ -92,9 +92,13 @@ export function buildReportGenerationPayload(body, tool, execution = null) {
     outputFile,
     outputUrl: execution?.outputFilePath || null,
     error: errorMessage,
+    internalOnly: true,
+    internalOnlyMessage: "Das Social Reporting Tool ist ausschliesslich fuer interne Zwecke vorgesehen und nicht fuer Kundenzugriffe gedacht.",
     missingConfig,
     fallback,
-    adapter: execution?.executed ? "social-reporting-cli-adapter" : "dashboard-reporting-tool-wrapper",
+    adapter: execution?.executed
+      ? (execution.executionMode === "remote_api" ? "social-reporting-api-adapter" : "social-reporting-cli-adapter")
+      : "dashboard-reporting-tool-wrapper",
     execution: execution ? {
       executed: true,
       projectPath: execution.projectPath,
@@ -111,6 +115,8 @@ export function buildReportGenerationPayload(body, tool, execution = null) {
       startDate: execution.dateRange?.startDate || null,
       endDate: execution.dateRange?.endDate || null,
       layout: execution.layout || null,
+      executionMode: execution.executionMode || null,
+      internalOnly: execution.internalOnly === true,
     } : null,
     externalService: {
       serviceName: tool.integration?.serviceName || "campaign_review_tool",
@@ -118,7 +124,9 @@ export function buildReportGenerationPayload(body, tool, execution = null) {
       healthEndpoint: tool.integration?.healthEndpoint || "/api/health",
       previewEndpoint: tool.integration?.previewEndpoint || "/api/preview",
       generateEndpoint: tool.integration?.generateEndpoint || "/api/generate",
-      state: execution?.executed ? "social_reporting_cli_connected" : (tool.integration?.state || "unknown"),
+      state: execution?.executed
+        ? (execution.executionMode === "remote_api" ? "social_reporting_api_connected" : "social_reporting_cli_connected")
+        : (tool.integration?.state || "unknown"),
       sourceReference: tool.integration?.sourceReference || null,
     },
     requiredUploads: dataSource.requiredUploads,
@@ -205,6 +213,7 @@ export function buildReportGenerationPayload(body, tool, execution = null) {
       reportType,
       dataSource: dataSource.id,
       outputFile,
+      internalOnly: true,
       pendingConnection,
       fallback,
       outputFilePath: execution?.outputFilePath || null,

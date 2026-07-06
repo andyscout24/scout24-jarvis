@@ -16,6 +16,12 @@ const integrationRequirements = [
     required: ["CAMPAIGN_REVIEW_BASE_URL"],
   },
   {
+    id: "social_reporting_api",
+    label: "Social Reporting Internal API",
+    required: ["SOCIAL_REPORTING_API_BASE_URL"],
+    optional: ["SOCIAL_REPORTING_API_TOKEN"],
+  },
+  {
     id: "swat_io",
     label: "Swat.io",
     required: ["SWATIO_BASE_URL", "SWATIO_API_KEY"],
@@ -144,6 +150,14 @@ export function getIntegrationEnvStatus(id) {
 }
 
 export function getReportingSourceEnvStatus(sourceId) {
+  const internalApiStatus = getIntegrationEnvStatus("social_reporting_api");
+  if (internalApiStatus?.configured && ["file", "combined", "swat_io", "meta_api"].includes(sourceId)) {
+    return {
+      ...internalApiStatus,
+      id: sourceId,
+      label: `Reporting via ${internalApiStatus.label}`,
+    };
+  }
   const integrationId = reportingSourceToIntegration[sourceId];
   return integrationId ? getIntegrationEnvStatus(integrationId) : null;
 }

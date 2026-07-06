@@ -33,11 +33,11 @@
       "route": "#/tools/reporting-tool",
       "launchRoute": "#/reporting",
       "externalUrl": "http://localhost:8000/app",
-      "lastRunAt": "2026-07-02T09:57:57.062Z",
+      "lastRunAt": "2026-07-06T12:03:05.996Z",
       "metrics": {
-        "runsToday": 5,
+        "runsToday": 6,
         "successRate": 0.91,
-        "storedResults": 13
+        "storedResults": 14
       },
       "integration": {
         "type": "hybrid_external_tooling",
@@ -110,11 +110,11 @@
       "route": "#/tools/editorial-planner",
       "launchRoute": "#/tools/editorial-planner",
       "externalUrl": "http://127.0.0.1:8080/dashboard/editorial-planner",
-      "lastRunAt": "2026-07-02T09:57:42.118Z",
+      "lastRunAt": "2026-07-06T12:02:49.875Z",
       "metrics": {
-        "runsToday": 1,
+        "runsToday": 2,
         "successRate": null,
-        "storedResults": 1
+        "storedResults": 2
       },
       "integration": {
         "type": "sqlite_http_service",
@@ -192,6 +192,119 @@
     }
   ],
   "reports": [
+    {
+      "id": "report-1783339385996",
+      "toolId": "reporting-tool",
+      "clientId": null,
+      "automationRunId": "run-report-1783339385996",
+      "clientName": "Internal QA",
+      "campaignName": "API Smoke",
+      "reportType": "weekly_social",
+      "reportingPeriod": "KW 27 2026",
+      "channel": "Alle Kanaele",
+      "dataSource": "file",
+      "dataSourceLabel": "Datei-Import",
+      "status": "generated",
+      "fileName": "dashboard_internal_qa_1783339385239.xlsx",
+      "fileUrl": "/api/reports/artifacts/dashboard_internal_qa_1783339385239.xlsx",
+      "errorMessage": null,
+      "createdAt": "2026-07-06T12:03:05.996Z",
+      "updatedAt": "2026-07-06T12:03:05.996Z",
+      "createdBy": "Lena Brandt",
+      "metadata": {
+        "reportType": "weekly_social",
+        "reportingPeriod": "KW 27 2026",
+        "dataSource": "file",
+        "dataSourceLabel": "Datei-Import",
+        "dataSourceState": "ready",
+        "channel": "Alle Kanaele",
+        "generatedAt": "2026-07-06T12:03:05.996Z",
+        "createdBy": "Lena Brandt",
+        "outputFile": "dashboard_internal_qa_1783339385239.xlsx",
+        "outputUrl": "/api/reports/artifacts/dashboard_internal_qa_1783339385239.xlsx",
+        "error": null,
+        "internalOnly": true,
+        "internalOnlyMessage": "Das Social Reporting Tool ist ausschliesslich fuer interne Zwecke vorgesehen und nicht fuer Kundenzugriffe gedacht.",
+        "missingConfig": [],
+        "fallback": false,
+        "adapter": "social-reporting-api-adapter",
+        "execution": {
+          "executed": true,
+          "projectPath": "/Users/awill/Documents/Codex/Reporting/social_reporting",
+          "pythonPath": null,
+          "source": "file",
+          "sourceLabel": "Datei-Import",
+          "commandPreview": "social_reporting_internal_api:/api/reports/generate",
+          "stdoutPreview": "",
+          "stderrPreview": "",
+          "outputFilePath": "/api/reports/artifacts/dashboard_internal_qa_1783339385239.xlsx",
+          "outputCreatedAt": "2026-07-06T12:03:05.996Z",
+          "logFilePath": null,
+          "logCreatedAt": null,
+          "startDate": "2026-06-29",
+          "endDate": "2026-07-06",
+          "layout": "weekly",
+          "executionMode": "remote_api",
+          "internalOnly": true
+        },
+        "externalService": {
+          "serviceName": "social_reporting",
+          "baseUrl": "http://localhost:8000/app",
+          "healthEndpoint": "/api/health",
+          "previewEndpoint": "/api/preview",
+          "generateEndpoint": "/api/generate",
+          "state": "social_reporting_api_connected",
+          "sourceReference": "social_reporting"
+        },
+        "requiredUploads": [
+          "social_export_file"
+        ],
+        "kpiPlaceholders": {
+          "reach": {
+            "label": "Reichweite",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "impressions": {
+            "label": "Impressionen",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "engagement": {
+            "label": "Engagement",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "clicks": {
+            "label": "Klicks",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "followerGrowth": {
+            "label": "Follower-Wachstum",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "topFormats": {
+            "label": "Top-Formate",
+            "value": [],
+            "status": "pending_data",
+            "source": "file"
+          },
+          "recommendations": {
+            "label": "Optimierungsvorschlaege",
+            "value": [],
+            "status": "pending_data",
+            "source": "file"
+          }
+        }
+      }
+    },
     {
       "id": "report-1782986277062",
       "toolId": "reporting-tool",
@@ -577,6 +690,52 @@
   ],
   "logs": [
     {
+      "id": "log-1783339385996-jefdk2",
+      "timestamp": "2026-07-06T12:03:05.996Z",
+      "actor": "Lena Brandt",
+      "user": "Lena Brandt",
+      "tool_id": "reporting-tool",
+      "toolId": "reporting-tool",
+      "action": "report.created",
+      "status": "success",
+      "level": "success",
+      "message": "Social Reporting Report fuer Internal QA wurde erstellt.",
+      "metadata": {
+        "reportId": "report-1783339385996",
+        "runId": "run-report-1783339385996",
+        "reportType": "weekly_social",
+        "dataSource": "file",
+        "outputFile": "dashboard_internal_qa_1783339385239.xlsx",
+        "internalOnly": true,
+        "pendingConnection": false,
+        "fallback": false,
+        "outputFilePath": "/api/reports/artifacts/dashboard_internal_qa_1783339385239.xlsx",
+        "logFilePath": null
+      },
+      "created_at": "2026-07-06T12:03:05.996Z",
+      "createdAt": "2026-07-06T12:03:05.996Z"
+    },
+    {
+      "id": "log-1783339369875-dkr7e3",
+      "timestamp": "2026-07-06T12:02:49.875Z",
+      "actor": "Mira Keller",
+      "user": "Mira Keller",
+      "tool_id": "editorial-planner",
+      "toolId": "editorial-planner",
+      "action": "editorial_plan.generated",
+      "status": "success",
+      "level": "success",
+      "message": "Redaktionsplan fuer KW 29/2026 wurde erzeugt.",
+      "metadata": {
+        "planId": 1002,
+        "weekStartDate": "2026-07-13",
+        "market": "AT",
+        "totalIdeas": 8
+      },
+      "created_at": "2026-07-06T12:02:49.875Z",
+      "createdAt": "2026-07-06T12:02:49.875Z"
+    },
+    {
       "id": "log-1782986277062-sz6ltk",
       "timestamp": "2026-07-02T09:57:57.062Z",
       "actor": "Mira Keller",
@@ -760,6 +919,35 @@
     }
   ],
   "automationRuns": [
+    {
+      "id": "run-report-1783339385996",
+      "automationId": "automation-report-cleanup",
+      "toolId": "reporting-tool",
+      "clientId": null,
+      "status": "succeeded",
+      "triggerSource": "manual",
+      "actorUserId": "user-003",
+      "input": {
+        "clientName": "Internal QA",
+        "campaignName": "API Smoke",
+        "reportingPeriod": "KW 27 2026",
+        "channel": "Alle Kanaele",
+        "reportType": "weekly_social",
+        "dataSource": "file"
+      },
+      "output": {
+        "reportId": "report-1783339385996",
+        "fileName": "dashboard_internal_qa_1783339385239.xlsx",
+        "fileUrl": null,
+        "pendingConnection": false,
+        "fallback": false
+      },
+      "errorCode": null,
+      "errorMessage": null,
+      "startedAt": "2026-07-06T12:03:05.996Z",
+      "finishedAt": "2026-07-06T12:03:05.996Z",
+      "createdAt": "2026-07-06T12:03:05.996Z"
+    },
     {
       "id": "run-report-1782986277062",
       "automationId": "automation-report-cleanup",
@@ -1049,6 +1237,2315 @@
       "isSecret": false,
       "updatedByUserId": "user-001",
       "updatedAt": "2026-06-08T08:00:00.000Z"
+    },
+    {
+      "settingKey": "editorial_planner_state",
+      "scope": "tool",
+      "toolId": "editorial-planner",
+      "userId": null,
+      "value": {
+        "version": 1,
+        "nextPlanId": 1003,
+        "nextIdeaId": 5025,
+        "trendSources": [
+          {
+            "id": 1,
+            "code": "mock_google_trends",
+            "name": "Google Trends",
+            "source_type": "search",
+            "url": null,
+            "is_active": true,
+            "refresh_frequency": "daily",
+            "notes": "Native Jarvis Mock Source",
+            "created_at": "2026-07-06T12:02:49.830Z"
+          },
+          {
+            "id": 2,
+            "code": "mock_instagram_insights",
+            "name": "Instagram Insights",
+            "source_type": "social",
+            "url": null,
+            "is_active": true,
+            "refresh_frequency": "daily",
+            "notes": "Native Jarvis Mock Source",
+            "created_at": "2026-07-06T12:02:49.840Z"
+          },
+          {
+            "id": 3,
+            "code": "mock_linkedin_trends",
+            "name": "LinkedIn Trends",
+            "source_type": "social",
+            "url": null,
+            "is_active": true,
+            "refresh_frequency": "daily",
+            "notes": "Native Jarvis Mock Source",
+            "created_at": "2026-07-06T12:02:49.840Z"
+          },
+          {
+            "id": 4,
+            "code": "mock_reddit_dach",
+            "name": "Reddit DACH",
+            "source_type": "community",
+            "url": null,
+            "is_active": true,
+            "refresh_frequency": "daily",
+            "notes": "Native Jarvis Mock Source",
+            "created_at": "2026-07-06T12:02:49.840Z"
+          },
+          {
+            "id": 5,
+            "code": "mock_news_at",
+            "name": "AT Medienmonitor",
+            "source_type": "news",
+            "url": null,
+            "is_active": true,
+            "refresh_frequency": "daily",
+            "notes": "Native Jarvis Mock Source",
+            "created_at": "2026-07-06T12:02:49.840Z"
+          },
+          {
+            "id": 6,
+            "code": "mock_reporting",
+            "name": "Jarvis Performance Learnings",
+            "source_type": "internal",
+            "url": null,
+            "is_active": true,
+            "refresh_frequency": "daily",
+            "notes": "Native Jarvis Mock Source",
+            "created_at": "2026-07-06T12:02:49.840Z"
+          }
+        ],
+        "trendSignals": [
+          {
+            "id": 1,
+            "title": "Nebenkosten transparent erklaeren",
+            "description": "Betriebskosten und Warmmiete werden wieder auffaellig oft recherchiert.",
+            "category": "Mieten",
+            "region": "Austria",
+            "source": "Google Trends",
+            "sourceCode": "mock_google_trends",
+            "relevance": 74,
+            "confidence": 72,
+            "suggestedAngle": "So erklaert ImmoScout24 Betriebskosten ohne Juristensprache.",
+            "contentOpportunity": "So erklaert ImmoScout24 Betriebskosten ohne Juristensprache.",
+            "detectedAt": "2026-07-06T12:02:49.830Z",
+            "platformFit": {
+              "instagram": true,
+              "linkedin": true,
+              "tiktok": false
+            }
+          },
+          {
+            "id": 2,
+            "title": "WG-Casting Red Flags",
+            "description": "WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+            "category": "WG & Studenten",
+            "region": "Austria",
+            "source": "Reddit DACH",
+            "sourceCode": "mock_reddit_dach",
+            "relevance": 78,
+            "confidence": 77,
+            "suggestedAngle": "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.",
+            "contentOpportunity": "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.",
+            "detectedAt": "2026-07-06T11:02:49.830Z",
+            "platformFit": {
+              "instagram": false,
+              "linkedin": false,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 3,
+            "title": "Kleine Wohnungen clever nutzen",
+            "description": "Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+            "category": "Wohnen & Einrichtung",
+            "region": "DACH",
+            "source": "Instagram Insights",
+            "sourceCode": "mock_instagram_insights",
+            "relevance": 82,
+            "confidence": 82,
+            "suggestedAngle": "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.",
+            "contentOpportunity": "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.",
+            "detectedAt": "2026-07-06T10:02:49.830Z",
+            "platformFit": {
+              "instagram": true,
+              "linkedin": false,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 4,
+            "title": "Mieten oder kaufen 2026",
+            "description": "Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+            "category": "Kaufen",
+            "region": "Austria",
+            "source": "Jarvis Performance Learnings",
+            "sourceCode": "mock_reporting",
+            "relevance": 86,
+            "confidence": 87,
+            "suggestedAngle": "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.",
+            "contentOpportunity": "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.",
+            "detectedAt": "2026-07-06T09:02:49.830Z",
+            "platformFit": {
+              "instagram": false,
+              "linkedin": true,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 5,
+            "title": "Wohnungssuche in Wien",
+            "description": "Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+            "category": "Wohnung suchen",
+            "region": "Austria",
+            "source": "Google Trends",
+            "sourceCode": "mock_google_trends",
+            "relevance": 90,
+            "confidence": 72,
+            "suggestedAngle": "Hilfreicher Such-Guide mit Wien-Fokus.",
+            "contentOpportunity": "Hilfreicher Such-Guide mit Wien-Fokus.",
+            "detectedAt": "2026-07-06T08:02:49.830Z",
+            "platformFit": {
+              "instagram": true,
+              "linkedin": false,
+              "tiktok": false
+            }
+          },
+          {
+            "id": 6,
+            "title": "Maklerwissen einfach erklaert",
+            "description": "Einfaches Erklaeren von Provision, Besichtigung und Expose bleibt relevant.",
+            "category": "Maklerwissen",
+            "region": "Austria",
+            "source": "AT Medienmonitor",
+            "sourceCode": "mock_news_at",
+            "relevance": 74,
+            "confidence": 77,
+            "suggestedAngle": "Explainer-Post mit Sicherheitsgefuehl fuer Erstsuchende.",
+            "contentOpportunity": "Explainer-Post mit Sicherheitsgefuehl fuer Erstsuchende.",
+            "detectedAt": "2026-07-06T07:02:49.830Z",
+            "platformFit": {
+              "instagram": false,
+              "linkedin": false,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 7,
+            "title": "Umzugscheckliste fuer die erste Wohnung",
+            "description": "Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+            "category": "Umzug",
+            "region": "Austria",
+            "source": "Instagram Insights",
+            "sourceCode": "mock_instagram_insights",
+            "relevance": 78,
+            "confidence": 82,
+            "suggestedAngle": "Checkliste mit klaren Schritten und Quick Wins.",
+            "contentOpportunity": "Checkliste mit klaren Schritten und Quick Wins.",
+            "detectedAt": "2026-07-06T06:02:49.830Z",
+            "platformFit": {
+              "instagram": true,
+              "linkedin": true,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 8,
+            "title": "Immobilienpreise in Graz",
+            "description": "Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+            "category": "Immobilienmarkt",
+            "region": "Austria",
+            "source": "LinkedIn Trends",
+            "sourceCode": "mock_linkedin_trends",
+            "relevance": 82,
+            "confidence": 87,
+            "suggestedAngle": "LinkedIn Insight oder Carousel fuer Suchende und Makler.",
+            "contentOpportunity": "LinkedIn Insight oder Carousel fuer Suchende und Makler.",
+            "detectedAt": "2026-07-06T05:02:49.830Z",
+            "platformFit": {
+              "instagram": false,
+              "linkedin": false,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 9,
+            "title": "Energiesparen in Mietwohnungen",
+            "description": "Nachhaltigkeit plus Nebenkosten ist weiter hoch relevant.",
+            "category": "Energie & Nachhaltigkeit",
+            "region": "DACH",
+            "source": "AT Medienmonitor",
+            "sourceCode": "mock_news_at",
+            "relevance": 86,
+            "confidence": 72,
+            "suggestedAngle": "Hilfreiche Tipps ohne moralischen Zeigefinger.",
+            "contentOpportunity": "Hilfreiche Tipps ohne moralischen Zeigefinger.",
+            "detectedAt": "2026-07-06T04:02:49.830Z",
+            "platformFit": {
+              "instagram": true,
+              "linkedin": false,
+              "tiktok": false
+            }
+          },
+          {
+            "id": 10,
+            "title": "Gen-Z Wohnprobleme",
+            "description": "Zwischen Balkontraum und Budgetrealitaet funktionieren relatable Inhalte sehr gut.",
+            "category": "Humor rund ums Wohnen",
+            "region": "DACH",
+            "source": "Instagram Insights",
+            "sourceCode": "mock_instagram_insights",
+            "relevance": 90,
+            "confidence": 77,
+            "suggestedAngle": "Trendbasiertes Short Video mit klarer Brand-Passung.",
+            "contentOpportunity": "Trendbasiertes Short Video mit klarer Brand-Passung.",
+            "detectedAt": "2026-07-06T03:02:49.830Z",
+            "platformFit": {
+              "instagram": false,
+              "linkedin": true,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 11,
+            "title": "Fehler bei der Wohnungssuche",
+            "description": "Fehlervermeidung bleibt eines der dankbarsten Hilfsthemen.",
+            "category": "Wohnung suchen",
+            "region": "Austria",
+            "source": "Jarvis Performance Learnings",
+            "sourceCode": "mock_reporting",
+            "relevance": 74,
+            "confidence": 82,
+            "suggestedAngle": "Konkreter Mehrwert fuer Suchende vor dem ersten Besichtigungstermin.",
+            "contentOpportunity": "Konkreter Mehrwert fuer Suchende vor dem ersten Besichtigungstermin.",
+            "detectedAt": "2026-07-06T02:02:49.830Z",
+            "platformFit": {
+              "instagram": true,
+              "linkedin": false,
+              "tiktok": true
+            }
+          },
+          {
+            "id": 12,
+            "title": "Wohntrends fuer kleine Balkone",
+            "description": "Balkon, Outdoor-Ecke und Sommer-Upgrade treiben Saves und Shares.",
+            "category": "Wohnen & Einrichtung",
+            "region": "Austria",
+            "source": "Instagram Insights",
+            "sourceCode": "mock_instagram_insights",
+            "relevance": 78,
+            "confidence": 87,
+            "suggestedAngle": "Sommerlicher Quick-Win-Post fuer hohe Speicherrate.",
+            "contentOpportunity": "Sommerlicher Quick-Win-Post fuer hohe Speicherrate.",
+            "detectedAt": "2026-07-06T01:02:49.830Z",
+            "platformFit": {
+              "instagram": false,
+              "linkedin": false,
+              "tiktok": true
+            }
+          }
+        ],
+        "plans": [
+          {
+            "id": 1000,
+            "title": "Weekly Editorial Plan KW 27/2026",
+            "calendarYear": 2026,
+            "calendarWeek": 27,
+            "weekStartDate": "2026-06-29",
+            "weekEndDate": "2026-07-05",
+            "market": "AT",
+            "status": "completed",
+            "generatedFrom": "jarvis_native_seed",
+            "contentIdeas": [
+              {
+                "id": 5000,
+                "backendId": 5000,
+                "editorialPlanId": 1000,
+                "title": "5 Learnings zu Mieten",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Betriebskosten und Warmmiete werden wieder auffaellig oft recherchiert.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Betriebskosten und Warmmiete werden wieder auffaellig oft recherchiert.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-06-29",
+                "postingTime": "09:00",
+                "status": "Briefed",
+                "statusCode": "briefed",
+                "format": "Reel",
+                "formatCode": "reel",
+                "funnelGoal": "awareness",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Warum nebenkosten transparent erklaeren gerade so viele Suchende beschaeftigt.",
+                "captionDraft": "5 Learnings zu Mieten\n\nSo erklaert ImmoScout24 Betriebskosten ohne Juristensprache.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Schneller Einstieg mit Problem, kurze Schnitte, grosse On-Screen-Texte.",
+                "timingReason": "Instagram Slot passend fuer awareness und das aktuelle Interesse an Nebenkosten transparent erklaeren.",
+                "requiredAssets": [
+                  {
+                    "type": "video",
+                    "description": "Kurzer Vertical Cut zum Thema Nebenkosten transparent erklaeren",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Hook und On-Screen-Texte",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Nebenkosten transparent erklaeren",
+                  "trend_description": "Betriebskosten und Warmmiete werden wieder auffaellig oft recherchiert.",
+                  "category": "Mieten",
+                  "region": "Austria",
+                  "source": "mock_google_trends",
+                  "sourceName": "Google Trends",
+                  "content_opportunity": "So erklaert ImmoScout24 Betriebskosten ohne Juristensprache.",
+                  "relevance_for_immoscout": 74
+                },
+                "responsible": "Mira Keller",
+                "responsibleEmail": "social-media@immoscout24.at",
+                "relevanceScore": 74,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 78,
+                "confidenceScore": 72,
+                "performanceScore": 70,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "So erklaert ImmoScout24 Betriebskosten ohne Juristensprache."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 84,
+                "trendTitle": "Nebenkosten transparent erklaeren",
+                "publishingSlot": {
+                  "scheduledDate": "2026-06-29",
+                  "scheduledTime": "09:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5001,
+                "backendId": 5001,
+                "editorialPlanId": 1000,
+                "title": "WG-Casting Red Flags: Marktupdate fuer ImmoScout24",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                "platform": "LinkedIn",
+                "platformCode": "linkedin",
+                "tone": "blue",
+                "postingDate": "2026-06-30",
+                "postingTime": "11:30",
+                "status": "Briefed",
+                "statusCode": "briefed",
+                "format": "Market Insight Post",
+                "formatCode": "market_insight_post",
+                "funnelGoal": "traffic",
+                "targetAudience": "Studierende und Berufseinsteiger",
+                "hook": "Wenn du 2026 wohnst, kennst du dieses Problem wahrscheinlich schon.",
+                "captionDraft": "WG-Casting Red Flags: Marktupdate fuer ImmoScout24\n\nHumor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Mehr dazu im Magazin lesen",
+                "creativeDirection": "Klare Chart- oder Kartenlogik mit Scout24 Branding und sachlicher Einordnung.",
+                "timingReason": "LinkedIn Slot passend fuer traffic und das aktuelle Interesse an WG-Casting Red Flags.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer WG-Casting Red Flags",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "WG-Casting Red Flags",
+                  "trend_description": "WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                  "category": "WG & Studenten",
+                  "region": "Austria",
+                  "source": "mock_reddit_dach",
+                  "sourceName": "Reddit DACH",
+                  "content_opportunity": "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.",
+                  "relevance_for_immoscout": 78
+                },
+                "responsible": "Leonie Hartmann",
+                "responsibleEmail": "content.lead@immoscout24.at",
+                "relevanceScore": 78,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 82,
+                "confidenceScore": 77,
+                "performanceScore": 75,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 87,
+                "trendTitle": "WG-Casting Red Flags",
+                "publishingSlot": {
+                  "scheduledDate": "2026-06-30",
+                  "scheduledTime": "11:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5007,
+                "backendId": 5007,
+                "editorialPlanId": 1000,
+                "title": "Immobilienpreise in Graz: Marktupdate fuer ImmoScout24",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                "platform": "LinkedIn",
+                "platformCode": "linkedin",
+                "tone": "blue",
+                "postingDate": "2026-07-01",
+                "postingTime": "10:15",
+                "status": "Veröffentlicht",
+                "statusCode": "published",
+                "format": "Explainer",
+                "formatCode": "explainer",
+                "funnelGoal": "lead",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Kurz und konkret: Das hilft dir bei immobilienmarkt.",
+                "captionDraft": "Immobilienpreise in Graz: Marktupdate fuer ImmoScout24\n\nLinkedIn Insight oder Carousel fuer Suchende und Makler.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Passende Inserate auf ImmoScout24 entdecken",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Immobilienmarkt.",
+                "timingReason": "LinkedIn Slot passend fuer lead und das aktuelle Interesse an Immobilienpreise in Graz.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Immobilienpreise in Graz",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Immobilienpreise in Graz",
+                  "trend_description": "Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                  "category": "Immobilienmarkt",
+                  "region": "Austria",
+                  "source": "mock_linkedin_trends",
+                  "sourceName": "LinkedIn Trends",
+                  "content_opportunity": "LinkedIn Insight oder Carousel fuer Suchende und Makler.",
+                  "relevance_for_immoscout": 82
+                },
+                "responsible": "Anna Berger",
+                "responsibleEmail": "brand.review@immoscout24.at",
+                "relevanceScore": 82,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 86,
+                "confidenceScore": 87,
+                "performanceScore": 85,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "LinkedIn Insight oder Carousel fuer Suchende und Makler."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 93,
+                "trendTitle": "Immobilienpreise in Graz",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-01",
+                  "scheduledTime": "10:15",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5002,
+                "backendId": 5002,
+                "editorialPlanId": 1000,
+                "title": "POV: Kleine Wohnungen clever nutzen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-01",
+                "postingTime": "13:00",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Carousel",
+                "formatCode": "carousel",
+                "funnelGoal": "engagement",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Das ist einer der haeufigsten Denkfehler rund ums Wohnen gerade.",
+                "captionDraft": "POV: Kleine Wohnungen clever nutzen\n\nCarousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Deine Erfahrung in den Kommentaren teilen",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Wohnen & Einrichtung.",
+                "timingReason": "Instagram Slot passend fuer engagement und das aktuelle Interesse an Kleine Wohnungen clever nutzen.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Kleine Wohnungen clever nutzen",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Kleine Wohnungen clever nutzen",
+                  "trend_description": "Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                  "category": "Wohnen & Einrichtung",
+                  "region": "DACH",
+                  "source": "mock_instagram_insights",
+                  "sourceName": "Instagram Insights",
+                  "content_opportunity": "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.",
+                  "relevance_for_immoscout": 82
+                },
+                "responsible": "Anna Berger",
+                "responsibleEmail": "brand.review@immoscout24.at",
+                "relevanceScore": 82,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 86,
+                "confidenceScore": 82,
+                "performanceScore": 80,
+                "qualityScore": 90,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 90,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 90,
+                "trendTitle": "Kleine Wohnungen clever nutzen",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-01",
+                  "scheduledTime": "13:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5003,
+                "backendId": 5003,
+                "editorialPlanId": 1000,
+                "title": "Mieten oder kaufen 2026 einfach erklaert",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                "platform": "Facebook",
+                "platformCode": "facebook",
+                "tone": "teal",
+                "postingDate": "2026-07-02",
+                "postingTime": "15:30",
+                "status": "Geplant im Tool",
+                "statusCode": "scheduled",
+                "format": "Poll",
+                "formatCode": "poll",
+                "funnelGoal": "engagement",
+                "targetAudience": "Kaeufer und Eigentumsinteressierte",
+                "hook": "Kurz und konkret: Das hilft dir bei kaufen.",
+                "captionDraft": "Mieten oder kaufen 2026 einfach erklaert\n\nEntscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Deine Erfahrung in den Kommentaren teilen",
+                "creativeDirection": "Leichtes Community-Visual mit klarer Frage und 2-4 Antwortoptionen.",
+                "timingReason": "Facebook Slot passend fuer engagement und das aktuelle Interesse an Mieten oder kaufen 2026.",
+                "requiredAssets": [
+                  {
+                    "type": "copy",
+                    "description": "Frage + Antwortoptionen zu Mieten oder kaufen 2026",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Mieten oder kaufen 2026",
+                  "trend_description": "Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                  "category": "Kaufen",
+                  "region": "Austria",
+                  "source": "mock_reporting",
+                  "sourceName": "Jarvis Performance Learnings",
+                  "content_opportunity": "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.",
+                  "relevance_for_immoscout": 86
+                },
+                "responsible": "Daniel Hofer",
+                "responsibleEmail": "design.ops@immoscout24.at",
+                "relevanceScore": 86,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "medium",
+                "notes": "Community-Reaktion in den Kommentaren monitoren.",
+                "expectedImpactScore": 90,
+                "confidenceScore": 87,
+                "performanceScore": 85,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 93,
+                "trendTitle": "Mieten oder kaufen 2026",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-02",
+                  "scheduledTime": "15:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5004,
+                "backendId": 5004,
+                "editorialPlanId": 1000,
+                "title": "5 Learnings zu Wohnung suchen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                "platform": "TikTok",
+                "platformCode": "tiktok",
+                "tone": "orange",
+                "postingDate": "2026-07-03",
+                "postingTime": "17:30",
+                "status": "Geplant im Tool",
+                "statusCode": "scheduled",
+                "format": "TikTok Short",
+                "formatCode": "tiktok_short",
+                "funnelGoal": "awareness",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "POV: Du suchst eine Wohnung und stolperst sofort ueber wohnungssuche in wien.",
+                "captionDraft": "5 Learnings zu Wohnung suchen\n\nHilfreicher Such-Guide mit Wien-Fokus.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Schneller Einstieg mit Problem, kurze Schnitte, grosse On-Screen-Texte.",
+                "timingReason": "TikTok Slot passend fuer awareness und das aktuelle Interesse an Wohnungssuche in Wien.",
+                "requiredAssets": [
+                  {
+                    "type": "video",
+                    "description": "Kurzer Vertical Cut zum Thema Wohnungssuche in Wien",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Hook und On-Screen-Texte",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Wohnungssuche in Wien",
+                  "trend_description": "Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                  "category": "Wohnung suchen",
+                  "region": "Austria",
+                  "source": "mock_google_trends",
+                  "sourceName": "Google Trends",
+                  "content_opportunity": "Hilfreicher Such-Guide mit Wien-Fokus.",
+                  "relevance_for_immoscout": 90
+                },
+                "responsible": "Julia Fink",
+                "responsibleEmail": "performance.team@immoscout24.at",
+                "relevanceScore": 90,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 94,
+                "confidenceScore": 72,
+                "performanceScore": 70,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Hilfreicher Such-Guide mit Wien-Fokus."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 84,
+                "trendTitle": "Wohnungssuche in Wien",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-03",
+                  "scheduledTime": "17:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5005,
+                "backendId": 5005,
+                "editorialPlanId": 1000,
+                "title": "Maklerwissen einfach erklaert: Was Suchende jetzt wissen muessen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Einfaches Erklaeren von Provision, Besichtigung und Expose bleibt relevant.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Einfaches Erklaeren von Provision, Besichtigung und Expose bleibt relevant.",
+                "platform": "Newsletter",
+                "platformCode": "newsletter",
+                "tone": "amber",
+                "postingDate": "2026-07-04",
+                "postingTime": "08:30",
+                "status": "Veröffentlicht",
+                "statusCode": "published",
+                "format": "Checklist",
+                "formatCode": "checklist",
+                "funnelGoal": "traffic",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Wenn du 2026 wohnst, kennst du dieses Problem wahrscheinlich schon.",
+                "captionDraft": "Maklerwissen einfach erklaert: Was Suchende jetzt wissen muessen\n\nExplainer-Post mit Sicherheitsgefuehl fuer Erstsuchende.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Mehr dazu im Magazin lesen",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Maklerwissen.",
+                "timingReason": "Newsletter Slot passend fuer traffic und das aktuelle Interesse an Maklerwissen einfach erklaert.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Maklerwissen einfach erklaert",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Maklerwissen einfach erklaert",
+                  "trend_description": "Einfaches Erklaeren von Provision, Besichtigung und Expose bleibt relevant.",
+                  "category": "Maklerwissen",
+                  "region": "Austria",
+                  "source": "mock_news_at",
+                  "sourceName": "AT Medienmonitor",
+                  "content_opportunity": "Explainer-Post mit Sicherheitsgefuehl fuer Erstsuchende.",
+                  "relevance_for_immoscout": 74
+                },
+                "responsible": "Mira Keller",
+                "responsibleEmail": "social-media@immoscout24.at",
+                "relevanceScore": 74,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 78,
+                "confidenceScore": 77,
+                "performanceScore": 75,
+                "qualityScore": 90,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 90,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Explainer-Post mit Sicherheitsgefuehl fuer Erstsuchende."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 87,
+                "trendTitle": "Maklerwissen einfach erklaert",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-04",
+                  "scheduledTime": "08:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5006,
+                "backendId": 5006,
+                "editorialPlanId": 1000,
+                "title": "POV: Umzugscheckliste fuer die erste Wohnung",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-05",
+                "postingTime": "18:00",
+                "status": "Veröffentlicht",
+                "statusCode": "published",
+                "format": "Story",
+                "formatCode": "story",
+                "funnelGoal": "retention",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Das ist einer der haeufigsten Denkfehler rund ums Wohnen gerade.",
+                "captionDraft": "POV: Umzugscheckliste fuer die erste Wohnung\n\nCheckliste mit klaren Schritten und Quick Wins.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Umzug.",
+                "timingReason": "Instagram Slot passend fuer retention und das aktuelle Interesse an Umzugscheckliste fuer die erste Wohnung.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Umzugscheckliste fuer die erste Wohnung",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Umzugscheckliste fuer die erste Wohnung",
+                  "trend_description": "Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                  "category": "Umzug",
+                  "region": "Austria",
+                  "source": "mock_instagram_insights",
+                  "sourceName": "Instagram Insights",
+                  "content_opportunity": "Checkliste mit klaren Schritten und Quick Wins.",
+                  "relevance_for_immoscout": 78
+                },
+                "responsible": "Leonie Hartmann",
+                "responsibleEmail": "content.lead@immoscout24.at",
+                "relevanceScore": 78,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "low",
+                "notes": "",
+                "expectedImpactScore": 82,
+                "confidenceScore": 82,
+                "performanceScore": 80,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Checkliste mit klaren Schritten und Quick Wins."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 90,
+                "trendTitle": "Umzugscheckliste fuer die erste Wohnung",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-05",
+                  "scheduledTime": "18:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              }
+            ],
+            "createdAt": "2026-07-06T12:02:49.841Z",
+            "updatedAt": "2026-07-06T12:02:49.841Z",
+            "summary": {
+              "totalIdeas": 8,
+              "channelCount": 5,
+              "formatCount": 8,
+              "statusCounts": {
+                "briefed": 2,
+                "published": 3,
+                "planned": 1,
+                "scheduled": 2
+              }
+            }
+          },
+          {
+            "id": 1001,
+            "title": "Weekly Editorial Plan KW 28/2026",
+            "calendarYear": 2026,
+            "calendarWeek": 28,
+            "weekStartDate": "2026-07-06",
+            "weekEndDate": "2026-07-12",
+            "market": "AT",
+            "status": "draft",
+            "generatedFrom": "jarvis_native_seed",
+            "contentIdeas": [
+              {
+                "id": 5008,
+                "backendId": 5008,
+                "editorialPlanId": 1001,
+                "title": "5 Learnings zu Mieten",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Betriebskosten und Warmmiete werden wieder auffaellig oft recherchiert.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Betriebskosten und Warmmiete werden wieder auffaellig oft recherchiert.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-06",
+                "postingTime": "09:00",
+                "status": "Briefed",
+                "statusCode": "briefed",
+                "format": "Reel",
+                "formatCode": "reel",
+                "funnelGoal": "awareness",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Warum nebenkosten transparent erklaeren gerade so viele Suchende beschaeftigt.",
+                "captionDraft": "5 Learnings zu Mieten\n\nSo erklaert ImmoScout24 Betriebskosten ohne Juristensprache.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Schneller Einstieg mit Problem, kurze Schnitte, grosse On-Screen-Texte.",
+                "timingReason": "Instagram Slot passend fuer awareness und das aktuelle Interesse an Nebenkosten transparent erklaeren.",
+                "requiredAssets": [
+                  {
+                    "type": "video",
+                    "description": "Kurzer Vertical Cut zum Thema Nebenkosten transparent erklaeren",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Hook und On-Screen-Texte",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Nebenkosten transparent erklaeren",
+                  "trend_description": "Betriebskosten und Warmmiete werden wieder auffaellig oft recherchiert.",
+                  "category": "Mieten",
+                  "region": "Austria",
+                  "source": "mock_google_trends",
+                  "sourceName": "Google Trends",
+                  "content_opportunity": "So erklaert ImmoScout24 Betriebskosten ohne Juristensprache.",
+                  "relevance_for_immoscout": 74
+                },
+                "responsible": "Mira Keller",
+                "responsibleEmail": "social-media@immoscout24.at",
+                "relevanceScore": 74,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 78,
+                "confidenceScore": 72,
+                "performanceScore": 70,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "So erklaert ImmoScout24 Betriebskosten ohne Juristensprache."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 84,
+                "trendTitle": "Nebenkosten transparent erklaeren",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-06",
+                  "scheduledTime": "09:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5009,
+                "backendId": 5009,
+                "editorialPlanId": 1001,
+                "title": "WG-Casting Red Flags: Marktupdate fuer ImmoScout24",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                "platform": "LinkedIn",
+                "platformCode": "linkedin",
+                "tone": "blue",
+                "postingDate": "2026-07-07",
+                "postingTime": "11:30",
+                "status": "Briefed",
+                "statusCode": "briefed",
+                "format": "Market Insight Post",
+                "formatCode": "market_insight_post",
+                "funnelGoal": "traffic",
+                "targetAudience": "Studierende und Berufseinsteiger",
+                "hook": "Wenn du 2026 wohnst, kennst du dieses Problem wahrscheinlich schon.",
+                "captionDraft": "WG-Casting Red Flags: Marktupdate fuer ImmoScout24\n\nHumor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Mehr dazu im Magazin lesen",
+                "creativeDirection": "Klare Chart- oder Kartenlogik mit Scout24 Branding und sachlicher Einordnung.",
+                "timingReason": "LinkedIn Slot passend fuer traffic und das aktuelle Interesse an WG-Casting Red Flags.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer WG-Casting Red Flags",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "WG-Casting Red Flags",
+                  "trend_description": "WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                  "category": "WG & Studenten",
+                  "region": "Austria",
+                  "source": "mock_reddit_dach",
+                  "sourceName": "Reddit DACH",
+                  "content_opportunity": "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.",
+                  "relevance_for_immoscout": 78
+                },
+                "responsible": "Leonie Hartmann",
+                "responsibleEmail": "content.lead@immoscout24.at",
+                "relevanceScore": 78,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 82,
+                "confidenceScore": 77,
+                "performanceScore": 75,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 87,
+                "trendTitle": "WG-Casting Red Flags",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-07",
+                  "scheduledTime": "11:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5024,
+                "backendId": 5024,
+                "editorialPlanId": 1001,
+                "title": "Test Idea",
+                "description": "Testbeschreibung",
+                "shortDescription": "Testbeschreibung",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-08",
+                "postingTime": "10:00",
+                "status": "Freigegeben",
+                "statusCode": "approved",
+                "format": "Carousel",
+                "formatCode": "carousel",
+                "funnelGoal": "engagement",
+                "targetAudience": "Suchende",
+                "hook": "Test Hook",
+                "captionDraft": "Test Caption",
+                "cta": "Jetzt speichern",
+                "creativeDirection": "",
+                "timingReason": "",
+                "requiredAssets": [],
+                "trendBasis": {
+                  "trend_title": "Manuell hinzugefuegt",
+                  "trend_description": "Testbeschreibung",
+                  "category": "Redaktion",
+                  "region": "Austria",
+                  "source": "manual",
+                  "sourceName": "Jarvis Native",
+                  "content_opportunity": "",
+                  "relevance_for_immoscout": 80
+                },
+                "responsible": "Mira Keller",
+                "responsibleEmail": "social-media@immoscout24.at",
+                "relevanceScore": 80,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 78,
+                "confidenceScore": 80,
+                "performanceScore": 76,
+                "qualityScore": 80,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 80,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Posting ist fuer das Team direkt weiterbearbeitbar."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 78,
+                "trendTitle": "Manuell hinzugefuegt",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-08",
+                  "scheduledTime": "10:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.870Z",
+                "updatedAt": "2026-07-06T12:02:57.358Z"
+              },
+              {
+                "id": 5015,
+                "backendId": 5015,
+                "editorialPlanId": 1001,
+                "title": "Immobilienpreise in Graz: Marktupdate fuer ImmoScout24",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                "platform": "LinkedIn",
+                "platformCode": "linkedin",
+                "tone": "blue",
+                "postingDate": "2026-07-08",
+                "postingTime": "10:15",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Explainer",
+                "formatCode": "explainer",
+                "funnelGoal": "lead",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Kurz und konkret: Das hilft dir bei immobilienmarkt.",
+                "captionDraft": "Immobilienpreise in Graz: Marktupdate fuer ImmoScout24\n\nLinkedIn Insight oder Carousel fuer Suchende und Makler.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Passende Inserate auf ImmoScout24 entdecken",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Immobilienmarkt.",
+                "timingReason": "LinkedIn Slot passend fuer lead und das aktuelle Interesse an Immobilienpreise in Graz.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Immobilienpreise in Graz",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Immobilienpreise in Graz",
+                  "trend_description": "Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                  "category": "Immobilienmarkt",
+                  "region": "Austria",
+                  "source": "mock_linkedin_trends",
+                  "sourceName": "LinkedIn Trends",
+                  "content_opportunity": "LinkedIn Insight oder Carousel fuer Suchende und Makler.",
+                  "relevance_for_immoscout": 82
+                },
+                "responsible": "Anna Berger",
+                "responsibleEmail": "brand.review@immoscout24.at",
+                "relevanceScore": 82,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 86,
+                "confidenceScore": 87,
+                "performanceScore": 85,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "LinkedIn Insight oder Carousel fuer Suchende und Makler."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 93,
+                "trendTitle": "Immobilienpreise in Graz",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-08",
+                  "scheduledTime": "10:15",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5010,
+                "backendId": 5010,
+                "editorialPlanId": 1001,
+                "title": "POV: Kleine Wohnungen clever nutzen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-08",
+                "postingTime": "13:00",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Carousel",
+                "formatCode": "carousel",
+                "funnelGoal": "engagement",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Das ist einer der haeufigsten Denkfehler rund ums Wohnen gerade.",
+                "captionDraft": "POV: Kleine Wohnungen clever nutzen\n\nCarousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Deine Erfahrung in den Kommentaren teilen",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Wohnen & Einrichtung.",
+                "timingReason": "Instagram Slot passend fuer engagement und das aktuelle Interesse an Kleine Wohnungen clever nutzen.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Kleine Wohnungen clever nutzen",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Kleine Wohnungen clever nutzen",
+                  "trend_description": "Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                  "category": "Wohnen & Einrichtung",
+                  "region": "DACH",
+                  "source": "mock_instagram_insights",
+                  "sourceName": "Instagram Insights",
+                  "content_opportunity": "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.",
+                  "relevance_for_immoscout": 82
+                },
+                "responsible": "Anna Berger",
+                "responsibleEmail": "brand.review@immoscout24.at",
+                "relevanceScore": 82,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 86,
+                "confidenceScore": 82,
+                "performanceScore": 80,
+                "qualityScore": 90,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 90,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 90,
+                "trendTitle": "Kleine Wohnungen clever nutzen",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-08",
+                  "scheduledTime": "13:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5011,
+                "backendId": 5011,
+                "editorialPlanId": 1001,
+                "title": "Mieten oder kaufen 2026 einfach erklaert",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                "platform": "Facebook",
+                "platformCode": "facebook",
+                "tone": "teal",
+                "postingDate": "2026-07-09",
+                "postingTime": "15:30",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Poll",
+                "formatCode": "poll",
+                "funnelGoal": "engagement",
+                "targetAudience": "Kaeufer und Eigentumsinteressierte",
+                "hook": "Kurz und konkret: Das hilft dir bei kaufen.",
+                "captionDraft": "Mieten oder kaufen 2026 einfach erklaert\n\nEntscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Deine Erfahrung in den Kommentaren teilen",
+                "creativeDirection": "Leichtes Community-Visual mit klarer Frage und 2-4 Antwortoptionen.",
+                "timingReason": "Facebook Slot passend fuer engagement und das aktuelle Interesse an Mieten oder kaufen 2026.",
+                "requiredAssets": [
+                  {
+                    "type": "copy",
+                    "description": "Frage + Antwortoptionen zu Mieten oder kaufen 2026",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Mieten oder kaufen 2026",
+                  "trend_description": "Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                  "category": "Kaufen",
+                  "region": "Austria",
+                  "source": "mock_reporting",
+                  "sourceName": "Jarvis Performance Learnings",
+                  "content_opportunity": "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.",
+                  "relevance_for_immoscout": 86
+                },
+                "responsible": "Daniel Hofer",
+                "responsibleEmail": "design.ops@immoscout24.at",
+                "relevanceScore": 86,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "medium",
+                "notes": "Community-Reaktion in den Kommentaren monitoren.",
+                "expectedImpactScore": 90,
+                "confidenceScore": 87,
+                "performanceScore": 85,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 93,
+                "trendTitle": "Mieten oder kaufen 2026",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-09",
+                  "scheduledTime": "15:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5012,
+                "backendId": 5012,
+                "editorialPlanId": 1001,
+                "title": "5 Learnings zu Wohnung suchen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                "platform": "TikTok",
+                "platformCode": "tiktok",
+                "tone": "orange",
+                "postingDate": "2026-07-10",
+                "postingTime": "17:30",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "TikTok Short",
+                "formatCode": "tiktok_short",
+                "funnelGoal": "awareness",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "POV: Du suchst eine Wohnung und stolperst sofort ueber wohnungssuche in wien.",
+                "captionDraft": "5 Learnings zu Wohnung suchen\n\nHilfreicher Such-Guide mit Wien-Fokus.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Schneller Einstieg mit Problem, kurze Schnitte, grosse On-Screen-Texte.",
+                "timingReason": "TikTok Slot passend fuer awareness und das aktuelle Interesse an Wohnungssuche in Wien.",
+                "requiredAssets": [
+                  {
+                    "type": "video",
+                    "description": "Kurzer Vertical Cut zum Thema Wohnungssuche in Wien",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Hook und On-Screen-Texte",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Wohnungssuche in Wien",
+                  "trend_description": "Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                  "category": "Wohnung suchen",
+                  "region": "Austria",
+                  "source": "mock_google_trends",
+                  "sourceName": "Google Trends",
+                  "content_opportunity": "Hilfreicher Such-Guide mit Wien-Fokus.",
+                  "relevance_for_immoscout": 90
+                },
+                "responsible": "Julia Fink",
+                "responsibleEmail": "performance.team@immoscout24.at",
+                "relevanceScore": 90,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 94,
+                "confidenceScore": 72,
+                "performanceScore": 70,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Hilfreicher Such-Guide mit Wien-Fokus."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 84,
+                "trendTitle": "Wohnungssuche in Wien",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-10",
+                  "scheduledTime": "17:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5013,
+                "backendId": 5013,
+                "editorialPlanId": 1001,
+                "title": "Maklerwissen einfach erklaert: Was Suchende jetzt wissen muessen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Einfaches Erklaeren von Provision, Besichtigung und Expose bleibt relevant.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Einfaches Erklaeren von Provision, Besichtigung und Expose bleibt relevant.",
+                "platform": "Newsletter",
+                "platformCode": "newsletter",
+                "tone": "amber",
+                "postingDate": "2026-07-11",
+                "postingTime": "08:30",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Checklist",
+                "formatCode": "checklist",
+                "funnelGoal": "traffic",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Wenn du 2026 wohnst, kennst du dieses Problem wahrscheinlich schon.",
+                "captionDraft": "Maklerwissen einfach erklaert: Was Suchende jetzt wissen muessen\n\nExplainer-Post mit Sicherheitsgefuehl fuer Erstsuchende.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Mehr dazu im Magazin lesen",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Maklerwissen.",
+                "timingReason": "Newsletter Slot passend fuer traffic und das aktuelle Interesse an Maklerwissen einfach erklaert.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Maklerwissen einfach erklaert",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Maklerwissen einfach erklaert",
+                  "trend_description": "Einfaches Erklaeren von Provision, Besichtigung und Expose bleibt relevant.",
+                  "category": "Maklerwissen",
+                  "region": "Austria",
+                  "source": "mock_news_at",
+                  "sourceName": "AT Medienmonitor",
+                  "content_opportunity": "Explainer-Post mit Sicherheitsgefuehl fuer Erstsuchende.",
+                  "relevance_for_immoscout": 74
+                },
+                "responsible": "Mira Keller",
+                "responsibleEmail": "social-media@immoscout24.at",
+                "relevanceScore": 74,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 78,
+                "confidenceScore": 77,
+                "performanceScore": 75,
+                "qualityScore": 90,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 90,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Explainer-Post mit Sicherheitsgefuehl fuer Erstsuchende."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 87,
+                "trendTitle": "Maklerwissen einfach erklaert",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-11",
+                  "scheduledTime": "08:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              },
+              {
+                "id": 5014,
+                "backendId": 5014,
+                "editorialPlanId": 1001,
+                "title": "POV: Umzugscheckliste fuer die erste Wohnung",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-12",
+                "postingTime": "18:00",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Story",
+                "formatCode": "story",
+                "funnelGoal": "retention",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Das ist einer der haeufigsten Denkfehler rund ums Wohnen gerade.",
+                "captionDraft": "POV: Umzugscheckliste fuer die erste Wohnung\n\nCheckliste mit klaren Schritten und Quick Wins.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Umzug.",
+                "timingReason": "Instagram Slot passend fuer retention und das aktuelle Interesse an Umzugscheckliste fuer die erste Wohnung.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Umzugscheckliste fuer die erste Wohnung",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Umzugscheckliste fuer die erste Wohnung",
+                  "trend_description": "Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                  "category": "Umzug",
+                  "region": "Austria",
+                  "source": "mock_instagram_insights",
+                  "sourceName": "Instagram Insights",
+                  "content_opportunity": "Checkliste mit klaren Schritten und Quick Wins.",
+                  "relevance_for_immoscout": 78
+                },
+                "responsible": "Leonie Hartmann",
+                "responsibleEmail": "content.lead@immoscout24.at",
+                "relevanceScore": 78,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "low",
+                "notes": "",
+                "expectedImpactScore": 82,
+                "confidenceScore": 82,
+                "performanceScore": 80,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Checkliste mit klaren Schritten und Quick Wins."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 90,
+                "trendTitle": "Umzugscheckliste fuer die erste Wohnung",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-12",
+                  "scheduledTime": "18:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.840Z",
+                "updatedAt": "2026-07-06T12:02:49.840Z"
+              }
+            ],
+            "createdAt": "2026-07-06T12:02:49.862Z",
+            "updatedAt": "2026-07-06T12:02:57.358Z",
+            "summary": {
+              "totalIdeas": 9,
+              "channelCount": 5,
+              "formatCount": 8,
+              "statusCounts": {
+                "briefed": 2,
+                "approved": 1,
+                "planned": 6
+              }
+            }
+          },
+          {
+            "id": 1002,
+            "title": "Weekly Editorial Plan KW 29/2026",
+            "calendarYear": 2026,
+            "calendarWeek": 29,
+            "weekStartDate": "2026-07-13",
+            "weekEndDate": "2026-07-19",
+            "market": "AT",
+            "status": "draft",
+            "generatedFrom": "jarvis_native_generator",
+            "contentIdeas": [
+              {
+                "id": 5016,
+                "backendId": 5016,
+                "editorialPlanId": 1002,
+                "title": "5 Learnings zu Wohnung suchen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-13",
+                "postingTime": "09:00",
+                "status": "Briefed",
+                "statusCode": "briefed",
+                "format": "Reel",
+                "formatCode": "reel",
+                "funnelGoal": "awareness",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Warum wohnungssuche in wien gerade so viele Suchende beschaeftigt.",
+                "captionDraft": "5 Learnings zu Wohnung suchen\n\nHilfreicher Such-Guide mit Wien-Fokus.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Schneller Einstieg mit Problem, kurze Schnitte, grosse On-Screen-Texte.",
+                "timingReason": "Instagram Slot passend fuer awareness und das aktuelle Interesse an Wohnungssuche in Wien.",
+                "requiredAssets": [
+                  {
+                    "type": "video",
+                    "description": "Kurzer Vertical Cut zum Thema Wohnungssuche in Wien",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Hook und On-Screen-Texte",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Wohnungssuche in Wien",
+                  "trend_description": "Lokale Stadtinhalte und Suchfehler in Wien performen konstant.",
+                  "category": "Wohnung suchen",
+                  "region": "Austria",
+                  "source": "mock_google_trends",
+                  "sourceName": "Google Trends",
+                  "content_opportunity": "Hilfreicher Such-Guide mit Wien-Fokus.",
+                  "relevance_for_immoscout": 90
+                },
+                "responsible": "Mira Keller",
+                "responsibleEmail": "social-media@immoscout24.at",
+                "relevanceScore": 90,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 78,
+                "confidenceScore": 72,
+                "performanceScore": 70,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Hilfreicher Such-Guide mit Wien-Fokus."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 84,
+                "trendTitle": "Wohnungssuche in Wien",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-13",
+                  "scheduledTime": "09:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              },
+              {
+                "id": 5017,
+                "backendId": 5017,
+                "editorialPlanId": 1002,
+                "title": "Gen-Z Wohnprobleme: Marktupdate fuer ImmoScout24",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Zwischen Balkontraum und Budgetrealitaet funktionieren relatable Inhalte sehr gut.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Zwischen Balkontraum und Budgetrealitaet funktionieren relatable Inhalte sehr gut.",
+                "platform": "LinkedIn",
+                "platformCode": "linkedin",
+                "tone": "blue",
+                "postingDate": "2026-07-14",
+                "postingTime": "11:30",
+                "status": "Briefed",
+                "statusCode": "briefed",
+                "format": "Market Insight Post",
+                "formatCode": "market_insight_post",
+                "funnelGoal": "traffic",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Wenn du 2026 wohnst, kennst du dieses Problem wahrscheinlich schon.",
+                "captionDraft": "Gen-Z Wohnprobleme: Marktupdate fuer ImmoScout24\n\nTrendbasiertes Short Video mit klarer Brand-Passung.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Mehr dazu im Magazin lesen",
+                "creativeDirection": "Klare Chart- oder Kartenlogik mit Scout24 Branding und sachlicher Einordnung.",
+                "timingReason": "LinkedIn Slot passend fuer traffic und das aktuelle Interesse an Gen-Z Wohnprobleme.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Gen-Z Wohnprobleme",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Gen-Z Wohnprobleme",
+                  "trend_description": "Zwischen Balkontraum und Budgetrealitaet funktionieren relatable Inhalte sehr gut.",
+                  "category": "Humor rund ums Wohnen",
+                  "region": "DACH",
+                  "source": "mock_instagram_insights",
+                  "sourceName": "Instagram Insights",
+                  "content_opportunity": "Trendbasiertes Short Video mit klarer Brand-Passung.",
+                  "relevance_for_immoscout": 90
+                },
+                "responsible": "Leonie Hartmann",
+                "responsibleEmail": "content.lead@immoscout24.at",
+                "relevanceScore": 90,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 82,
+                "confidenceScore": 77,
+                "performanceScore": 75,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Trendbasiertes Short Video mit klarer Brand-Passung."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 87,
+                "trendTitle": "Gen-Z Wohnprobleme",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-14",
+                  "scheduledTime": "11:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              },
+              {
+                "id": 5023,
+                "backendId": 5023,
+                "editorialPlanId": 1002,
+                "title": "Umzugscheckliste fuer die erste Wohnung: Marktupdate fuer ImmoScout24",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                "platform": "LinkedIn",
+                "platformCode": "linkedin",
+                "tone": "blue",
+                "postingDate": "2026-07-15",
+                "postingTime": "10:15",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Explainer",
+                "formatCode": "explainer",
+                "funnelGoal": "lead",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Kurz und konkret: Das hilft dir bei umzug.",
+                "captionDraft": "Umzugscheckliste fuer die erste Wohnung: Marktupdate fuer ImmoScout24\n\nCheckliste mit klaren Schritten und Quick Wins.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Passende Inserate auf ImmoScout24 entdecken",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Umzug.",
+                "timingReason": "LinkedIn Slot passend fuer lead und das aktuelle Interesse an Umzugscheckliste fuer die erste Wohnung.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Umzugscheckliste fuer die erste Wohnung",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Umzugscheckliste fuer die erste Wohnung",
+                  "trend_description": "Die erste eigene Wohnung bleibt ein starker Gen-Z Trigger.",
+                  "category": "Umzug",
+                  "region": "Austria",
+                  "source": "mock_instagram_insights",
+                  "sourceName": "Instagram Insights",
+                  "content_opportunity": "Checkliste mit klaren Schritten und Quick Wins.",
+                  "relevance_for_immoscout": 78
+                },
+                "responsible": "Anna Berger",
+                "responsibleEmail": "brand.review@immoscout24.at",
+                "relevanceScore": 78,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 86,
+                "confidenceScore": 82,
+                "performanceScore": 85,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Checkliste mit klaren Schritten und Quick Wins."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 93,
+                "trendTitle": "Umzugscheckliste fuer die erste Wohnung",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-15",
+                  "scheduledTime": "10:15",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              },
+              {
+                "id": 5018,
+                "backendId": 5018,
+                "editorialPlanId": 1002,
+                "title": "POV: Mieten oder kaufen 2026",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-15",
+                "postingTime": "13:00",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Carousel",
+                "formatCode": "carousel",
+                "funnelGoal": "engagement",
+                "targetAudience": "Kaeufer und Eigentumsinteressierte",
+                "hook": "Das ist einer der haeufigsten Denkfehler rund ums Wohnen gerade.",
+                "captionDraft": "POV: Mieten oder kaufen 2026\n\nEntscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Deine Erfahrung in den Kommentaren teilen",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Kaufen.",
+                "timingReason": "Instagram Slot passend fuer engagement und das aktuelle Interesse an Mieten oder kaufen 2026.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Mieten oder kaufen 2026",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Mieten oder kaufen 2026",
+                  "trend_description": "Vergleichsrechner und Budget-Entscheidungshilfen gewinnen an Aufmerksamkeit.",
+                  "category": "Kaufen",
+                  "region": "Austria",
+                  "source": "mock_reporting",
+                  "sourceName": "Jarvis Performance Learnings",
+                  "content_opportunity": "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive.",
+                  "relevance_for_immoscout": 86
+                },
+                "responsible": "Anna Berger",
+                "responsibleEmail": "brand.review@immoscout24.at",
+                "relevanceScore": 86,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 86,
+                "confidenceScore": 87,
+                "performanceScore": 80,
+                "qualityScore": 90,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 90,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Entscheidungshilfe mit Budget-Brille statt harter Verkaufsperspektive."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 90,
+                "trendTitle": "Mieten oder kaufen 2026",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-15",
+                  "scheduledTime": "13:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              },
+              {
+                "id": 5019,
+                "backendId": 5019,
+                "editorialPlanId": 1002,
+                "title": "Energiesparen in Mietwohnungen einfach erklaert",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Nachhaltigkeit plus Nebenkosten ist weiter hoch relevant.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Nachhaltigkeit plus Nebenkosten ist weiter hoch relevant.",
+                "platform": "Facebook",
+                "platformCode": "facebook",
+                "tone": "teal",
+                "postingDate": "2026-07-16",
+                "postingTime": "15:30",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Poll",
+                "formatCode": "poll",
+                "funnelGoal": "engagement",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Kurz und konkret: Das hilft dir bei energie & nachhaltigkeit.",
+                "captionDraft": "Energiesparen in Mietwohnungen einfach erklaert\n\nHilfreiche Tipps ohne moralischen Zeigefinger.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Deine Erfahrung in den Kommentaren teilen",
+                "creativeDirection": "Leichtes Community-Visual mit klarer Frage und 2-4 Antwortoptionen.",
+                "timingReason": "Facebook Slot passend fuer engagement und das aktuelle Interesse an Energiesparen in Mietwohnungen.",
+                "requiredAssets": [
+                  {
+                    "type": "copy",
+                    "description": "Frage + Antwortoptionen zu Energiesparen in Mietwohnungen",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Energiesparen in Mietwohnungen",
+                  "trend_description": "Nachhaltigkeit plus Nebenkosten ist weiter hoch relevant.",
+                  "category": "Energie & Nachhaltigkeit",
+                  "region": "DACH",
+                  "source": "mock_news_at",
+                  "sourceName": "AT Medienmonitor",
+                  "content_opportunity": "Hilfreiche Tipps ohne moralischen Zeigefinger.",
+                  "relevance_for_immoscout": 86
+                },
+                "responsible": "Daniel Hofer",
+                "responsibleEmail": "design.ops@immoscout24.at",
+                "relevanceScore": 86,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "medium",
+                "notes": "Community-Reaktion in den Kommentaren monitoren.",
+                "expectedImpactScore": 90,
+                "confidenceScore": 72,
+                "performanceScore": 85,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Hilfreiche Tipps ohne moralischen Zeigefinger."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 93,
+                "trendTitle": "Energiesparen in Mietwohnungen",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-16",
+                  "scheduledTime": "15:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              },
+              {
+                "id": 5020,
+                "backendId": 5020,
+                "editorialPlanId": 1002,
+                "title": "5 Learnings zu Wohnen & Einrichtung",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                "platform": "TikTok",
+                "platformCode": "tiktok",
+                "tone": "orange",
+                "postingDate": "2026-07-17",
+                "postingTime": "17:30",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "TikTok Short",
+                "formatCode": "tiktok_short",
+                "funnelGoal": "awareness",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "POV: Du suchst eine Wohnung und stolperst sofort ueber kleine wohnungen clever nutzen.",
+                "captionDraft": "5 Learnings zu Wohnen & Einrichtung\n\nCarousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Schneller Einstieg mit Problem, kurze Schnitte, grosse On-Screen-Texte.",
+                "timingReason": "TikTok Slot passend fuer awareness und das aktuelle Interesse an Kleine Wohnungen clever nutzen.",
+                "requiredAssets": [
+                  {
+                    "type": "video",
+                    "description": "Kurzer Vertical Cut zum Thema Kleine Wohnungen clever nutzen",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Hook und On-Screen-Texte",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Kleine Wohnungen clever nutzen",
+                  "trend_description": "Stauraum, Multifunktionsmoebel und kleine Grundrisse performen stark.",
+                  "category": "Wohnen & Einrichtung",
+                  "region": "DACH",
+                  "source": "mock_instagram_insights",
+                  "sourceName": "Instagram Insights",
+                  "content_opportunity": "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter.",
+                  "relevance_for_immoscout": 82
+                },
+                "responsible": "Julia Fink",
+                "responsibleEmail": "performance.team@immoscout24.at",
+                "relevanceScore": 82,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "high",
+                "notes": "",
+                "expectedImpactScore": 94,
+                "confidenceScore": 82,
+                "performanceScore": 70,
+                "qualityScore": 86,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 86,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Carousel oder Reel mit echten Wohn-Hacks fuer 35 bis 55 Quadratmeter."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 84,
+                "trendTitle": "Kleine Wohnungen clever nutzen",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-17",
+                  "scheduledTime": "17:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              },
+              {
+                "id": 5021,
+                "backendId": 5021,
+                "editorialPlanId": 1002,
+                "title": "Immobilienpreise in Graz: Was Suchende jetzt wissen muessen",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                "platform": "Newsletter",
+                "platformCode": "newsletter",
+                "tone": "amber",
+                "postingDate": "2026-07-18",
+                "postingTime": "08:30",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Checklist",
+                "formatCode": "checklist",
+                "funnelGoal": "traffic",
+                "targetAudience": "Wohnungssuchende in Oesterreich",
+                "hook": "Wenn du 2026 wohnst, kennst du dieses Problem wahrscheinlich schon.",
+                "captionDraft": "Immobilienpreise in Graz: Was Suchende jetzt wissen muessen\n\nLinkedIn Insight oder Carousel fuer Suchende und Makler.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Mehr dazu im Magazin lesen",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema Immobilienmarkt.",
+                "timingReason": "Newsletter Slot passend fuer traffic und das aktuelle Interesse an Immobilienpreise in Graz.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer Immobilienpreise in Graz",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "Immobilienpreise in Graz",
+                  "trend_description": "Regionale Preisentwicklungen und Vergleiche werden aktiv gelesen.",
+                  "category": "Immobilienmarkt",
+                  "region": "Austria",
+                  "source": "mock_linkedin_trends",
+                  "sourceName": "LinkedIn Trends",
+                  "content_opportunity": "LinkedIn Insight oder Carousel fuer Suchende und Makler.",
+                  "relevance_for_immoscout": 82
+                },
+                "responsible": "Mira Keller",
+                "responsibleEmail": "social-media@immoscout24.at",
+                "relevanceScore": 82,
+                "effort": "medium",
+                "effortScore": 3,
+                "priority": "medium",
+                "notes": "",
+                "expectedImpactScore": 78,
+                "confidenceScore": 87,
+                "performanceScore": 75,
+                "qualityScore": 90,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 90,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "LinkedIn Insight oder Carousel fuer Suchende und Makler."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 87,
+                "trendTitle": "Immobilienpreise in Graz",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-18",
+                  "scheduledTime": "08:30",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              },
+              {
+                "id": 5022,
+                "backendId": 5022,
+                "editorialPlanId": 1002,
+                "title": "POV: WG-Casting Red Flags",
+                "description": "Redaktionelle Content-Idee fuer ImmoScout24 AT: WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                "shortDescription": "Redaktionelle Content-Idee fuer ImmoScout24 AT: WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                "platform": "Instagram",
+                "platformCode": "instagram",
+                "tone": "violet",
+                "postingDate": "2026-07-19",
+                "postingTime": "18:00",
+                "status": "Geplant",
+                "statusCode": "planned",
+                "format": "Story",
+                "formatCode": "story",
+                "funnelGoal": "retention",
+                "targetAudience": "Studierende und Berufseinsteiger",
+                "hook": "Das ist einer der haeufigsten Denkfehler rund ums Wohnen gerade.",
+                "captionDraft": "POV: WG-Casting Red Flags\n\nHumor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.\n\nMehr Orientierung fuer Wohnungssuche, Miete und Kaufen in Oesterreich.",
+                "cta": "Fuer spaeter speichern",
+                "creativeDirection": "Klare, hilfreiche Visualisierung zum Thema WG & Studenten.",
+                "timingReason": "Instagram Slot passend fuer retention und das aktuelle Interesse an WG-Casting Red Flags.",
+                "requiredAssets": [
+                  {
+                    "type": "design",
+                    "description": "Visual oder Grafik fuer WG-Casting Red Flags",
+                    "required": true,
+                    "status": "open"
+                  },
+                  {
+                    "type": "copy",
+                    "description": "Caption und CTA finalisieren",
+                    "required": true,
+                    "status": "open"
+                  }
+                ],
+                "trendBasis": {
+                  "trend_title": "WG-Casting Red Flags",
+                  "trend_description": "WG-Suche plus Matching-Frust sorgt fuer viele Community-Fragen.",
+                  "category": "WG & Studenten",
+                  "region": "Austria",
+                  "source": "mock_reddit_dach",
+                  "sourceName": "Reddit DACH",
+                  "content_opportunity": "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger.",
+                  "relevance_for_immoscout": 78
+                },
+                "responsible": "Leonie Hartmann",
+                "responsibleEmail": "content.lead@immoscout24.at",
+                "relevanceScore": 78,
+                "effort": "low",
+                "effortScore": 2,
+                "priority": "low",
+                "notes": "",
+                "expectedImpactScore": 82,
+                "confidenceScore": 77,
+                "performanceScore": 80,
+                "qualityScore": 82,
+                "qualityValidation": {
+                  "isValid": true,
+                  "qualityScore": 82,
+                  "warnings": [],
+                  "improvementSuggestions": [
+                    "Humor plus konkrete WG-Tipps fuer Studierende und Berufseinsteiger."
+                  ],
+                  "blockingIssues": []
+                },
+                "brandFitScore": 90,
+                "trendTitle": "WG-Casting Red Flags",
+                "publishingSlot": {
+                  "scheduledDate": "2026-07-19",
+                  "scheduledTime": "18:00",
+                  "timezone": "Europe/Vienna",
+                  "status": "draft"
+                },
+                "createdAt": "2026-07-06T12:02:49.867Z",
+                "updatedAt": "2026-07-06T12:02:49.867Z"
+              }
+            ],
+            "createdAt": "2026-07-06T12:02:49.867Z",
+            "updatedAt": "2026-07-06T12:02:49.867Z",
+            "summary": {
+              "totalIdeas": 8,
+              "channelCount": 5,
+              "formatCount": 8,
+              "statusCounts": {
+                "briefed": 2,
+                "planned": 6
+              }
+            }
+          }
+        ],
+        "lastUpdatedAt": "2026-07-06T12:02:57.358Z"
+      },
+      "isSecret": false,
+      "updatedByUserId": null,
+      "updatedAt": "2026-07-06T12:02:57.358Z"
     }
   ]
 }

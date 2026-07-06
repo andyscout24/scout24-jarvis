@@ -21,11 +21,25 @@ export function ReportingCenterView(data, currentUser) {
     ${PageHeader({
       eyebrow: "Social Media",
       title: "Reporting & Analytics",
-      description: "Das Dashboard steuert das echte social_reporting Projekt, zeigt Exportlaeufe an und startet neue Social-Media-Reports direkt aus der Arbeitsoberflaeche.",
+      description: "Das Dashboard steuert das echte social_reporting Projekt, zeigt Exportlaeufe an und startet neue Social-Media-Reports direkt aus der Arbeitsoberflaeche. Dieser Bereich ist ausschliesslich fuer interne Zwecke gedacht und nicht fuer Kundenzugriffe vorgesehen.",
       actions: [
         ...(canCreateReports(currentUser) ? [{ label: "Neuen Report starten", href: "#/reporting", icon: "play", primary: true }] : []),
       ],
     })}
+
+    <section class="surface-card">
+      <div class="surface-card-header">
+        <div>
+          <p class="surface-kicker">Interner Hinweis</p>
+          <h3>Nur fuer interne Nutzung</h3>
+        </div>
+        <span class="surface-meta">Kein Kundenzugang</span>
+      </div>
+      <p class="tool-description">
+        Das Social Reporting Tool dient ausschliesslich internen Reporting-, Analyse- und Automatisierungszwecken.
+        Es ist nicht als Kundenportal gedacht und stellt keine kundenseitige Oberflaeche dar.
+      </p>
+    </section>
 
     <section class="kpi-row">
       ${kpiCard("Exports gesamt", formatNumber(kpis.totalReports), `${kpis.latestSource}`, "blue")}

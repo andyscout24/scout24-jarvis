@@ -2,8 +2,10 @@ import { spawn } from "node:child_process";
 import { access } from "node:fs/promises";
 import { join } from "node:path";
 import { socialReportingProjectDir } from "../config/paths.mjs";
+import { createSocialReportingClient } from "./socialReportingClient.mjs";
 
 const supportedSources = new Set(["file", "meta", "swatio", "combined"]);
+const remoteClient = createSocialReportingClient();
 
 const snapshotScript = `
 import json
@@ -209,6 +211,36 @@ print(json.dumps(response, ensure_ascii=False))
 `;
 
 export async function getSocialReportingLiveSnapshot(options = {}) {
+  const payload = {
+    source: normalizeSource(options.source),
+    startDate: normalizeDate(options.startDate) || isoDate(daysAgo(7)),
+    endDate: normalizeDate(options.endDate) || isoDate(new Date()),
+    platform: normalizePlatform(options.platform),
+  };
+
+  if (process.env.SOCIAL_REPORTING_API_BASE_URL) {
+    try {
+      const snapshot = await remoteClient.getLiveSnapshot(payload);
+      return {
+        ...snapshot,
+        status: snapshot.status || "ready",
+        commandPreview: "social_reporting_internal_api:/api/live-snapshot",
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        generatedAt: new Date().toISOString(),
+        filter: payload,
+        errorMessage: error?.message || "Der Live-Snapshot aus dem internen Social Reporting API ist fehlgeschlagen.",
+        summary: null,
+        platforms: [],
+        sources: [],
+        qualitySummary: { errors: 1, warnings: 0, info: 0, total: 1 },
+        issuesPreview: [],
+      };
+    }
+  }
+
   const projectPath = socialReportingProjectDir;
 
   if (!await pathExists(projectPath)) {
@@ -239,13 +271,6 @@ export async function getSocialReportingLiveSnapshot(options = {}) {
       issuesPreview: [],
     };
   }
-
-  const payload = {
-    source: normalizeSource(options.source),
-    startDate: normalizeDate(options.startDate) || isoDate(daysAgo(7)),
-    endDate: normalizeDate(options.endDate) || isoDate(new Date()),
-    platform: normalizePlatform(options.platform),
-  };
 
   const commandResult = await runProcess(
     pythonPath,

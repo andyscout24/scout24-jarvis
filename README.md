@@ -18,6 +18,8 @@ Die App bietet aktuell:
   - `social_reporting`
   - `Weekly Editorial Planner`
 
+Wichtig: Das Reporting-Modul dient ausschliesslich internen Reporting- und Analysezwecken. Es ist kein Kundenbereich und nicht fuer externe Kundenzugriffe vorgesehen.
+
 ## Tech Stack
 
 Das Projekt nutzt bewusst einen schlanken Fullstack-Stack:
@@ -103,6 +105,8 @@ DATA_REPOSITORY=json
 DATA_FILE_PATH=data/db.json
 PUBLIC_BASE_URL=http://localhost:4173
 SOCIAL_REPORTING_PROJECT_PATH=../Reporting/social_reporting
+SOCIAL_REPORTING_API_BASE_URL=
+SOCIAL_REPORTING_API_TOKEN=
 REDAKTIONSPLAN_PROJECT_PATH=../Redaktionsplan
 EDITORIAL_PLANNER_BASE_URL=http://127.0.0.1:8080
 EDITORIAL_PLANNER_EMAIL=admin@immoscout24.at
@@ -141,6 +145,19 @@ Wichtig:
 
 - `social_reporting` ist kein eigener HTTP-Service, sondern wird on-demand per CLI ueber das Dashboard gestartet
 - der Redaktionsplan bleibt ein separates Python-Projekt mit HTTP-API
+
+Fuer die Web-Variante kann Jarvis alternativ gegen das interne Social-Reporting-API laufen. Dann setzt du in `.env`:
+
+```env
+SOCIAL_REPORTING_API_BASE_URL=http://127.0.0.1:8788
+SOCIAL_REPORTING_API_TOKEN=
+```
+
+und startest im `social_reporting` Projekt:
+
+```bash
+python3 -m src.internal_api --host 127.0.0.1 --port 8788
+```
 
 ### 4. App oeffnen
 

@@ -88,6 +88,15 @@ export function createDashboardRepository(store) {
       return db.settings || [];
     },
 
+    async getSetting(settingKey, { toolId = null, scope = null } = {}) {
+      const db = await store.read();
+      const settings = db.settings || [];
+      return settings.find((setting) =>
+        setting.settingKey === settingKey
+        && (scope ? setting.scope === scope : true)
+        && (toolId ? setting.toolId === toolId : true)) || null;
+    },
+
     async getToolDetail(toolId) {
       const db = await store.read();
       const tool = db.tools.find((item) => item.id === toolId) || null;
@@ -160,6 +169,39 @@ export function createDashboardRepository(store) {
       }
       await store.write(db);
       return offer;
+    },
+
+    async upsertSetting(setting) {
+      const db = await store.read();
+      db.settings = db.settings || [];
+      const normalized = {
+        settingKey: setting.settingKey,
+        scope: setting.scope || "global",
+        toolId: setting.toolId || null,
+        userId: setting.userId || null,
+        value: setting.value ?? null,
+        isSecret: Boolean(setting.isSecret),
+        updatedByUserId: setting.updatedByUserId || null,
+        updatedAt: setting.updatedAt || new Date().toISOString(),
+      };
+
+      const index = db.settings.findIndex((item) =>
+        item.settingKey === normalized.settingKey
+        && item.scope === normalized.scope
+        && (item.toolId || null) === normalized.toolId
+        && (item.userId || null) === normalized.userId);
+
+      if (index >= 0) {
+        db.settings[index] = {
+          ...db.settings[index],
+          ...normalized,
+        };
+      } else {
+        db.settings.push(normalized);
+      }
+
+      await store.write(db);
+      return normalized;
     },
   };
 }

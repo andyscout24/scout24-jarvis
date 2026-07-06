@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { redaktionsplanProjectDir, socialReportingProjectDir } from "../config/paths.mjs";
 
 const editorialPlannerBaseUrl = process.env.EDITORIAL_PLANNER_BASE_URL || "http://127.0.0.1:8080";
+const editorialPlannerMode = String(process.env.EDITORIAL_PLANNER_MODE || "auto").trim().toLowerCase();
 
 export async function getIntegrationReadinessSummary() {
   const [socialReporting, editorialPlanner] = await Promise.all([
@@ -40,6 +41,20 @@ export async function getSocialReportingReadiness() {
 }
 
 export async function getEditorialPlannerReadiness() {
+  if (editorialPlannerMode === "native") {
+    return {
+      toolId: "editorial-planner",
+      toolName: "Redaktionsplan",
+      projectPath: redaktionsplanProjectDir,
+      baseUrl: "jarvis-native",
+      status: "ready",
+      projectExists: true,
+      reachable: true,
+      health: { status: "ok", mode: "native" },
+      message: "Der Planner laeuft direkt nativ in Jarvis.",
+    };
+  }
+
   const projectExists = await pathExists(redaktionsplanProjectDir);
   const health = await fetchJson(`${editorialPlannerBaseUrl.replace(/\/+$/, "")}/api/health`);
 

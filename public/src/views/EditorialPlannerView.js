@@ -182,8 +182,8 @@ export function EditorialPlannerView(data) {
         </div>
         <div class="planner-action-row">
           <button class="button" type="button" data-planner-open-modal="new">${icon("sparkles")}Content-Idee hinzufügen</button>
+          ${activePlan ? `<button class="button" type="button" data-export-plan-id="${escapeHtml(String(activePlan.id))}" data-export-format="csv">${icon("file")}CSV</button>` : ""}
           ${activePlan ? `<button class="button" type="button" data-export-plan-id="${escapeHtml(String(activePlan.id))}" data-export-format="json">${icon("file")}JSON</button>` : ""}
-          ${activePlan ? `<button class="button" type="button" data-export-plan-id="${escapeHtml(String(activePlan.id))}" data-export-format="xlsx">${icon("file")}Excel</button>` : ""}
         </div>
       </div>
 

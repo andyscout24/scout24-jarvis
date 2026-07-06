@@ -108,6 +108,16 @@ export function createSupabaseRepository(config) {
       return rows.map(settingFromRow);
     },
 
+    async getSetting(settingKey, { toolId = null, scope = null } = {}) {
+      const filters = compactFilters([
+        eq("setting_key", settingKey),
+        toolId && eq("tool_id", toolId),
+        scope && eq("scope", scope),
+      ]);
+      const [row] = await client.select("settings", { filters, limit: 1 });
+      return row ? settingFromRow(row) : null;
+    },
+
     async getToolDetail(toolId) {
       const tool = await this.getToolById(toolId);
       if (!tool) return null;
@@ -166,6 +176,41 @@ export function createSupabaseRepository(config) {
       await client.insert("activity_logs", logToRow(log));
       await incrementToolMetrics(offer.toolId, offer.createdAt);
       return row ? (await mapOffers([row]))[0] : offer;
+    },
+
+    async upsertSetting(setting) {
+      const normalized = {
+        settingKey: setting.settingKey || setting.key,
+        scope: setting.scope || "global",
+        toolId: setting.toolId || null,
+        userId: setting.userId || null,
+        value: setting.value ?? null,
+        isSecret: Boolean(setting.isSecret),
+        updatedByUserId: setting.updatedByUserId || null,
+        updatedAt: setting.updatedAt || new Date().toISOString(),
+      };
+
+      const existing = await this.getSetting(normalized.settingKey, {
+        toolId: normalized.toolId,
+        scope: normalized.scope,
+      });
+
+      const rowBody = settingToRow(normalized);
+
+      if (existing) {
+        const [row] = await client.patch("settings", {
+          filters: compactFilters([
+            eq("setting_key", rowBody.setting_key),
+            eq("scope", rowBody.scope),
+            rowBody.tool_id && eq("tool_id", rowBody.tool_id),
+          ]),
+          body: rowBody,
+        });
+        return row ? settingFromRow(row) : normalized;
+      }
+
+      const [row] = await client.insert("settings", rowBody);
+      return row ? settingFromRow(row) : normalized;
     },
   };
 
@@ -401,6 +446,7 @@ function apiConnectionFromRow(row) {
 
 function settingFromRow(row) {
   return {
+    settingKey: row.setting_key || row.key,
     key: row.setting_key || row.key,
     scope: row.scope,
     toolId: row.tool_id,
@@ -409,6 +455,19 @@ function settingFromRow(row) {
     isSecret: row.is_secret,
     updatedByUserId: row.updated_by_user_id,
     updatedAt: row.updated_at,
+  };
+}
+
+function settingToRow(setting) {
+  return {
+    setting_key: setting.settingKey || setting.key,
+    scope: setting.scope || "global",
+    tool_id: setting.toolId || null,
+    user_id: setting.userId || null,
+    value: setting.value ?? null,
+    is_secret: Boolean(setting.isSecret),
+    updated_by_user_id: setting.updatedByUserId || null,
+    updated_at: setting.updatedAt || new Date().toISOString(),
   };
 }
 
