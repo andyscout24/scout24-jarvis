@@ -39,6 +39,14 @@ async function request(path, options = {}) {
   return payload?.success === true ? payload.data : payload;
 }
 
+function buildAuthHeaders(extraHeaders = {}) {
+  const accessToken = getAccessToken();
+  return {
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : { "X-User-Id": getCurrentUserId() }),
+    ...extraHeaders,
+  };
+}
+
 function apiErrorFromPayload(payload, status) {
   const error = payload?.error || {};
   return new ApiError(
@@ -102,6 +110,24 @@ export const api = {
   async getHealth() {
     return request("/api/health");
   },
+  async download(path) {
+    const response = await fetch(path, {
+      headers: buildAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      const payload = await safeJson(response);
+      throw apiErrorFromPayload(payload, response.status);
+    }
+
+    const blob = await response.blob();
+    const disposition = response.headers.get("content-disposition") || "";
+    const match = /filename=\"?([^\";]+)\"?/i.exec(disposition);
+    return {
+      blob,
+      filename: match ? match[1] : "",
+    };
+  },
   async getTools() {
     return request("/api/tools");
   },
@@ -152,6 +178,19 @@ export const api = {
   async getReports() {
     return request("/api/reports");
   },
+  async getLiveReportingSnapshot({
+    source = "combined",
+    startDate = "",
+    endDate = "",
+    platform = "",
+  } = {}) {
+    const params = new URLSearchParams();
+    if (source) params.set("source", source);
+    if (startDate) params.set("startDate", startDate);
+    if (endDate) params.set("endDate", endDate);
+    if (platform) params.set("platform", platform);
+    return request(`/api/reports/live-snapshot?${params.toString()}`);
+  },
   async getReport(id) {
     return request(`/api/reports/${encodeURIComponent(id)}`);
   },
@@ -160,6 +199,74 @@ export const api = {
       method: "POST",
       body: JSON.stringify(payload),
     });
+  },
+  async getEditorialPlannerOverview() {
+    return request("/api/editorial-planner/overview");
+  },
+  async generateEditorialPlan(payload) {
+    return request("/api/editorial-planner/generate", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+  async getEditorialPlans(params = {}) {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === "") return;
+      searchParams.set(key, String(value));
+    });
+    const query = searchParams.toString();
+    return request(`/api/editorial-planner/plans${query ? `?${query}` : ""}`);
+  },
+  async getEditorialPlan(id) {
+    return request(`/api/editorial-planner/plans/${encodeURIComponent(id)}`);
+  },
+  async createEditorialContentIdea(payload) {
+    return request("/api/editorial-planner/content-ideas", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+  async updateEditorialContentIdea(id, payload) {
+    return request(`/api/editorial-planner/content-ideas/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    });
+  },
+  async deleteEditorialContentIdea(id) {
+    return request(`/api/editorial-planner/content-ideas/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+    });
+  },
+  async updateEditorialContentIdeaStatus(id, statusCode) {
+    return request(`/api/editorial-planner/content-ideas/${encodeURIComponent(id)}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status_code: statusCode }),
+    });
+  },
+  async getEditorialTrendSignals(params = {}) {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === "") return;
+      searchParams.set(key, String(value));
+    });
+    const query = searchParams.toString();
+    return request(`/api/editorial-planner/trend-signals${query ? `?${query}` : ""}`);
+  },
+  async refreshEditorialTrendSignals(payload = {}) {
+    return request("/api/editorial-planner/trend-signals/refresh", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+  async getEditorialTrendSources() {
+    return request("/api/editorial-planner/trend-sources");
+  },
+  async downloadReportFile(reportId) {
+    return this.download(`/api/reports/${encodeURIComponent(reportId)}/file`);
+  },
+  async exportEditorialPlan(planId, format = "csv") {
+    return this.download(`/api/editorial-planner/plans/${encodeURIComponent(planId)}/export?format=${encodeURIComponent(format)}`);
   },
   async getUsers() {
     return request("/api/users");

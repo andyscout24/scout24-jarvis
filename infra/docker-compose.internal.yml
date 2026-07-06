@@ -1,0 +1,58 @@
+services:
+  planner:
+    image: python:3.12-slim
+    container_name: social-jarvis-planner
+    working_dir: /app
+    command: >
+      python -m weekly_editorial_planner
+      --db data/editorial_planner.sqlite
+      --seed-mvp
+      --port 8080
+    volumes:
+      - ../../Redaktionsplan:/app
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=2).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 10s
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dashboard
+    container_name: social-jarvis-dashboard
+    depends_on:
+      planner:
+        condition: service_healthy
+    env_file:
+      - ../.env.internal.demo.example
+    environment:
+      PORT: 4173
+      PUBLIC_BASE_URL: http://localhost:4173
+      DATA_FILE_PATH: data/db.json
+      SOCIAL_REPORTING_PROJECT_PATH: /opt/external/social_reporting
+      REDAKTIONSPLAN_PROJECT_PATH: /opt/external/Redaktionsplan
+      EDITORIAL_PLANNER_BASE_URL: http://planner:8080
+      SOCIAL_REPORTING_VENV_PATH: /opt/venvs/social_reporting
+      SOCIAL_REPORTING_PYTHON_PATH: /opt/venvs/social_reporting/bin/python
+    volumes:
+      - ../data:/app/data
+      - ../../Reporting/social_reporting:/opt/external/social_reporting
+      - ../../Redaktionsplan:/opt/external/Redaktionsplan
+      - social_reporting_venv:/opt/venvs/social_reporting
+    ports:
+      - "4173:4173"
+    healthcheck:
+      test: ["CMD", "node", "scripts/healthcheck.mjs"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 20s
+    restart: unless-stopped
+
+volumes:
+  social_reporting_venv:

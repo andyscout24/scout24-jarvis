@@ -14,6 +14,9 @@ Die App bietet aktuell:
 - `Reports & Details`
 - `Datenquellen & Einstellungen`
 - `Hilfe & Dokumentation`
+- echte Anbindung an:
+  - `social_reporting`
+  - `Weekly Editorial Planner`
 
 ## Tech Stack
 
@@ -95,10 +98,15 @@ Fuer lokales Starten reicht der JSON-Modus:
 NODE_ENV=development
 APP_ENV=development
 PORT=4173
-AUTH_MODE=hybrid
+AUTH_MODE=mock_header
 DATA_REPOSITORY=json
 DATA_FILE_PATH=data/db.json
 PUBLIC_BASE_URL=http://localhost:4173
+SOCIAL_REPORTING_PROJECT_PATH=../Reporting/social_reporting
+REDAKTIONSPLAN_PROJECT_PATH=../Redaktionsplan
+EDITORIAL_PLANNER_BASE_URL=http://127.0.0.1:8080
+EDITORIAL_PLANNER_EMAIL=admin@immoscout24.at
+EDITORIAL_PLANNER_PASSWORD=Planner2026!
 ```
 
 ### 3. Server starten
@@ -114,6 +122,25 @@ Oder ueber npm:
 ```bash
 npm run start:env
 ```
+
+### 3b. Ganzen internen Stack starten
+
+Wenn du Dashboard plus Redaktionsplan zusammen hochfahren willst:
+
+```bash
+npm run stack:start
+```
+
+Der Script:
+
+- startet das Dashboard
+- startet den Redaktionsplan-Service, falls er noch nicht laeuft
+- prueft die `social_reporting`-Readiness
+
+Wichtig:
+
+- `social_reporting` ist kein eigener HTTP-Service, sondern wird on-demand per CLI ueber das Dashboard gestartet
+- der Redaktionsplan bleibt ein separates Python-Projekt mit HTTP-API
 
 ### 4. App oeffnen
 
@@ -186,6 +213,8 @@ npm run start:env
 npm run build
 npm run check
 npm run health
+npm run stack:check
+npm run stack:start
 npm run cf:dev
 npm run cf:deploy
 ```
@@ -202,6 +231,28 @@ Wichtig:
 
 - produktive Runtime-Secrets werden nicht in `.openai/hosting.json` gespeichert
 - sie gehoeren in die Hosting-Umgebung
+
+## Interner Betrieb ohne Sites
+
+Fuer euren aktuellen Integrationsstand ist der realistischere interne Betriebsmodus:
+
+- Dashboard als Node-Service
+- Redaktionsplan als separater Python-Service
+- social_reporting als Python-CLI im Dashboard-Container
+
+Vorbereitete Dateien:
+
+- [infra/docker-compose.internal.yml](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/infra/docker-compose.internal.yml)
+- [Dockerfile.dashboard](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/Dockerfile.dashboard)
+- [.env.internal.demo.example](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/.env.internal.demo.example)
+- [docs/internal-docker-stack.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/internal-docker-stack.md)
+
+Schnellstart:
+
+```bash
+cp .env.internal.demo.example .env.internal.demo
+docker compose -f infra/docker-compose.internal.yml --env-file .env.internal.demo up --build
+```
 
 ## Healthcheck
 
@@ -223,6 +274,7 @@ Der Healthcheck liefert:
 - Storage-Modus
 - Tool-/Fehlerzaehler
 - Integrationskontext
+- Readiness fuer `social_reporting` und `Redaktionsplan`
 - fehlende Variablennamen ohne Secret-Werte
 
 ## Benoetigte Umgebungsvariablen
@@ -256,6 +308,9 @@ Der Healthcheck liefert:
 | `DATABASE_URL` | Postgres / Tooling |
 | `SOCIAL_REPORTING_PROJECT_PATH` | Pfad zum separaten Social Reporting Projekt |
 | `REDAKTIONSPLAN_PROJECT_PATH` | Pfad zum separaten Weekly Editorial Planner |
+| `EDITORIAL_PLANNER_BASE_URL` | interne URL des Planner-Service |
+| `EDITORIAL_PLANNER_EMAIL` | Service-Login fuer Dashboard-Proxy |
+| `EDITORIAL_PLANNER_PASSWORD` | Service-Login fuer Dashboard-Proxy |
 | `CAMPAIGN_REVIEW_BASE_URL` | Reporting FastAPI |
 | `SWATIO_BASE_URL` | Swat.io |
 | `SWATIO_API_KEY` | Swat.io |

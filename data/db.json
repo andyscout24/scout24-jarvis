@@ -33,11 +33,11 @@
       "route": "#/tools/reporting-tool",
       "launchRoute": "#/reporting",
       "externalUrl": "http://localhost:8000/app",
-      "lastRunAt": "2026-07-02T07:56:54.924Z",
+      "lastRunAt": "2026-07-02T09:57:57.062Z",
       "metrics": {
-        "runsToday": 4,
+        "runsToday": 5,
         "successRate": 0.91,
-        "storedResults": 12
+        "storedResults": 13
       },
       "integration": {
         "type": "hybrid_external_tooling",
@@ -110,11 +110,11 @@
       "route": "#/tools/editorial-planner",
       "launchRoute": "#/tools/editorial-planner",
       "externalUrl": "http://127.0.0.1:8080/dashboard/editorial-planner",
-      "lastRunAt": null,
+      "lastRunAt": "2026-07-02T09:57:42.118Z",
       "metrics": {
-        "runsToday": 0,
+        "runsToday": 1,
         "successRate": null,
-        "storedResults": 0
+        "storedResults": 1
       },
       "integration": {
         "type": "sqlite_http_service",
@@ -192,6 +192,115 @@
     }
   ],
   "reports": [
+    {
+      "id": "report-1782986277062",
+      "toolId": "reporting-tool",
+      "clientId": null,
+      "automationRunId": "run-report-1782986277062",
+      "clientName": "ImmoScout24 Austria Team",
+      "campaignName": "Dashboard Smoke Test",
+      "reportType": "weekly_social",
+      "reportingPeriod": "KW 27 2026",
+      "channel": "Instagram",
+      "dataSource": "file",
+      "dataSourceLabel": "Datei-Import",
+      "status": "generated",
+      "fileName": "dashboard_immoscout24_austria_team_1782986271714.xlsx",
+      "fileUrl": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_team_1782986271714.xlsx",
+      "errorMessage": null,
+      "createdAt": "2026-07-02T09:57:57.062Z",
+      "updatedAt": "2026-07-02T09:57:57.062Z",
+      "createdBy": "Mira Keller",
+      "metadata": {
+        "reportType": "weekly_social",
+        "reportingPeriod": "KW 27 2026",
+        "dataSource": "file",
+        "dataSourceLabel": "Datei-Import",
+        "dataSourceState": "ready",
+        "channel": "Instagram",
+        "generatedAt": "2026-07-02T09:57:57.062Z",
+        "createdBy": "Mira Keller",
+        "outputFile": "dashboard_immoscout24_austria_team_1782986271714.xlsx",
+        "outputUrl": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_team_1782986271714.xlsx",
+        "error": null,
+        "missingConfig": [],
+        "fallback": false,
+        "adapter": "social-reporting-cli-adapter",
+        "execution": {
+          "executed": true,
+          "projectPath": "/Users/awill/Documents/Codex/Reporting/social_reporting",
+          "pythonPath": "/Users/awill/Documents/Codex/Reporting/social_reporting/.venv/bin/python",
+          "source": "file",
+          "sourceLabel": "Datei-Import",
+          "commandPreview": "/Users/awill/Documents/Codex/Reporting/social_reporting/.venv/bin/python -m src.main --source file --output data_output --output-name dashboard_immoscout24_austria_team_1782986271714.xlsx --period weekly --layout weekly --no-ai --input /Users/awill/Documents/Codex/Reporting/social_reporting/data_input --platform Instagram",
+          "stdoutPreview": "Report created: /Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_team_1782986271714.xlsx",
+          "stderrPreview": "INFO | Starting social media reporting pipeline. INFO | Data source: file INFO | Period: None to None INFO | Input: /Users/awill/Documents/Codex/Reporting/social_reporting/data_input INFO | Output: /Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_team_1782986271714.xlsx INFO | Loading input file: /Users/awill/Documents/Codex/Reporting/social_reporting/data_input/example_minimal_social_data.csv INFO | Loading input file: /Users/awill/Documents/Cod…",
+          "outputFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_team_1782986271714.xlsx",
+          "outputCreatedAt": "2026-07-02T09:57:57.023Z",
+          "logFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/logs/social_reporting_2026-07-02.log",
+          "logCreatedAt": "2026-07-02T09:57:57.024Z",
+          "startDate": "2026-06-25",
+          "endDate": "2026-07-02",
+          "layout": "weekly"
+        },
+        "externalService": {
+          "serviceName": "social_reporting",
+          "baseUrl": "http://localhost:8000/app",
+          "healthEndpoint": "/api/health",
+          "previewEndpoint": "/api/preview",
+          "generateEndpoint": "/api/generate",
+          "state": "social_reporting_cli_connected",
+          "sourceReference": "social_reporting"
+        },
+        "requiredUploads": [
+          "social_export_file"
+        ],
+        "kpiPlaceholders": {
+          "reach": {
+            "label": "Reichweite",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "impressions": {
+            "label": "Impressionen",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "engagement": {
+            "label": "Engagement",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "clicks": {
+            "label": "Klicks",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "followerGrowth": {
+            "label": "Follower-Wachstum",
+            "value": null,
+            "status": "pending_data",
+            "source": "file"
+          },
+          "topFormats": {
+            "label": "Top-Formate",
+            "value": [],
+            "status": "pending_data",
+            "source": "file"
+          },
+          "recommendations": {
+            "label": "Optimierungsvorschlaege",
+            "value": [],
+            "status": "pending_data",
+            "source": "file"
+          }
+        }
+      }
+    },
     {
       "id": "report-1782979014924",
       "toolId": "reporting-tool",
@@ -468,6 +577,51 @@
   ],
   "logs": [
     {
+      "id": "log-1782986277062-sz6ltk",
+      "timestamp": "2026-07-02T09:57:57.062Z",
+      "actor": "Mira Keller",
+      "user": "Mira Keller",
+      "tool_id": "reporting-tool",
+      "toolId": "reporting-tool",
+      "action": "report.created",
+      "status": "success",
+      "level": "success",
+      "message": "Social Reporting Report fuer ImmoScout24 Austria Team wurde erstellt.",
+      "metadata": {
+        "reportId": "report-1782986277062",
+        "runId": "run-report-1782986277062",
+        "reportType": "weekly_social",
+        "dataSource": "file",
+        "outputFile": "dashboard_immoscout24_austria_team_1782986271714.xlsx",
+        "pendingConnection": false,
+        "fallback": false,
+        "outputFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/data_output/dashboard_immoscout24_austria_team_1782986271714.xlsx",
+        "logFilePath": "/Users/awill/Documents/Codex/Reporting/social_reporting/logs/social_reporting_2026-07-02.log"
+      },
+      "created_at": "2026-07-02T09:57:57.062Z",
+      "createdAt": "2026-07-02T09:57:57.062Z"
+    },
+    {
+      "id": "log-1782986262118-tp5v6v",
+      "timestamp": "2026-07-02T09:57:42.118Z",
+      "actor": "Mira Keller",
+      "user": "Mira Keller",
+      "tool_id": "editorial-planner",
+      "toolId": "editorial-planner",
+      "action": "editorial_plan.generated",
+      "status": "success",
+      "level": "success",
+      "message": "Redaktionsplan fuer KW 32/2026 wurde erzeugt.",
+      "metadata": {
+        "planId": 12,
+        "weekStartDate": "2026-08-03",
+        "market": "AT",
+        "totalIdeas": 7
+      },
+      "created_at": "2026-07-02T09:57:42.118Z",
+      "createdAt": "2026-07-02T09:57:42.118Z"
+    },
+    {
       "id": "log-1782979014924-gauyer",
       "timestamp": "2026-07-02T07:56:54.924Z",
       "actor": "Mira Keller",
@@ -606,6 +760,35 @@
     }
   ],
   "automationRuns": [
+    {
+      "id": "run-report-1782986277062",
+      "automationId": "automation-report-cleanup",
+      "toolId": "reporting-tool",
+      "clientId": null,
+      "status": "succeeded",
+      "triggerSource": "manual",
+      "actorUserId": "user-001",
+      "input": {
+        "clientName": "ImmoScout24 Austria Team",
+        "campaignName": "Dashboard Smoke Test",
+        "reportingPeriod": "KW 27 2026",
+        "channel": "Instagram",
+        "reportType": "weekly_social",
+        "dataSource": "file"
+      },
+      "output": {
+        "reportId": "report-1782986277062",
+        "fileName": "dashboard_immoscout24_austria_team_1782986271714.xlsx",
+        "fileUrl": null,
+        "pendingConnection": false,
+        "fallback": false
+      },
+      "errorCode": null,
+      "errorMessage": null,
+      "startedAt": "2026-07-02T09:57:57.062Z",
+      "finishedAt": "2026-07-02T09:57:57.062Z",
+      "createdAt": "2026-07-02T09:57:57.062Z"
+    },
     {
       "id": "run-report-1782979014924",
       "automationId": "automation-report-cleanup",

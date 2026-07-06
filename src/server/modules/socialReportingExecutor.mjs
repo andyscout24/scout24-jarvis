@@ -116,12 +116,14 @@ export async function runSocialReportingReport(body) {
 }
 
 async function resolvePythonExecutable(projectPath) {
+  const configuredPythonPath = String(process.env.SOCIAL_REPORTING_PYTHON_PATH || "").trim();
   const candidates = [
+    configuredPythonPath,
     join(projectPath, ".venv", "bin", "python"),
     join(projectPath, ".venv", "Scripts", "python.exe"),
     "python3",
     "python",
-  ];
+  ].filter(Boolean);
 
   for (const candidate of candidates) {
     if (candidate === "python3" || candidate === "python") return candidate;

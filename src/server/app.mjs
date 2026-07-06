@@ -11,6 +11,7 @@ import { createAdminService } from "./services/adminService.mjs";
 import { createAutomationService } from "./services/automationService.mjs";
 import { createHealthService } from "./services/healthService.mjs";
 import { createLogService } from "./services/logService.mjs";
+import { createEditorialPlannerService } from "./services/editorialPlannerService.mjs";
 import { createResultService } from "./services/resultService.mjs";
 import { createUserService } from "./services/userService.mjs";
 import { createStaticServer } from "./static/staticServer.mjs";
@@ -29,6 +30,7 @@ export function createServices() {
     automations: createAutomationService(repository),
     health: createHealthService(repository, { serviceName, storageMode }),
     logs: createLogService(repository),
+    editorialPlanner: createEditorialPlannerService(repository),
     results: createResultService(repository),
     users: createUserService(repository),
     admin: createAdminService(repository),

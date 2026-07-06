@@ -16,6 +16,21 @@ export function sendSuccess(res, statusCode, data, message = "OK") {
   });
 }
 
+export function sendBinary(res, statusCode, body, {
+  contentType = "application/octet-stream",
+  filename = "",
+} = {}) {
+  const headers = {
+    "Content-Type": contentType,
+    "Cache-Control": "no-store",
+  };
+  if (filename) {
+    headers["Content-Disposition"] = `attachment; filename="${filename}"`;
+  }
+  res.writeHead(statusCode, headers);
+  res.end(body);
+}
+
 export function sendErrorResponse(res, error) {
   if (error instanceof ApiError) {
     sendJson(res, error.statusCode, {

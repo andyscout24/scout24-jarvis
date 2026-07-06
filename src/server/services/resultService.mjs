@@ -3,6 +3,7 @@ import { Permissions, canAccessTool, canReadOffer, canReadReport, requirePermiss
 import { buildOfferGenerationPayload } from "../modules/offerGeneratorAdapter.mjs";
 import { buildReportGenerationPayload } from "../modules/reportingToolAdapter.mjs";
 import { runSocialReportingReport } from "../modules/socialReportingExecutor.mjs";
+import { getSocialReportingLiveSnapshot } from "../modules/socialReportingSnapshot.mjs";
 
 export function createResultService(repository) {
   return {
@@ -30,6 +31,11 @@ export function createResultService(repository) {
         throw notFound("report_not_found", "Der angeforderte Report wurde nicht gefunden.");
       }
       return report;
+    },
+
+    async getLiveReportingSnapshot(currentUser, options = {}) {
+      requirePermission(currentUser, Permissions.VIEW_REPORTS, "Nur Marketing, Management und Admins koennen Live-Reporting-Zahlen sehen.");
+      return getSocialReportingLiveSnapshot(options);
     },
 
     async generateReport(body, currentUser) {

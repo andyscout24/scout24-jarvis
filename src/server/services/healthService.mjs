@@ -1,4 +1,5 @@
 import { getHealthConfigSummary } from "../config/env.mjs";
+import { getIntegrationReadinessSummary } from "../modules/integrationReadiness.mjs";
 
 export function createHealthService(repository, { serviceName, storageMode } = {}) {
   return {
@@ -6,6 +7,7 @@ export function createHealthService(repository, { serviceName, storageMode } = {
       const config = getHealthConfigSummary();
       const timestamp = new Date().toISOString();
       const storageStatus = repository.getStorageStatus?.() || null;
+      const integrationReadiness = await getIntegrationReadinessSummary();
 
       try {
         const [tools, apiConnections] = await Promise.all([
@@ -43,6 +45,7 @@ export function createHealthService(repository, { serviceName, storageMode } = {
               pending: apiConnections.filter((connection) => connection.config?.state === "pending_connection").length,
               unknown: apiConnections.filter((connection) => connection.status === "unknown").length,
             },
+            externalTools: integrationReadiness,
           },
         };
       } catch (error) {
@@ -59,6 +62,7 @@ export function createHealthService(repository, { serviceName, storageMode } = {
               fallbackActive: Boolean(storageStatus?.fallbackActive),
               message: "Die Dashboard-Datenquelle konnte nicht gelesen werden.",
             },
+            externalTools: integrationReadiness,
           },
         };
       }

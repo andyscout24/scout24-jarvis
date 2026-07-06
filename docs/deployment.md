@@ -11,6 +11,16 @@ Empfohlene Zielarchitektur:
 - Datenhaltung: Supabase
 - Auth: Supabase
 
+Fuer den aktuellen Integrationsstand gibt es zusaetzlich einen pragmatischen internen Docker-Stack:
+
+- [docs/internal-docker-stack.md](/Users/awill/Documents/Codex/ImmoScout24%20Jarvis/docs/internal-docker-stack.md)
+
+Der ist vor allem fuer:
+
+- interne Demos
+- Team-Testing
+- VM-/Server-Betrieb im geschlossenen Netz
+
 ## Build und Start
 
 ### Build

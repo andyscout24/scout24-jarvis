@@ -10,6 +10,7 @@ import { getEmptyDashboardData, loadDashboardData } from "./data/dashboardData.j
 import { offerPayloadFromForm, reportPayloadFromForm } from "./forms/formPayloads.js";
 import { getRoute } from "./router.js";
 import { bindAutomationHubFilters, bindActivityLogFilters, bindReportingFilters } from "./ui/filters.js";
+import { bindEditorialPlannerView } from "./ui/editorialPlanner.js";
 import { bindToolOpenLogging } from "./ui/toolOpenLogging.js";
 import { formatCurrency } from "./utils.js";
 import { ActivityView } from "./views/ActivityView.js";
@@ -174,6 +175,21 @@ function bindActions() {
   bindAutomationHubFilters();
   bindActivityLogFilters();
   bindReportingFilters();
+  bindEditorialPlannerView({
+    plannerOverview: state.data?.plannerOverview,
+    onReload: async (notice) => loadData({ notice }),
+    onError: async (error, fallbackMessage) => {
+      state = {
+        ...state,
+        apiStatus: error?.status ? state.apiStatus : "error",
+        error: error?.message || fallbackMessage,
+        notice: "",
+        warnings: [],
+        loading: false,
+      };
+      render();
+    },
+  });
   bindToolOpenLogging(api);
   bindOfferPreview();
 
@@ -279,6 +295,77 @@ function bindActions() {
       submitButton.disabled = false;
     }
   });
+
+  document.getElementById("editorial-planner-form")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const submitButton = form.querySelector("button[type='submit']");
+    const payload = {
+      weekStartDate: String(form.elements.weekStartDate.value || ""),
+      market: String(form.elements.market.value || "AT"),
+    };
+
+    submitButton.disabled = true;
+    try {
+      const result = await api.generateEditorialPlan(payload);
+      await loadData({ notice: `Redaktionsplan fuer KW ${result.plan.calendarWeek}/${result.plan.calendarYear} wurde erzeugt.` });
+    } catch (error) {
+      state = {
+        ...state,
+        apiStatus: error?.status ? state.apiStatus : "error",
+        error: error.message || "Redaktionsplan konnte nicht erzeugt werden.",
+        notice: "",
+        warnings: [],
+        loading: false,
+      };
+      render();
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  document.querySelectorAll("[data-download-report-id]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const reportId = button.getAttribute("data-download-report-id");
+      button.disabled = true;
+      try {
+        const file = await api.downloadReportFile(reportId);
+        triggerBrowserDownload(file.blob, file.filename || `report-${reportId}.xlsx`);
+      } catch (error) {
+        state = {
+          ...state,
+          apiStatus: error?.status ? state.apiStatus : "error",
+          error: error.message || "Report-Datei konnte nicht geladen werden.",
+          loading: false,
+        };
+        render();
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-export-plan-id]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const planId = button.getAttribute("data-export-plan-id");
+      const format = button.getAttribute("data-export-format") || "csv";
+      button.disabled = true;
+      try {
+        const file = await api.exportEditorialPlan(planId, format);
+        triggerBrowserDownload(file.blob, file.filename || `editorial-plan-${planId}.${format}`);
+      } catch (error) {
+        state = {
+          ...state,
+          apiStatus: error?.status ? state.apiStatus : "error",
+          error: error.message || "Plan-Export konnte nicht geladen werden.",
+          loading: false,
+        };
+        render();
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
 }
 
 function normalizeRoute(route) {
@@ -334,4 +421,15 @@ function setText(id, value) {
 function setHtml(id, value) {
   const element = document.getElementById(id);
   if (element) element.innerHTML = value;
+}
+
+function triggerBrowserDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
